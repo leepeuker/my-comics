@@ -13,7 +13,6 @@ class Factory
 {
     private ?DBAL\Connection $dbConnection = null;
 
-
     public function createHttpClient(int $timeout): ClientInterface
     {
         return new Client(['timeout' => $timeout]);

@@ -41,6 +41,13 @@ class Repository
         $this->dbConnection->delete('issues', ['id' => $id,]);
     }
 
+    public function fetchAll() : EntityList
+    {
+        $data = $this->dbConnection->fetchAll('SELECT * FROM `issues`');
+
+        return EntityList::createFromArray($data);
+    }
+
     public function fetchById(Id $id) : Entity
     {
         $data = $this->dbConnection->fetchAssoc('SELECT * FROM `issues` WHERE id = ?', [$id->asInt()]);

@@ -34,4 +34,4 @@ RUN addgroup --gid "$USER_ID" "dev" \
     --uid "$USER_ID" \
     "dev"
 
-WORKDIR /app
+WORKDIR /var/www

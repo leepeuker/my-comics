@@ -6,7 +6,7 @@ use App\ValueObject\Id;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
 
-class Entity
+class Entity implements \JsonSerializable
 {
     private string $comicVineId;
 
@@ -120,5 +120,20 @@ class Entity
     public function getYear() : ?Year
     {
         return $this->year;
+    }
+
+    public function jsonSerialize() : array
+    {
+        return [
+            'id' => $this->id,
+            'coverId' => $this->coverId,
+            'comicVineId' => $this->comicVineId,
+            'name' => $this->name,
+            'year' => $this->year,
+            'volumeId' => $this->volumeId,
+            'publisherId' => $this->publisherId,
+            'description' => $this->description,
+            'price' => $this->price,
+        ];
     }
 }

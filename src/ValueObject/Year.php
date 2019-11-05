@@ -2,7 +2,7 @@
 
 namespace App\ValueObject;
 
-class Year
+class Year implements \JsonSerializable
 {
     private int $year;
 
@@ -33,5 +33,10 @@ class Year
         if ($year < 1901 || $year > 2155) {
             throw new \InvalidArgumentException('Year has to be between 1901 and 2155, invalid value: ' . $year);
         }
+    }
+
+    public function jsonSerialize() : int
+    {
+        return $this->year;
     }
 }

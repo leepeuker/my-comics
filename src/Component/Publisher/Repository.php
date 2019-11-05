@@ -33,6 +33,13 @@ class Repository
         $this->dbConnection->delete('publishers', ['id' => $id]);
     }
 
+    public function fetchAll() : EntityList
+    {
+        $data = $this->dbConnection->fetchAll('SELECT * FROM `publishers`');
+
+        return EntityList::createFromArray($data);
+    }
+
     public function fetchByComicVineId(Id $comicVineId) : Entity
     {
         $data = $this->dbConnection->fetchAssoc('SELECT * FROM `publishers` WHERE comic_vine_id = ?', [$comicVineId->asInt()]);

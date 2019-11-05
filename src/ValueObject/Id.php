@@ -2,7 +2,7 @@
 
 namespace App\ValueObject;
 
-class Id
+class Id implements \JsonSerializable
 {
     private int $id;
 
@@ -36,6 +36,11 @@ class Id
     }
 
     public function asInt() : int
+    {
+        return $this->id;
+    }
+
+    public function jsonSerialize() : int
     {
         return $this->id;
     }

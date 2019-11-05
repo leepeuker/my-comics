@@ -1,12 +1,21 @@
 version: "3.5"
 
 services:
+  nginx:
+    image: nginx:latest
+    container_name: my-comics-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www
+      - ./build/nginx/app.conf:/etc/nginx/conf.d/site.conf
+
   php:
-    build: ./build
+    build: ./build/php
     container_name: my-comics-php
     user: "${USER_ID}"
     volumes:
-      - ./:/app
+      - ./:/var/www
 
   mysql:
     image: mysql:5.7

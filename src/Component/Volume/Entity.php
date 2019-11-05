@@ -4,7 +4,7 @@ namespace App\Component\Volume;
 
 use App\ValueObject\Id;
 
-class Entity
+class Entity implements \JsonSerializable
 {
     private Id $comicVineId;
 
@@ -41,5 +41,14 @@ class Entity
     public function getName() : string
     {
         return $this->name;
+    }
+
+    public function jsonSerialize() : array
+    {
+        return [
+            'id' => $this->id,
+            'comicVineId' => $this->comicVineId,
+            'name' => $this->name
+        ];
     }
 }

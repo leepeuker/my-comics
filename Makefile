@@ -21,6 +21,9 @@ reup: down up
 connect_php_bash:
 	docker exec -it my-comics-php bash
 
+connect_nginx_bash:
+	docker exec -it my-comics-nginx bash
+
 connect_mysql_cli:
 	docker exec -it my-comics-mysql bash -c "mysql -uroot -p${MYSQL_ROOT_PASSWORD}"
 
@@ -29,6 +32,9 @@ run_cmd_php:
 
 run_cmd_mysql:
 	docker exec -it my-comics-mysql bash -c "mysql -uroot -p${MYSQL_ROOT_PASSWORD} -e \"$(QUERY)\""
+
+reload_nginx:
+	docker exec -it my-comics-nginx bash -c "service nginx reload"
 
 # App
 #####

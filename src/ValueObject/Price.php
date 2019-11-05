@@ -2,7 +2,7 @@
 
 namespace App\ValueObject;
 
-class Price
+class Price implements \JsonSerializable
 {
     private int $centAmount;
 
@@ -36,6 +36,11 @@ class Price
     }
 
     public function asInt() : int
+    {
+        return $this->centAmount;
+    }
+
+    public function jsonSerialize() : int
     {
         return $this->centAmount;
     }

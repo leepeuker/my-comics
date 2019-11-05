@@ -16,6 +16,7 @@
     </projectFiles>
 
     <issueHandlers>
+        <PropertyNotSetInConstructor errorLevel="suppress"/>
         <MixedInferredReturnType>
             <errorLevel type="info">
                 <directory name="src/" />
