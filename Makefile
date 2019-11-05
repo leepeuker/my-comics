@@ -69,10 +69,13 @@ composer_update:
 
 # Tests
 #######
-test: test_psalm test_phpunit
+test: test_phpstan test_psalm test_phpunit
 
 test_phpunit:
 	make run_cmd_php CMD="vendor/bin/phpunit -c ./phpunit.xml --testsuite unit"
+
+test_phpstan:
+	make run_cmd_php CMD="vendor/bin/phpstan analyse src tests --level max"
 
 test_psalm:
 	make run_cmd_php CMD="vendor/bin/psalm -c ./psalm.xml --show-info=false"
