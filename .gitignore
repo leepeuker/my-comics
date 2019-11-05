@@ -1,6 +1,5 @@
 .idea/
 phinx.yml
-/tmp
 
 ###> symfony/framework-bundle ###
 /.env.local
