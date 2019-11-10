@@ -56,8 +56,8 @@ class Entity implements \JsonSerializable
             (string)$data['comic_vine_id'],
             (string)$data['name'],
             empty($data['year']) === true ? null : Year::createFromInt((int)$data['year']),
-            empty($data['publisher_id']) === true ? null : Id::createFromString((string)$data['publisher_id']),
             empty($data['volume_id']) === true ? null : Id::createFromString((string)$data['volume_id']),
+            empty($data['publisher_id']) === true ? null : Id::createFromString((string)$data['publisher_id']),
             (string)$data['description'],
             $data['price'] === null ? null : Price::createFromString((string)$data['price'])
         );

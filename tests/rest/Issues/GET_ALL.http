@@ -1,0 +1,6 @@
+OPTIONS http://my-comics.test/issues
+Accept: */*
+Cache-Control: no-cache
+
+###
+

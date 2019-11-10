@@ -27,3 +27,8 @@ publishers_get_all:
     path: /publishers
     controller: App\Controller\Publishers::getAll
     methods: GET|HEAD
+
+comics:
+    path: /comics
+    controller: App\Controller\Comics::addComic
+    methods: POST

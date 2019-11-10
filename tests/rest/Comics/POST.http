@@ -1,0 +1,9 @@
+POST http://my-comics.test/comics
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/x-www-form-urlencoded
+
+{"comicVineId": "622912"}
+
+###
+

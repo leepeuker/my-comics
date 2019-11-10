@@ -1,0 +1,6 @@
+GET http://my-comics.test/issues/3
+Accept: */*
+Cache-Control: no-cache
+
+###
+

@@ -43,7 +43,9 @@ class Repository
 
     public function fetchAll() : EntityList
     {
-        $data = $this->dbConnection->fetchAll('SELECT * FROM `issues`');
+        $data = $this->dbConnection->fetchAll(
+            'SELECT * FROM `issues`'
+        );
 
         return EntityList::createFromArray($data);
     }

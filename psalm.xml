@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <psalm
-    totallyTyped="true"
-    resolveFromConfigFile="true"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="https://getpsalm.org/schema/config"
-    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        totallyTyped="true"
+        resolveFromConfigFile="true"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
         <directory name="src"/>
-        <directory name="tests"/>
+        <directory name="tests/unit"/>
         <ignoreFiles>
             <directory name="vendor"/>
             <file name="src/Kernel.php"/>
@@ -19,27 +19,27 @@
         <PropertyNotSetInConstructor errorLevel="suppress"/>
         <MixedInferredReturnType>
             <errorLevel type="info">
-                <directory name="src/" />
+                <directory name="src/"/>
             </errorLevel>
         </MixedInferredReturnType>
         <MixedArrayAccess>
             <errorLevel type="info">
-                <directory name="src/" />
+                <directory name="src/"/>
             </errorLevel>
         </MixedArrayAccess>
         <MixedAssignment>
             <errorLevel type="info">
-                <directory name="src/" />
+                <directory name="src/"/>
             </errorLevel>
         </MixedAssignment>
         <MixedReturnStatement>
             <errorLevel type="info">
-                <directory name="src/" />
+                <directory name="src/"/>
             </errorLevel>
         </MixedReturnStatement>
         <MixedArgument>
             <errorLevel type="info">
-                <directory name="src/" />
+                <directory name="src/"/>
             </errorLevel>
         </MixedArgument>
     </issueHandlers>
