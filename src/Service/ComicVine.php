@@ -17,19 +17,19 @@ class ComicVine
 
     private Component\Image\Repository $imageRepository;
 
-    private Component\Comic\Repository $issueRepository;
+    private Component\Comic\Repository $comicRepository;
 
     private Component\Publisher\Repository $publisherRepository;
 
     public function __construct(
         Api $api,
         Component\Publisher\Repository $publisherRepository,
-        Component\Comic\Repository $issueRepository,
+        Component\Comic\Repository $comicRepository,
         Component\Image\Repository $imageRepository
     ) {
         $this->api = $api;
         $this->publisherRepository = $publisherRepository;
-        $this->issueRepository = $issueRepository;
+        $this->comicRepository = $comicRepository;
         $this->imageRepository = $imageRepository;
     }
 
@@ -73,7 +73,7 @@ class ComicVine
         $publisher = $this->getPublisher($comicVineVolume);
         $cover = $this->getCover($comicVineIssue);
 
-        return $this->issueRepository->create(
+        return $this->comicRepository->create(
             $comicVineIssue->getId(),
             $cover->getId(),
             $this->convertString($comicVineVolume->getName() . ' - ' . $comicVineIssue->getName()),

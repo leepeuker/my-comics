@@ -19,7 +19,7 @@ class Repository
     public function create(Id $comicVineId, ?Id $coverId, string $name, ?Year $year, ?Id $publisherId, string $description, Price $price) : Entity
     {
         $this->dbConnection->insert(
-            'issues', [
+            'comics', [
                 'comic_vine_id' => $comicVineId->asInt(),
                 'cover_id' => $coverId,
                 'name' => $name,
@@ -37,13 +37,13 @@ class Repository
 
     public function deleteById(string $id) : void
     {
-        $this->dbConnection->delete('issues', ['id' => $id,]);
+        $this->dbConnection->delete('comics', ['id' => $id,]);
     }
 
     public function fetchAll() : EntityList
     {
         $data = $this->dbConnection->fetchAll(
-            'SELECT * FROM `issues`'
+            'SELECT * FROM `comics`'
         );
 
         return EntityList::createFromArray($data);
@@ -51,10 +51,10 @@ class Repository
 
     public function fetchById(Id $id) : Entity
     {
-        $data = $this->dbConnection->fetchAssoc('SELECT * FROM `issues` WHERE id = ?', [$id->asInt()]);
+        $data = $this->dbConnection->fetchAssoc('SELECT * FROM `comics` WHERE id = ?', [$id->asInt()]);
 
         if ($data === false) {
-            throw new \RuntimeException('No issue found by id: ' . $id);
+            throw new \RuntimeException('No comic found by id: ' . $id);
         }
 
         return Entity::createFromArray($data);
@@ -63,7 +63,7 @@ class Repository
     public function update(Entity $entity) : void
     {
         $this->dbConnection->update(
-            'issues',
+            'comics',
             [
                 'comic_vine_id' => $entity->getComicVineId(),
                 'cover_id' => $entity->getCoverId(),
