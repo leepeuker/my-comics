@@ -8,16 +8,6 @@ issues_get_all:
     controller: App\Controller\Issues::getAll
     methods: GET|HEAD
 
-volumes_get:
-    path: /volumes/{id}
-    controller: App\Controller\Volumes::getById
-    methods: GET|HEAD
-
-volumes_get_all:
-    path: /volumes
-    controller: App\Controller\Volumes::getAll
-    methods: GET|HEAD
-
 publishers:
     path: /publishers/{id}
     controller: App\Controller\Publishers::getById

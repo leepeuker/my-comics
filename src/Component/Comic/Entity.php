@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Component\Issue;
+namespace App\Component\Comic;
 
 use App\ValueObject\Id;
 use App\ValueObject\Price;
@@ -22,8 +22,6 @@ class Entity implements \JsonSerializable
 
     private ?Id $publisherId;
 
-    private ?Id $volumeId;
-
     private ?Year $year;
 
     private function __construct(
@@ -32,7 +30,6 @@ class Entity implements \JsonSerializable
         string $comicVineId,
         string $name,
         ?Year $year,
-        ?Id $volumeId,
         ?Id $publisherId,
         string $description,
         ?Price $price
@@ -42,7 +39,6 @@ class Entity implements \JsonSerializable
         $this->comicVineId = $comicVineId;
         $this->name = $name;
         $this->year = $year;
-        $this->volumeId = $volumeId;
         $this->publisherId = $publisherId;
         $this->description = $description;
         $this->price = $price;
@@ -56,7 +52,6 @@ class Entity implements \JsonSerializable
             (string)$data['comic_vine_id'],
             (string)$data['name'],
             empty($data['year']) === true ? null : Year::createFromInt((int)$data['year']),
-            empty($data['volume_id']) === true ? null : Id::createFromString((string)$data['volume_id']),
             empty($data['publisher_id']) === true ? null : Id::createFromString((string)$data['publisher_id']),
             (string)$data['description'],
             $data['price'] === null ? null : Price::createFromString((string)$data['price'])
@@ -69,12 +64,11 @@ class Entity implements \JsonSerializable
         string $comicVineId,
         string $name,
         Year $year,
-        ?Id $volumeId,
         ?Id $publisherId,
         string $description,
         Price $price
     ) : self {
-        return new self($id, $coverId, $comicVineId, $name, $year, $volumeId, $publisherId, $description, $price);
+        return new self($id, $coverId, $comicVineId, $name, $year, $publisherId, $description, $price);
     }
 
     public function getComicVineId() : string
@@ -112,11 +106,6 @@ class Entity implements \JsonSerializable
         return $this->publisherId;
     }
 
-    public function getVolumeId() : ?Id
-    {
-        return $this->volumeId;
-    }
-
     public function getYear() : ?Year
     {
         return $this->year;
@@ -130,7 +119,6 @@ class Entity implements \JsonSerializable
             'comicVineId' => $this->comicVineId,
             'name' => $this->name,
             'year' => $this->year,
-            'volumeId' => $this->volumeId,
             'publisherId' => $this->publisherId,
             'description' => $this->description,
             'price' => $this->price,

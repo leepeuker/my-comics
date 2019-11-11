@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Component\Volume;
+namespace App\Component\Comic;
 
 use App\AbstractList;
 

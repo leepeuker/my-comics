@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Component\Issue\Repository;
+use App\Component\Comic\Repository;
 use App\ValueObject\Id;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

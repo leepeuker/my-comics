@@ -38,6 +38,6 @@ class Comic extends Command
 
         $issue = $this->comicVineService->createComicByIssueId(Id::createFromString($comicVineId));
 
-        $output->writeln((string)$comicVineId);
+        $output->writeln(json_encode($issue));
     }
 }

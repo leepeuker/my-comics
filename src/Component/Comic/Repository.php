@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Component\Issue;
+namespace App\Component\Comic;
 
 use App\ValueObject\Id;
 use App\ValueObject\Price;
@@ -16,7 +16,7 @@ class Repository
         $this->dbConnection = $dbConnection;
     }
 
-    public function create(Id $comicVineId, ?Id $coverId, string $name, ?Year $year, ?Id $volumeId, ?Id $publisherId, string $description, Price $price) : Entity
+    public function create(Id $comicVineId, ?Id $coverId, string $name, ?Year $year, ?Id $publisherId, string $description, Price $price) : Entity
     {
         $this->dbConnection->insert(
             'issues', [
@@ -24,7 +24,6 @@ class Repository
                 'cover_id' => $coverId,
                 'name' => $name,
                 'year' => $year === null ? null : $year->asInt(),
-                'volume_id' => $volumeId === null ? null : $volumeId->asInt(),
                 'publisher_id' => $publisherId === null ? null : $publisherId->asInt(),
                 'description' => $description,
                 'price' => $price->asInt()
@@ -71,7 +70,6 @@ class Repository
                 'name' => $entity->getName(),
                 'year' => $entity->getYear(),
                 'description' => $entity->getDescription(),
-                'volume_id' => $entity->getVolumeId(),
                 'publisher_id' => $entity->getPublisherId(),
                 'price' => $entity->getPrice()
             ],

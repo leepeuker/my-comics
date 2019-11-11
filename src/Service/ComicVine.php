@@ -17,27 +17,23 @@ class ComicVine
 
     private Component\Image\Repository $imageRepository;
 
-    private Component\Issue\Repository $issueRepository;
+    private Component\Comic\Repository $issueRepository;
 
     private Component\Publisher\Repository $publisherRepository;
 
-    private Component\Volume\Repository $volumeRepository;
-
     public function __construct(
         Api $api,
-        Component\Volume\Repository $volumeRepository,
         Component\Publisher\Repository $publisherRepository,
-        Component\Issue\Repository $issueRepository,
+        Component\Comic\Repository $issueRepository,
         Component\Image\Repository $imageRepository
     ) {
         $this->api = $api;
-        $this->volumeRepository = $volumeRepository;
         $this->publisherRepository = $publisherRepository;
         $this->issueRepository = $issueRepository;
         $this->imageRepository = $imageRepository;
     }
 
-    public function createComicByIssueId(Id $issueId) : Component\Issue\Entity
+    public function createComicByIssueId(Id $issueId) : Component\Comic\Entity
     {
         $comicVineIssue = $this->api->fetchIssue($issueId);
         $comicVineVolume = $this->api->fetchVolume($comicVineIssue->getVolume()->getId());
@@ -72,32 +68,16 @@ class ComicVine
         }
     }
 
-    public function getVolume(Issue\Dto $comicVineIssue) : Component\Volume\Entity
-    {
-        try {
-            return $this->volumeRepository->fetchByComicVineId(
-                $comicVineIssue->getVolume()->getId()
-            );
-        } catch (RuntimeException $exception) {
-            return $this->volumeRepository->create(
-                $comicVineIssue->getVolume()->getId(),
-                $this->convertString($comicVineIssue->getVolume()->getName())
-            );
-        }
-    }
-
-    public function persist(Issue\Dto $comicVineIssue, Volume\Dto $comicVineVolume) : Component\Issue\Entity
+    public function persist(Issue\Dto $comicVineIssue, Volume\Dto $comicVineVolume) : Component\Comic\Entity
     {
         $publisher = $this->getPublisher($comicVineVolume);
-        $volume = $this->getVolume($comicVineIssue);
         $cover = $this->getCover($comicVineIssue);
 
         return $this->issueRepository->create(
             $comicVineIssue->getId(),
             $cover->getId(),
-            $this->convertString($comicVineIssue->getName()),
+            $this->convertString($comicVineVolume->getName() . ' - ' . $comicVineIssue->getName()),
             $this->getYear($comicVineIssue),
-            $volume->getId(),
             $publisher->getId(),
             $this->convertString($comicVineIssue->getDescription()),
             Price::createFromInt(100)
