@@ -1,24 +1,55 @@
+###########
+### Api ###
+###########
 issues:
     path: /issues/{id}
-    controller: App\Controller\Issues::getById
+    controller: App\Controller\Api\Issues::getById
     methods: GET|HEAD
 
 issues_get_all:
     path: /issues
-    controller: App\Controller\Issues::getAll
+    controller: App\Controller\Api\Issues::getAll
+    methods: GET|HEAD
+
+images:
+    path: /images/{id}
+    controller: App\Controller\Api\Images::getById
     methods: GET|HEAD
 
 publishers:
     path: /publishers/{id}
-    controller: App\Controller\Publishers::getById
+    controller: App\Controller\Api\Publishers::getById
     methods: GET|HEAD
 
 publishers_get_all:
     path: /publishers
-    controller: App\Controller\Publishers::getAll
+    controller: App\Controller\Api\Publishers::getAll
     methods: GET|HEAD
 
 comics:
     path: /comics
-    controller: App\Controller\Comics::addComic
+    controller: App\Controller\Api\Comics::addComic
     methods: POST
+
+###########
+### Web ###
+###########
+web_comics_list:
+    path: /
+    controller: App\Controller\Web\Comics::list
+    methods: GET
+
+web_comics_show:
+    path: /comics/{id}
+    controller: App\Controller\Web\Comics::show
+    methods: GET
+
+web_comics_edit:
+    path: /comics/{id}
+    controller: App\Controller\Web\Comics::edit
+    methods: POST
+
+web_comics_remove:
+    path: /comics/{id}
+    controller: App\Controller\Web\Comics::remove
+    methods: DELETE

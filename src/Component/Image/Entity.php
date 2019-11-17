@@ -4,7 +4,7 @@ namespace App\Component\Image;
 
 use App\ValueObject\Id;
 
-class Entity
+class Entity implements \JsonSerializable
 {
     private string $fileName;
 
@@ -37,5 +37,13 @@ class Entity
     public function getId() : Id
     {
         return $this->id;
+    }
+
+    public function jsonSerialize() : array
+    {
+        return [
+            'id' => $this->id,
+            'fileName' => $this->fileName
+        ];
     }
 }

@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Api;
 
-use App\Component\Comic\Repository;
+use App\Component\Image\Repository;
 use App\ValueObject\Id;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class Issues extends AbstractController
+class Images extends AbstractController
 {
     private Repository $repository;
 

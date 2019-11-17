@@ -1,0 +1,6 @@
+GET http://my-comics.test/images/1
+Accept: */*
+Cache-Control: no-cache
+
+###
+

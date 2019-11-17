@@ -1,5 +1,7 @@
 .idea/
 phinx.yml
+public/images/*
+!public/images/.gitkeep
 
 ###> symfony/framework-bundle ###
 /.env.local

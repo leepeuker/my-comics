@@ -15,7 +15,7 @@ class ComicVine
 {
     private Api $api;
 
-    private Component\Image\Repository $imageRepository;
+    private Component\Image\Service $imageService;
 
     private Component\Comic\Repository $comicRepository;
 
@@ -25,12 +25,12 @@ class ComicVine
         Api $api,
         Component\Publisher\Repository $publisherRepository,
         Component\Comic\Repository $comicRepository,
-        Component\Image\Repository $imageRepository
+        Component\Image\Service $imageService
     ) {
         $this->api = $api;
         $this->publisherRepository = $publisherRepository;
         $this->comicRepository = $comicRepository;
-        $this->imageRepository = $imageRepository;
+        $this->imageService = $imageService;
     }
 
     public function createComicByIssueId(Id $issueId) : Component\Comic\Entity
@@ -44,11 +44,11 @@ class ComicVine
     public function getCover(Issue\Dto $comicVineIssue) : Component\Image\Entity
     {
         try {
-            return $this->imageRepository->fetchByFileName(
+            return $this->imageService->fetchByFileName(
                 $comicVineIssue->getCoverUrl()
             );
         } catch (RuntimeException $exception) {
-            return $this->imageRepository->create(
+            return $this->imageService->createFromUrl(
                 $comicVineIssue->getCoverUrl()
             );
         }
