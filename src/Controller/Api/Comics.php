@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Service\ComicVine;
+use App\Util\Json;
 use App\ValueObject\Id;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,7 +25,7 @@ class Comics extends AbstractController
     public function addComic(Request $request) : Response
     {
         try {
-            $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+            $data = Json::decode($request->getContent());
             $issue = $this->comicVine->createComicByIssueId(Id::createFromString($data['comicVineId']));
         } catch (\Throwable $t) {
             $this->logger->error($t->getMessage());

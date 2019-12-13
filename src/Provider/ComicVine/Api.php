@@ -4,6 +4,7 @@ namespace App\Provider\ComicVine;
 
 use App\Provider\ComicVine\Resource\Issue;
 use App\Provider\ComicVine\Resource\Volume;
+use App\Util\Json;
 use App\ValueObject\Id;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
@@ -43,7 +44,7 @@ class Api
             throw new \RuntimeException('Comic Vine api error. Response status code: ' . $response->getStatusCode());
         }
 
-        $body = json_decode((string)$response->getBody(), true);
+        $body = Json::decode((string)$response->getBody());
 
         if (is_array($body['results']) === false) {
             throw new \RuntimeException('Comic Vine api error. Results in wrong format: ' . gettype($body['results']));

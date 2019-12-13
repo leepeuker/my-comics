@@ -75,7 +75,7 @@ class Comics extends AbstractController
         $comic = $this->comicRepo->fetchById(Id::createFromInt($id));
         $dto = Comic\Dto::createFromParameters(
             $comic->getId(),
-            $this->imageRepo->fetchById($comic->getCoverId()),
+            $comic->getCoverId() === null ? null : $this->imageRepo->fetchById($comic->getCoverId()),
             $comic->getComicVineId(),
             $comic->getName(),
             $comic->getYear(),
