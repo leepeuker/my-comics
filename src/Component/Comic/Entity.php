@@ -11,7 +11,7 @@ class Entity implements \JsonSerializable
 {
     private ?DateTime $addedToCollection;
 
-    private string $comicVineId;
+    private ?Id $comicVineId;
 
     private ?Id $coverId;
 
@@ -30,7 +30,7 @@ class Entity implements \JsonSerializable
     private function __construct(
         Id $id,
         ?Id $coverId,
-        string $comicVineId,
+        ?Id $comicVineId,
         string $name,
         ?Year $year,
         ?Id $publisherId,
@@ -54,7 +54,7 @@ class Entity implements \JsonSerializable
         return new self(
             Id::createFromString((string)$data['id']),
             empty($data['cover_id']) === true ? null : Id::createFromString((string)$data['cover_id']),
-            (string)$data['comic_vine_id'],
+            $data['comic_vine_id'] === null ? null : Id::createFromString((string)$data['comic_vine_id']),
             (string)$data['name'],
             empty($data['year']) === true ? null : Year::createFromInt((int)$data['year']),
             empty($data['publisher_id']) === true ? null : Id::createFromString((string)$data['publisher_id']),
@@ -67,7 +67,7 @@ class Entity implements \JsonSerializable
     public static function createFromParameters(
         Id $id,
         ?Id $coverId,
-        string $comicVineId,
+        ?Id $comicVineId,
         string $name,
         Year $year,
         ?Id $publisherId,
@@ -83,7 +83,7 @@ class Entity implements \JsonSerializable
         return $this->addedToCollection;
     }
 
-    public function getComicVineId() : string
+    public function getComicVineId() : ?Id
     {
         return $this->comicVineId;
     }

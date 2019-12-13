@@ -62,12 +62,12 @@ class Repository
         return Entity::createFromArray($data);
     }
 
-    public function fetchByName(string $name) : Entity
+    public function fetchByName(string $name) : ?Entity
     {
         $data = $this->dbConnection->fetchAssoc('SELECT * FROM `publishers` WHERE name = ?', [$name]);
 
         if ($data === false) {
-            throw new \RuntimeException('No publisher found by name: ' . $name);
+            return null;
         }
 
         return Entity::createFromArray($data);

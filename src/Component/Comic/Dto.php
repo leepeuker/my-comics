@@ -10,7 +10,7 @@ use App\ValueObject\Year;
 
 class Dto implements \JsonSerializable
 {
-    private string $comicVineId;
+    private ?Id $comicVineId;
 
     private ?Image\Entity $cover;
 
@@ -29,7 +29,7 @@ class Dto implements \JsonSerializable
     private function __construct(
         Id $id,
         ?Image\Entity $cover,
-        string $comicVineId,
+        ?Id $comicVineId,
         string $name,
         ?Year $year,
         ?Publisher\Entity $publisher,
@@ -49,17 +49,17 @@ class Dto implements \JsonSerializable
     public static function createFromParameters(
         Id $id,
         ?Image\Entity $cover,
-        string $comicVineId,
+        ?Id $comicVineId,
         string $name,
-        Year $year,
+        ?Year $year,
         ?Publisher\Entity $publisher,
         string $description,
-        Price $price
+        ?Price $price
     ) : self {
         return new self($id, $cover, $comicVineId, $name, $year, $publisher, $description, $price);
     }
 
-    public function getComicVineId() : string
+    public function getComicVineId() : ?Id
     {
         return $this->comicVineId;
     }

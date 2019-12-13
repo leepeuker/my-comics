@@ -41,7 +41,7 @@ class Migration1571951983 extends AbstractMigration
             'CREATE TABLE `comics` (
                 `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `cover_id` INT(10) UNSIGNED NULL DEFAULT NULL,
-                `comic_vine_id` INT(10) NOT NULL,
+                `comic_vine_id` INT(10) NULL DEFAULT NULL,
                 `name` VARCHAR(256) NOT NULL,
                 `year` YEAR(4) NULL DEFAULT NULL,
                 `publisher_id` INT(10) UNSIGNED NULL DEFAULT NULL,

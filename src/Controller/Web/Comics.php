@@ -29,14 +29,18 @@ class Comics extends AbstractController
 
     public function edit(Request $request, int $id) : Response
     {
+        $comicVineId = $request->get('comicVineId');
+        $price = $request->get('price');
+        $year = $request->get('year');
+
         $this->comicRepo->updateWithoutCover(
             Id::createFromString($request->get('id')),
-            Id::createFromString($request->get('comicVineId')),
+            empty($comicVineId) === true ? null : Id::createFromString($comicVineId),
             $request->get('name'),
-            Year::createFromInt((int)$request->get('year')),
+            empty($year) === true ? null : Year::createFromInt((int)$year),
             $request->get('description'),
             $this->publisherRepo->fetchByName($request->get('publisherName'))->getId(),
-            Price::createFromString($request->get('price'))
+            empty($price) === true ? null : Price::createFromString($request->get('price'))
         );
 
         return $this->redirect('/comics/' . $id);

@@ -17,18 +17,18 @@ class Repository
         $this->dbConnection = $dbConnection;
     }
 
-    public function create(Id $comicVineId, ?Id $coverId, string $name, ?Year $year, ?Id $publisherId, string $description, ?DateTime $addedToCollection, Price $price) : Entity
+    public function create(?Id $comicVineId, ?Id $coverId, string $name, ?Year $year, ?Id $publisherId, string $description, ?DateTime $addedToCollection, ?Price $price) : Entity
     {
         $this->dbConnection->insert(
             'comics', [
-                'comic_vine_id' => $comicVineId->asInt(),
+                'comic_vine_id' => $comicVineId === null ? null : $comicVineId->asInt(),
                 'cover_id' => $coverId,
                 'name' => $name,
                 'year' => $year === null ? null : $year->asInt(),
                 'publisher_id' => $publisherId === null ? null : $publisherId->asInt(),
                 'description' => $description,
                 'added_to_collection' => $addedToCollection === null ? null : (string)$addedToCollection,
-                'price' => $price->asInt()
+                'price' => $price === null ? null : $price->asInt()
             ]
         );
 
@@ -82,7 +82,7 @@ class Repository
         );
     }
 
-    public function updateWithoutCover(Id $id, Id $comicVineId, string $name, Year $year, string $description, Id $publisherId, Price $price) : void
+    public function updateWithoutCover(Id $id, ?Id $comicVineId, string $name, ?Year $year, string $description, Id $publisherId, ?Price $price) : void
     {
         $this->dbConnection->update(
             'comics',

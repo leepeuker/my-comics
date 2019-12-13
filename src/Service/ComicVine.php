@@ -84,7 +84,7 @@ class ComicVine
             $publisher->getId(),
             $this->convertString($comicVineIssue->getDescription()),
             null,
-            Price::createFromInt(100)
+            null
         );
     }
 
