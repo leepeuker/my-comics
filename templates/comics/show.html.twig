@@ -1,37 +1,38 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-            <form action="/comics/{{ comic.id }}/edit">
-                <div class="form-group">
-                    <label for="formGroupExampleInput">Name</label>
-                    <input type="text" class="form-control" id="formGroupExampleInput" value="{{ comic.name }}">
-                </div>
-                <div class="row form-group">
-                    <div class="col">
-                        <label for="formGroupExampleInput">Publisher</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput" value="{{ comic.publisher.name }}">
-                    </div>
-                    <div class="col">
-                        <label for="formGroupExampleInput">Year</label>
-                        <input type="number" class="form-control" id="formGroupExampleInput" value="{{ comic.year }}" min="1901" max="2030">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="formGroupExampleInput2">Description</label>
-                    <textarea class="form-control" id="formGroupExampleInput2" rows="4">{{ comic.description }}</textarea>
-                </div>
-                <div class="row form-group">
-                    <div class="col">
-                        <label for="formGroupExampleInput">Price</label>
-                        <input type="number" class="form-control" id="formGroupExampleInput" value="{{ comic.price }}">
-                    </div>
-                    <div class="col">
-                        <label for="formGroupExampleInput">ComicVine Id</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput" value="{{ comic.comicVineId }}">
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary float-right">Submit</button>
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
-        </main>
+    <form action="/comics/{{ comic.id }}/edit" method="POST">
+        <div class="form-group">
+            <label for="formGroupExampleInput">Name</label>
+            <input type="text" class="form-control" name="name" id="formGroupExampleInput" value="{{ comic.name }}">
+        </div>
+        <div class="row form-group">
+            <div class="col">
+                <label for="formGroupExampleInput">Publisher</label>
+                <input type="text" class="form-control" name="publisherName" value="{{ comic.publisher.name }}">
+            </div>
+            <div class="col">
+                <label for="formGroupExampleInput">Year</label>
+                <input type="number" class="form-control" name="year" value="{{ comic.year }}" min="1901" max="2030">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="formGroupExampleInput2">Description</label>
+            <textarea class="form-control" name="description" rows="4">{{ comic.description }}</textarea>
+        </div>
+        <div class="row form-group">
+            <div class="col">
+                <label for="formGroupExampleInput">Price</label>
+                <input type="number" class="form-control" name="price" value="{{ comic.price }}">
+            </div>
+            <div class="col">
+                <label for="formGroupExampleInput">ComicVine Id</label>
+                <input type="text" class="form-control" name="comicVineId" value="{{ comic.comicVineId }}">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary float-right">Submit</button>
+        <form action="/comics/{{ comic.id }}/delete" method="DELETE">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </form>
 {% endblock %}

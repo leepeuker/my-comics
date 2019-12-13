@@ -2,12 +2,15 @@
 
 namespace App\Component\Comic;
 
+use App\ValueObject\DateTime;
 use App\ValueObject\Id;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
 
 class Entity implements \JsonSerializable
 {
+    private ?DateTime $addedToCollection;
+
     private string $comicVineId;
 
     private ?Id $coverId;
@@ -32,6 +35,7 @@ class Entity implements \JsonSerializable
         ?Year $year,
         ?Id $publisherId,
         string $description,
+        ?DateTime $addedToCollection,
         ?Price $price
     ) {
         $this->id = $id;
@@ -41,6 +45,7 @@ class Entity implements \JsonSerializable
         $this->year = $year;
         $this->publisherId = $publisherId;
         $this->description = $description;
+        $this->addedToCollection = $addedToCollection;
         $this->price = $price;
     }
 
@@ -54,6 +59,7 @@ class Entity implements \JsonSerializable
             empty($data['year']) === true ? null : Year::createFromInt((int)$data['year']),
             empty($data['publisher_id']) === true ? null : Id::createFromString((string)$data['publisher_id']),
             (string)$data['description'],
+            empty($data['added_to_collection']) === true ? null : DateTime::createFromString((string)$data['added_to_collection']),
             $data['price'] === null ? null : Price::createFromString((string)$data['price'])
         );
     }
@@ -66,9 +72,15 @@ class Entity implements \JsonSerializable
         Year $year,
         ?Id $publisherId,
         string $description,
+        ?DateTime $addedToCollection,
         Price $price
     ) : self {
-        return new self($id, $coverId, $comicVineId, $name, $year, $publisherId, $description, $price);
+        return new self($id, $coverId, $comicVineId, $name, $year, $publisherId, $description, $addedToCollection, $price);
+    }
+
+    public function getAddedToCollection() : ?DateTime
+    {
+        return $this->addedToCollection;
     }
 
     public function getComicVineId() : string

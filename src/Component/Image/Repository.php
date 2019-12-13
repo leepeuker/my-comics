@@ -32,12 +32,12 @@ class Repository
         $this->dbConnection->delete('images', ['id' => $id,]);
     }
 
-    public function fetchByFileName(string $fileName) : Entity
+    public function fetchByFileName(string $fileName) : ?Entity
     {
         $data = $this->dbConnection->fetchAssoc('SELECT * FROM `images` WHERE file_name = ?', [$fileName]);
 
         if ($data === false) {
-            throw new \RuntimeException('No image found by filename: ' . $fileName);
+            return null;
         }
 
         return Entity::createFromArray($data);

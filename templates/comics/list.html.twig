@@ -4,7 +4,9 @@
     <ul class="list-unstyled">
         {% for comic in comics %}
             <li class="media" style="border: black solid 1px">
-                <img src="{{ comic.cover.fileName }}" width="100" class="mr-3" alt="...">
+                {% if comic.cover is not null %}
+                    <img src="{{ comic.cover.fileName }}" width="100" class="mr-3" alt="...">
+                {% endif %}
                 <div class="media-body">
                     <h5 class="mt-0">{{ comic.name }} <small>{{ comic.year }}</small></h5>
                     {{ comic.description|raw }}

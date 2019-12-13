@@ -2,6 +2,7 @@
 
 namespace App\Component\Comic;
 
+use App\ValueObject\DateTime;
 use App\ValueObject\Id;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
@@ -16,7 +17,7 @@ class Repository
         $this->dbConnection = $dbConnection;
     }
 
-    public function create(Id $comicVineId, ?Id $coverId, string $name, ?Year $year, ?Id $publisherId, string $description, Price $price) : Entity
+    public function create(Id $comicVineId, ?Id $coverId, string $name, ?Year $year, ?Id $publisherId, string $description, ?DateTime $addedToCollection, Price $price) : Entity
     {
         $this->dbConnection->insert(
             'comics', [
@@ -26,6 +27,7 @@ class Repository
                 'year' => $year === null ? null : $year->asInt(),
                 'publisher_id' => $publisherId === null ? null : $publisherId->asInt(),
                 'description' => $description,
+                'added_to_collection' => $addedToCollection === null ? null : (string)$addedToCollection,
                 'price' => $price->asInt()
             ]
         );
@@ -70,11 +72,30 @@ class Repository
                 'name' => $entity->getName(),
                 'year' => $entity->getYear(),
                 'description' => $entity->getDescription(),
+                'added_to_collection' => $entity->getAddedToCollection(),
                 'publisher_id' => $entity->getPublisherId(),
                 'price' => $entity->getPrice()
             ],
             [
                 'id' => $entity->getId()
+            ]
+        );
+    }
+
+    public function updateWithoutCover(Id $id, Id $comicVineId, string $name, Year $year, string $description, Id $publisherId, Price $price) : void
+    {
+        $this->dbConnection->update(
+            'comics',
+            [
+                'comic_vine_id' => $comicVineId,
+                'name' => $name,
+                'year' => $year,
+                'description' => $description,
+                'publisher_id' => $publisherId,
+                'price' => $price
+            ],
+            [
+                'id' => $id
             ]
         );
     }

@@ -9,15 +9,14 @@ use App\Provider\ComicVine\Resource\Volume;
 use App\ValueObject\Id;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
-use RuntimeException;
 
 class ComicVine
 {
     private Api $api;
 
-    private Component\Image\Service $imageService;
-
     private Component\Comic\Repository $comicRepository;
+
+    private Component\Image\Service $imageService;
 
     private Component\Publisher\Repository $publisherRepository;
 
@@ -43,29 +42,33 @@ class ComicVine
 
     public function getCover(Issue\Dto $comicVineIssue) : Component\Image\Entity
     {
-        try {
-            return $this->imageService->fetchByFileName(
-                $comicVineIssue->getCoverUrl()
-            );
-        } catch (RuntimeException $exception) {
-            return $this->imageService->createFromUrl(
-                $comicVineIssue->getCoverUrl()
-            );
+        $image = $this->imageService->fetchByFileName(
+            $comicVineIssue->getCoverUrl()
+        );
+
+        if ($image instanceof Component\Image\Entity) {
+            return $image;
         }
+
+        return $this->imageService->createFromUrl(
+            $comicVineIssue->getCoverUrl()
+        );
     }
 
     public function getPublisher(Volume\Dto $comicVineVolume) : Component\Publisher\Entity
     {
-        try {
-            return $this->publisherRepository->fetchByComicVineId(
-                $comicVineVolume->getPublisher()->getId()
-            );
-        } catch (RuntimeException $exception) {
-            return $this->publisherRepository->create(
-                $comicVineVolume->getPublisher()->getId(),
-                $comicVineVolume->getPublisher()->getName()
-            );
+        $publisher = $this->publisherRepository->fetchByName(
+            $comicVineVolume->getPublisher()->getName()
+        );
+
+        if ($publisher instanceof Component\Publisher\Entity) {
+            return $publisher;
         }
+
+        return $this->publisherRepository->create(
+            $comicVineVolume->getPublisher()->getId(),
+            $comicVineVolume->getPublisher()->getName()
+        );
     }
 
     public function persist(Issue\Dto $comicVineIssue, Volume\Dto $comicVineVolume) : Component\Comic\Entity
@@ -80,6 +83,7 @@ class ComicVine
             $this->getYear($comicVineIssue),
             $publisher->getId(),
             $this->convertString($comicVineIssue->getDescription()),
+            null,
             Price::createFromInt(100)
         );
     }

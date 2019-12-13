@@ -36,7 +36,7 @@ class Service
         return $this->repository->create($fileName);
     }
 
-    public function fetchByFileName(string $fileName) : Entity
+    public function fetchByFileName(string $fileName) : ?Entity
     {
         return $this->repository->fetchByFileName($fileName);
     }

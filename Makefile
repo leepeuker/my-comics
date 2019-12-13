@@ -65,6 +65,12 @@ db_migration_rollback:
 db_migration_create:
 	make run_cmd_php CMD="vendor/bin/phinx create Migration$(shell date +%s) --configuration ./phinx.yml"
 
+db_seed_run:
+	make run_cmd_php CMD="vendor/bin/phinx seed:run"
+
+db_seed_create:
+	make run_cmd_php CMD="vendor/bin/phinx seed:create DefaultSeeder"
+
 # Composer
 #########
 composer_install:

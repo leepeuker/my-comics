@@ -40,12 +40,12 @@ class Repository
         return EntityList::createFromArray($data);
     }
 
-    public function fetchByComicVineId(Id $comicVineId) : Entity
+    public function fetchByComicVineId(Id $comicVineId) : ?Entity
     {
         $data = $this->dbConnection->fetchAssoc('SELECT * FROM `publishers` WHERE comic_vine_id = ?', [$comicVineId->asInt()]);
 
         if ($data === false) {
-            throw new \RuntimeException('No publisher found by comicvine id: ' . $comicVineId);
+            return null;
         }
 
         return Entity::createFromArray($data);
@@ -57,6 +57,17 @@ class Repository
 
         if ($data === false) {
             throw new \RuntimeException('No publisher found by id: ' . $id);
+        }
+
+        return Entity::createFromArray($data);
+    }
+
+    public function fetchByName(string $name) : Entity
+    {
+        $data = $this->dbConnection->fetchAssoc('SELECT * FROM `publishers` WHERE name = ?', [$name]);
+
+        if ($data === false) {
+            throw new \RuntimeException('No publisher found by name: ' . $name);
         }
 
         return Entity::createFromArray($data);

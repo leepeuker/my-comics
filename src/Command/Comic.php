@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Service\ComicVine;
+use App\Util\Json;
 use App\ValueObject\Id;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,7 +23,7 @@ class Comic extends Command
         parent::__construct();
     }
 
-    protected function configure(): void
+    protected function configure() : void
     {
         $this
             ->setDescription('Creates a new user.')
@@ -38,6 +39,6 @@ class Comic extends Command
 
         $issue = $this->comicVineService->createComicByIssueId(Id::createFromString($comicVineId));
 
-        $output->writeln(json_encode($issue));
+        $output->writeln(Json::encode($issue));
     }
 }

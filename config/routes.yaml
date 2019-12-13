@@ -45,11 +45,11 @@ web_comics_show:
     methods: GET
 
 web_comics_edit:
-    path: /comics/{id}
+    path: /comics/{id}/edit
     controller: App\Controller\Web\Comics::edit
     methods: POST
 
 web_comics_remove:
-    path: /comics/{id}
+    path: /comics/{id}/remove
     controller: App\Controller\Web\Comics::remove
     methods: DELETE
