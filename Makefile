@@ -66,6 +66,16 @@ db_migration_rollback:
 db_migration_create:
 	make run_cmd_php CMD="vendor/bin/phinx create Migration$(shell date +%s) --configuration ./phinx.yml"
 
+db_import:
+	docker cp $(FILE) my-comics-mysql:/tmp/dump.sql
+	docker exec my-comics-mysql bash -c 'mysql -u${DB_USER} -p${DB_PASSWORD} < /tmp/dump.sql'
+	docker exec my-comics-mysql bash -c 'rm /tmp/dump.sql'
+
+db_export:
+	docker exec my-comics-mysql bash -c 'mysqldump --databases --add-drop-database -u$(DB_USER) -p$(DB_PASSWORD) $(DB_NAME) > /tmp/dump.sql'
+	docker cp my-comics-mysql:/tmp/dump.sql var/my-comics-`date +%Y-%m-%d-%H-%M-%S`.sql
+	docker exec my-comics-mysql bash -c 'rm /tmp/dump.sql'
+
 db_seed_run:
 	make run_cmd_php CMD="vendor/bin/phinx seed:run"
 
