@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}{{ comic.name }}{% endblock %}
+
 {% block body %}
     <form action="/comics/{{ comic.id }}/edit" method="POST">
         <div class="form-group">
