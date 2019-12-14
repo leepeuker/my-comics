@@ -1,5 +1,6 @@
 include .env
 include .env.local
+export
 
 init:
 	cp .env.dist .env
