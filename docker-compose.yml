@@ -5,7 +5,7 @@ services:
     image: nginx:latest
     container_name: my-comics-nginx
     ports:
-      - "80:80"
+      - "${NGINX_PORT}:80"
     volumes:
       - ./:/var/www
       - ./build/nginx/app.conf:/etc/nginx/conf.d/site.conf
