@@ -5,6 +5,7 @@ namespace App\Controller\Web;
 use App\Component\Comic;
 use App\Component\Image;
 use App\Component\Publisher;
+use App\ValueObject\DateTime;
 use App\ValueObject\Id;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
@@ -39,6 +40,7 @@ class Comics extends AbstractController
             $request->get('name'),
             empty($year) === true ? null : Year::createFromInt((int)$year),
             $request->get('description'),
+            empty($request->get('addedToCollection')) === true ? null : DateTime::createFromString($request->get('addedToCollection')),
             $this->publisherRepo->fetchByName($request->get('publisherName'))->getId(),
             empty($price) === true ? null : Price::createFromString($request->get('price'))
         );
@@ -62,6 +64,7 @@ class Comics extends AbstractController
                     $comic->getYear(),
                     $this->publisherRepo->fetchById($comic->getPublisherId()),
                     $comic->getDescription(),
+                    $comic->getAddedToCollection(),
                     $comic->getPrice()
                 )
             );
@@ -85,6 +88,7 @@ class Comics extends AbstractController
             $comic->getYear(),
             $this->publisherRepo->fetchById($comic->getPublisherId()),
             $comic->getDescription(),
+            $comic->getAddedToCollection(),
             $comic->getPrice()
         );
 

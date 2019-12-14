@@ -4,12 +4,15 @@ namespace App\Component\Comic;
 
 use App\Component\Image;
 use App\Component\Publisher;
+use App\ValueObject\DateTime;
 use App\ValueObject\Id;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
 
 class Dto implements \JsonSerializable
 {
+    private ?DateTime $addedToCollection;
+
     private ?Id $comicVineId;
 
     private ?Image\Entity $cover;
@@ -34,6 +37,7 @@ class Dto implements \JsonSerializable
         ?Year $year,
         ?Publisher\Entity $publisher,
         string $description,
+        ?DateTime $addedToCollection,
         ?Price $price
     ) {
         $this->id = $id;
@@ -43,6 +47,7 @@ class Dto implements \JsonSerializable
         $this->year = $year;
         $this->publisher = $publisher;
         $this->description = $description;
+        $this->addedToCollection = $addedToCollection;
         $this->price = $price;
     }
 
@@ -54,9 +59,15 @@ class Dto implements \JsonSerializable
         ?Year $year,
         ?Publisher\Entity $publisher,
         string $description,
+        ?DateTime $addedToCollection,
         ?Price $price
     ) : self {
-        return new self($id, $cover, $comicVineId, $name, $year, $publisher, $description, $price);
+        return new self($id, $cover, $comicVineId, $name, $year, $publisher, $description, $addedToCollection, $price);
+    }
+
+    public function getAddedToCollection() : ?DateTime
+    {
+        return $this->addedToCollection;
     }
 
     public function getComicVineId() : ?Id

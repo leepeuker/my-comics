@@ -45,7 +45,7 @@ class Repository
     public function fetchAll() : EntityList
     {
         $data = $this->dbConnection->fetchAll(
-            'SELECT * FROM `comics`'
+            'SELECT * FROM `comics` ORDER BY name'
         );
 
         return EntityList::createFromArray($data);
@@ -82,8 +82,16 @@ class Repository
         );
     }
 
-    public function updateWithoutCover(Id $id, ?Id $comicVineId, string $name, ?Year $year, string $description, Id $publisherId, ?Price $price) : void
-    {
+    public function updateWithoutCover(
+        Id $id,
+        ?Id $comicVineId,
+        string $name,
+        ?Year $year,
+        string $description,
+        ?DateTime $addedToCollection,
+        Id $publisherId,
+        ?Price $price
+    ) : void {
         $this->dbConnection->update(
             'comics',
             [
@@ -92,6 +100,7 @@ class Repository
                 'year' => $year,
                 'description' => $description,
                 'publisher_id' => $publisherId,
+                'added_to_collection' => $addedToCollection,
                 'price' => $price
             ],
             [

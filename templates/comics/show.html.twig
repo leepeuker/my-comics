@@ -22,6 +22,16 @@
         </div>
         <div class="row form-group">
             <div class="col">
+                <label for="formGroupExampleInput">Added to collection</label>
+                {% if comic.addedToCollection == null %}
+                    <input type="date" class="form-control" name="addedToCollection" value="">
+                {% else %}
+                    <input type="date" class="form-control" name="addedToCollection" value="{{ comic.addedToCollection|date("Y-m-d") }}">
+                {% endif %}
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col">
                 <label for="formGroupExampleInput">Price</label>
                 <input type="number" class="form-control" name="price" value="{{ comic.price }}">
             </div>
