@@ -4,6 +4,7 @@ namespace App\Component\Comic;
 
 use App\ValueObject\DateTime;
 use App\ValueObject\Id;
+use App\ValueObject\PlainText;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
 use Doctrine\DBAL;
@@ -17,8 +18,16 @@ class Repository
         $this->dbConnection = $dbConnection;
     }
 
-    public function create(?Id $comicVineId, ?Id $coverId, string $name, ?Year $year, ?Id $publisherId, string $description, ?DateTime $addedToCollection, ?Price $price) : Entity
-    {
+    public function create(
+        ?Id $comicVineId,
+        ?Id $coverId,
+        PlainText $name,
+        ?Year $year,
+        ?Id $publisherId,
+        PlainText $description,
+        ?DateTime $addedToCollection,
+        ?Price $price
+    ) : Entity {
         $this->dbConnection->insert(
             'comics', [
                 'comic_vine_id' => $comicVineId === null ? null : $comicVineId->asInt(),
@@ -85,9 +94,9 @@ class Repository
     public function updateWithoutCover(
         Id $id,
         ?Id $comicVineId,
-        string $name,
+        PlainText $name,
         ?Year $year,
-        string $description,
+        PlainText $description,
         ?DateTime $addedToCollection,
         Id $publisherId,
         ?Price $price

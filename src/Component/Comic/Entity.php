@@ -4,6 +4,7 @@ namespace App\Component\Comic;
 
 use App\ValueObject\DateTime;
 use App\ValueObject\Id;
+use App\ValueObject\PlainText;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
 
@@ -15,11 +16,11 @@ class Entity implements \JsonSerializable
 
     private ?Id $coverId;
 
-    private string $description;
+    private PlainText $description;
 
     private Id $id;
 
-    private string $name;
+    private PlainText $name;
 
     private ?Price $price;
 
@@ -31,10 +32,10 @@ class Entity implements \JsonSerializable
         Id $id,
         ?Id $coverId,
         ?Id $comicVineId,
-        string $name,
+        PlainText $name,
         ?Year $year,
         ?Id $publisherId,
-        string $description,
+        PlainText $description,
         ?DateTime $addedToCollection,
         ?Price $price
     ) {
@@ -55,10 +56,10 @@ class Entity implements \JsonSerializable
             Id::createFromString((string)$data['id']),
             empty($data['cover_id']) === true ? null : Id::createFromString((string)$data['cover_id']),
             $data['comic_vine_id'] === null ? null : Id::createFromString((string)$data['comic_vine_id']),
-            (string)$data['name'],
+            PlainText::createFromString($data['name']),
             empty($data['year']) === true ? null : Year::createFromInt((int)$data['year']),
             empty($data['publisher_id']) === true ? null : Id::createFromString((string)$data['publisher_id']),
-            (string)$data['description'],
+            PlainText::createFromString($data['description']),
             empty($data['added_to_collection']) === true ? null : DateTime::createFromString((string)$data['added_to_collection']),
             $data['price'] === null ? null : Price::createFromString((string)$data['price'])
         );
@@ -68,10 +69,10 @@ class Entity implements \JsonSerializable
         Id $id,
         ?Id $coverId,
         ?Id $comicVineId,
-        string $name,
+        PlainText $name,
         Year $year,
         ?Id $publisherId,
-        string $description,
+        PlainText $description,
         ?DateTime $addedToCollection,
         Price $price
     ) : self {
@@ -93,7 +94,7 @@ class Entity implements \JsonSerializable
         return $this->coverId;
     }
 
-    public function getDescription() : string
+    public function getDescription() : PlainText
     {
         return $this->description;
     }
@@ -103,7 +104,7 @@ class Entity implements \JsonSerializable
         return $this->id;
     }
 
-    public function getName() : string
+    public function getName() : PlainText
     {
         return $this->name;
     }

@@ -6,6 +6,7 @@ use App\Component\Image;
 use App\Component\Publisher;
 use App\ValueObject\DateTime;
 use App\ValueObject\Id;
+use App\ValueObject\PlainText;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
 
@@ -17,11 +18,11 @@ class Dto implements \JsonSerializable
 
     private ?Image\Entity $cover;
 
-    private string $description;
+    private PlainText $description;
 
     private Id $id;
 
-    private string $name;
+    private PlainText $name;
 
     private ?Price $price;
 
@@ -33,10 +34,10 @@ class Dto implements \JsonSerializable
         Id $id,
         ?Image\Entity $cover,
         ?Id $comicVineId,
-        string $name,
+        PlainText $name,
         ?Year $year,
         ?Publisher\Entity $publisher,
-        string $description,
+        PlainText $description,
         ?DateTime $addedToCollection,
         ?Price $price
     ) {
@@ -55,10 +56,10 @@ class Dto implements \JsonSerializable
         Id $id,
         ?Image\Entity $cover,
         ?Id $comicVineId,
-        string $name,
+        PlainText $name,
         ?Year $year,
         ?Publisher\Entity $publisher,
-        string $description,
+        PlainText $description,
         ?DateTime $addedToCollection,
         ?Price $price
     ) : self {
@@ -80,7 +81,7 @@ class Dto implements \JsonSerializable
         return $this->cover;
     }
 
-    public function getDescription() : string
+    public function getDescription() : PlainText
     {
         return $this->description;
     }
@@ -90,7 +91,7 @@ class Dto implements \JsonSerializable
         return $this->id;
     }
 
-    public function getName() : string
+    public function getName() : PlainText
     {
         return $this->name;
     }
