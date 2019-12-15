@@ -11,7 +11,7 @@
         <div class="row form-group">
             <div class="col">
                 <label for="formGroupExampleInput">Publisher</label>
-                <input type="text" class="form-control" name="publisherName" value="{{ comic.publisher.name }}">
+                <input type="text" class="form-control" name="publisherName" value="{{ comic.publisher is null ? '' : comic.publisher.name }}">
             </div>
             <div class="col">
                 <label for="formGroupExampleInput">Year</label>

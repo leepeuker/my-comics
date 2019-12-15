@@ -7,6 +7,7 @@ use App\Component\Image;
 use App\Component\Publisher;
 use App\ValueObject\DateTime;
 use App\ValueObject\Id;
+use App\ValueObject\PlainText;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,15 +34,18 @@ class Comics extends AbstractController
         $comicVineId = $request->get('comicVineId');
         $price = $request->get('price');
         $year = $request->get('year');
+        $publisherName = $request->get('publisherName');
+
+        $publisher = empty($publisherName) === true ? null : $this->publisherRepo->fetchByNameOrCreate($request->get('publisherName'));
 
         $this->comicRepo->updateWithoutCover(
             Id::createFromString($request->get('id')),
             empty($comicVineId) === true ? null : Id::createFromString($comicVineId),
-            $request->get('name'),
+            PlainText::createFromString($request->get('name')),
             empty($year) === true ? null : Year::createFromInt((int)$year),
-            $request->get('description'),
+            PlainText::createFromString($request->get('description')),
             empty($request->get('addedToCollection')) === true ? null : DateTime::createFromString($request->get('addedToCollection')),
-            $this->publisherRepo->fetchByName($request->get('publisherName'))->getId(),
+            $publisher === null ? null : $publisher->getId(),
             empty($price) === true ? null : Price::createFromString($request->get('price'))
         );
 
@@ -86,7 +90,7 @@ class Comics extends AbstractController
             $comic->getComicVineId(),
             $comic->getName(),
             $comic->getYear(),
-            $this->publisherRepo->fetchById($comic->getPublisherId()),
+            $comic->getPublisherId() === null ? null : $this->publisherRepo->fetchById($comic->getPublisherId()),
             $comic->getDescription(),
             $comic->getAddedToCollection(),
             $comic->getPrice()

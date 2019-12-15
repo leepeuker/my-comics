@@ -57,7 +57,7 @@ class ComicVine
 
     public function getPublisher(Volume\Dto $comicVineVolume) : Component\Publisher\Entity
     {
-        $publisher = $this->publisherRepository->fetchByName(
+        $publisher = $this->publisherRepository->fetchByNameOrCreate(
             $comicVineVolume->getPublisher()->getName()
         );
 

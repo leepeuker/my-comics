@@ -14,7 +14,7 @@ class Repository
         $this->dbConnection = $dbConnection;
     }
 
-    public function create(Id $comicVineId, string $name) : Entity
+    public function create(?Id $comicVineId, string $name) : Entity
     {
         $this->dbConnection->insert(
             'publishers', [
@@ -71,6 +71,17 @@ class Repository
         }
 
         return Entity::createFromArray($data);
+    }
+
+    public function fetchByNameOrCreate(string $name) : Entity
+    {
+        $publisher = $this->fetchByName($name);
+
+        if ($publisher !== null) {
+            return $publisher;
+        }
+
+        return $this->create(null, $name);
     }
 
     public function update(Entity $entity) : void

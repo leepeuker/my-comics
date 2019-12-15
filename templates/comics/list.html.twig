@@ -3,16 +3,25 @@
 {% block body %}
     <ul class="list-unstyled">
         {% for comic in comics %}
-            <li class="media" style="border: black solid 1px">
+            <li class="media media-comic" onclick="window.location.href ='/comics/{{ comic.id }}';">
                 {% if comic.cover is not null %}
-                    <img src="{{ comic.cover.fileName }}" width="100" class="mr-3" alt="...">
+                    <img src="{{ comic.cover.fileName }}" width="130" class="mr-3" alt="...">
                 {% endif %}
                 <div class="media-body">
                     <h5 class="mt-0">{{ comic.name }} <small>{{ comic.year }}</small></h5>
-                    {{ comic.description|raw }}
-                    <a href="/comics/{{ comic.id }}">edit</a>
+                    {{ comic.description|length > 300 ? comic.description|slice(0, 300) ~ '...' : comic.description }}
                 </div>
             </li>
         {% endfor %}
     </ul>
+{% endblock %}
+
+{% block stylesheets %}
+    <link href="/css/comic.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+    </script>
 {% endblock %}

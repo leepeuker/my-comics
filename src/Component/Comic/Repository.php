@@ -98,7 +98,7 @@ class Repository
         ?Year $year,
         PlainText $description,
         ?DateTime $addedToCollection,
-        Id $publisherId,
+        ?Id $publisherId,
         ?Price $price
     ) : void {
         $this->dbConnection->update(

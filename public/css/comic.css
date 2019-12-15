@@ -1,0 +1,14 @@
+.media-comic {
+    margin-bottom: 1em;
+    border: rgba(122,123,128,0.42) solid 1px;
+    cursor: pointer;
+}
+.comic-image {
+    display: inline-block;
+}
+.comic-body {
+    display: inline-block;
+}
+.media-comic:hover {
+    background-color: rgba(199, 199, 199, 0.43);
+}
