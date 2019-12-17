@@ -2,6 +2,7 @@
 
 namespace App\Component\Image;
 
+use App\ValueObject\Url;
 use Psr\Http\Client\ClientInterface;
 
 class Service
@@ -16,10 +17,10 @@ class Service
         $this->client = $client;
     }
 
-    public function createFromUrl(string $fileUrl) : Entity
+    public function createFromUrl(Url $fileUrl) : Entity
     {
         //TODO Refactor
-        $response = $this->client->sendRequest(new \GuzzleHttp\Psr7\Request('GET', $fileUrl));
+        $response = $this->client->sendRequest(new \GuzzleHttp\Psr7\Request('GET', (string)$fileUrl));
         if ($response->getStatusCode() !== 200) {
             throw new \RuntimeException('Invalid status code: ' . $response->getStatusCode());
         }
@@ -31,14 +32,14 @@ class Service
         return $this->repository->create($fileName);
     }
 
-    public function fetchByFileName(string $fileUrl) : ?Entity
+    public function fetchByFileName(Url $fileUrl) : ?Entity
     {
         return $this->repository->fetchByFileName($this->createFileNameFromUrl($fileUrl));
     }
 
-    private function createFileNameFromUrl(string $fileUrl) : string
+    private function createFileNameFromUrl(Url $fileUrl) : string
     {
-        $urlFileName = explode('/', parse_url($fileUrl)['path'])[4];
+        $urlFileName = explode('/', (string)$fileUrl->getPath())[4];
         if (empty($urlFileName) === true) {
             throw new \RuntimeException('No filename found in url.');
         }

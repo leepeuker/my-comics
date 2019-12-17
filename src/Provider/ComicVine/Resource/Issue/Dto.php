@@ -3,10 +3,11 @@
 namespace App\Provider\ComicVine\Resource\Issue;
 
 use App\ValueObject\Id;
+use App\ValueObject\Url;
 
 class Dto
 {
-    private string $coverUrl;
+    private Url $coverUrl;
 
     private string $description;
 
@@ -20,7 +21,7 @@ class Dto
 
     private Volume $volume;
 
-    private function __construct(Id $id, string $coverUrl, string $name, string $description, ?string $storeDate, int $issueNumber, Volume $volume)
+    private function __construct(Id $id, Url $coverUrl, string $name, string $description, ?string $storeDate, int $issueNumber, Volume $volume)
     {
         $this->id = $id;
         $this->coverUrl = $coverUrl;
@@ -35,7 +36,7 @@ class Dto
     {
         return new self(
             Id::createFromInt((int)$data['id']),
-            (string)$data['image']['medium_url'],
+            Url::createFromString((string)$data['image']['medium_url']),
             (string)$data['name'],
             (string)$data['description'],
             $data['store_date'] === null ? null : (string)$data['store_date'],
@@ -44,7 +45,7 @@ class Dto
         );
     }
 
-    public function getCoverUrl() : string
+    public function getCoverUrl() : Url
     {
         return $this->coverUrl;
     }

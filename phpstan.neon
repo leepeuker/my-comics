@@ -5,3 +5,6 @@ parameters:
         -
             message: '#Strict comparison using === between string and false will always evaluate to false\.#'
             path: src/ValueObject/DateTime.php
+        -
+            message: '#Method App\ValueObject\Url::getPath() should return string|null but returns string|false|null\.#'
+            path: src/ValueObject/Url.php
