@@ -39,14 +39,11 @@ reload_nginx:
 
 # App
 #####
-app_add_comic:
+app_comics_add:
 	make run_cmd_php CMD="php bin/console comic:add $(ID)"
 
-app_add_comic_fixtures:
-	make run_cmd_php CMD="php bin/console comic:add 522540"
-	make run_cmd_php CMD="php bin/console comic:add 562618"
-	make run_cmd_php CMD="php bin/console comic:add 499800"
-	make run_cmd_php CMD="php bin/console comic:add 537968"
+app_image_cleanup:
+	make run_cmd_php CMD="php bin/console image:cleanup"
 
 # Database
 ##########

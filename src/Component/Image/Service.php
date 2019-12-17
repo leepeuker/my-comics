@@ -2,32 +2,32 @@
 
 namespace App\Component\Image;
 
+use App\Util;
 use App\ValueObject\Url;
+use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\StreamInterface;
 
 class Service
 {
     private ClientInterface $client;
 
+    private Util\File $fileUtil;
+
     private Repository $repository;
 
-    public function __construct(Repository $repository, ClientInterface $client)
+    public function __construct(Repository $repository, ClientInterface $client, Util\File $fileUtil)
     {
         $this->repository = $repository;
         $this->client = $client;
+        $this->fileUtil = $fileUtil;
     }
 
     public function createFromUrl(Url $fileUrl) : Entity
     {
-        //TODO Refactor
-        $response = $this->client->sendRequest(new \GuzzleHttp\Psr7\Request('GET', (string)$fileUrl));
-        if ($response->getStatusCode() !== 200) {
-            throw new \RuntimeException('Invalid status code: ' . $response->getStatusCode());
-        }
-
         $fileName = $this->createFileNameFromUrl($fileUrl);
 
-        file_put_contents(__DIR__ . '/../../../public/' . $fileName, $response->getBody()->getContents());
+        $this->fileUtil->write(__DIR__ . '/../../../public/' . $fileName, $this->fetchImage($fileUrl)->getContents());
 
         return $this->repository->create($fileName);
     }
@@ -45,5 +45,15 @@ class Service
         }
 
         return 'images/' . $urlFileName;
+    }
+
+    private function fetchImage(Url $fileUrl) : StreamInterface
+    {
+        $response = $this->client->sendRequest(new Request('GET', (string)$fileUrl));
+        if ($response->getStatusCode() !== 200) {
+            throw new \RuntimeException('Invalid status code: ' . $response->getStatusCode());
+        }
+
+        return $response->getBody();
     }
 }

@@ -32,6 +32,14 @@ class Repository
         $this->dbConnection->delete('images', ['id' => $id,]);
     }
 
+    public function fetchAllNames() : array
+    {
+        $stmt = $this->dbConnection->prepare('SELECT file_name FROM `images`');
+        $stmt->execute();
+
+        return $stmt->fetchAll(DBAL\FetchMode::COLUMN);
+    }
+
     public function fetchByFileName(string $fileName) : ?Entity
     {
         $data = $this->dbConnection->fetchAssoc('SELECT * FROM `images` WHERE file_name = ?', [$fileName]);
