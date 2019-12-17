@@ -24,20 +24,25 @@ class Service
             throw new \RuntimeException('Invalid status code: ' . $response->getStatusCode());
         }
 
-        $urlFileName = explode('/', parse_url($fileUrl)['path'])[4];
-        if (empty($urlFileName) === true) {
-            throw new \RuntimeException('No filename found in url.');
-        }
-
-        $fileName = 'images/' . $urlFileName;
+        $fileName = $this->createFileNameFromUrl($fileUrl);
 
         file_put_contents(__DIR__ . '/../../../public/' . $fileName, $response->getBody()->getContents());
 
         return $this->repository->create($fileName);
     }
 
-    public function fetchByFileName(string $fileName) : ?Entity
+    public function fetchByFileName(string $fileUrl) : ?Entity
     {
-        return $this->repository->fetchByFileName($fileName);
+        return $this->repository->fetchByFileName($this->createFileNameFromUrl($fileUrl));
+    }
+
+    private function createFileNameFromUrl(string $fileUrl) : string
+    {
+        $urlFileName = explode('/', parse_url($fileUrl)['path'])[4];
+        if (empty($urlFileName) === true) {
+            throw new \RuntimeException('No filename found in url.');
+        }
+
+        return 'images/' . $urlFileName;
     }
 }
