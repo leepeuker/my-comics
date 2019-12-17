@@ -1,0 +1,7 @@
+parameters:
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    ignoreErrors:
+        -
+            message: '#Strict comparison using === between string and false will always evaluate to false\.#'
+            path: src/ValueObject/DateTime.php

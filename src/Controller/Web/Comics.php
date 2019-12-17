@@ -59,14 +59,17 @@ class Comics extends AbstractController
 
         /** @var Comic\Entity $comic */
         foreach ($comics as $comic) {
+            $publisherId = $comic->getPublisherId();
+            $coverId = $comic->getCoverId();
+
             $dtoList->add(
                 Comic\Dto::createFromParameters(
                     $comic->getId(),
-                    $comic->getCoverId() === null ? null : $this->imageRepo->fetchById($comic->getCoverId()),
+                    $coverId === null ? null : $this->imageRepo->fetchById($coverId),
                     $comic->getComicVineId(),
                     $comic->getName(),
                     $comic->getYear(),
-                    $this->publisherRepo->fetchById($comic->getPublisherId()),
+                    $publisherId === null ? null : $this->publisherRepo->fetchById($publisherId),
                     $comic->getDescription(),
                     $comic->getAddedToCollection(),
                     $comic->getPrice()
@@ -84,13 +87,16 @@ class Comics extends AbstractController
     public function show(int $id) : Response
     {
         $comic = $this->comicRepo->fetchById(Id::createFromInt($id));
+        $coverId = $comic->getCoverId();
+        $publisherId = $comic->getPublisherId();
+
         $dto = Comic\Dto::createFromParameters(
             $comic->getId(),
-            $comic->getCoverId() === null ? null : $this->imageRepo->fetchById($comic->getCoverId()),
+            $coverId === null ? null : $this->imageRepo->fetchById($coverId),
             $comic->getComicVineId(),
             $comic->getName(),
             $comic->getYear(),
-            $comic->getPublisherId() === null ? null : $this->publisherRepo->fetchById($comic->getPublisherId()),
+            $publisherId === null ? null : $this->publisherRepo->fetchById($publisherId),
             $comic->getDescription(),
             $comic->getAddedToCollection(),
             $comic->getPrice()

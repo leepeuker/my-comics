@@ -16,13 +16,6 @@ class Images extends AbstractController
         $this->repository = $repository;
     }
 
-    public function getAll() : Response
-    {
-        $issue = $this->repository->fetchAll();
-
-        return $this->json($issue);
-    }
-
     public function getById(int $id) : Response
     {
         $issue = $this->repository->fetchById(Id::createFromInt($id));

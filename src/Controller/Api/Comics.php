@@ -25,7 +25,7 @@ class Comics extends AbstractController
     public function addComic(Request $request) : Response
     {
         try {
-            $data = Json::decode($request->getContent());
+            $data = Json::decode((string)$request->getContent());
             $issue = $this->comicVine->createComicByIssueId(Id::createFromString($data['comicVineId']));
         } catch (\Throwable $t) {
             $this->logger->error($t->getMessage());

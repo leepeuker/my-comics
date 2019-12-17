@@ -7,6 +7,7 @@ use App\Provider\ComicVine\Api;
 use App\Provider\ComicVine\Resource\Issue;
 use App\Provider\ComicVine\Resource\Volume;
 use App\ValueObject\Id;
+use App\ValueObject\PlainText;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
 
@@ -57,16 +58,7 @@ class ComicVine
 
     public function getPublisher(Volume\Dto $comicVineVolume) : Component\Publisher\Entity
     {
-        $publisher = $this->publisherRepository->fetchByNameOrCreate(
-            $comicVineVolume->getPublisher()->getName()
-        );
-
-        if ($publisher instanceof Component\Publisher\Entity) {
-            return $publisher;
-        }
-
-        return $this->publisherRepository->create(
-            $comicVineVolume->getPublisher()->getId(),
+        return $this->publisherRepository->fetchByNameOrCreate(
             $comicVineVolume->getPublisher()->getName()
         );
     }
@@ -79,10 +71,10 @@ class ComicVine
         return $this->comicRepository->create(
             $comicVineIssue->getId(),
             $cover->getId(),
-            $this->convertString($comicVineVolume->getName() . ' - ' . $comicVineIssue->getName()),
+            PlainText::createFromString($this->convertString($comicVineVolume->getName() . ' - ' . $comicVineIssue->getName())),
             $this->getYear($comicVineIssue),
             $publisher->getId(),
-            $this->convertString($comicVineIssue->getDescription()),
+            PlainText::createFromString($this->convertString($comicVineIssue->getDescription())),
             null,
             null
         );
@@ -90,7 +82,7 @@ class ComicVine
 
     private function convertString(string $string) : string
     {
-        return str_replace('’', '\'', $string);
+        return strip_tags(str_replace('’', '\'', $string));
     }
 
     private function getYear(Issue\Dto $comicVineIssue) : ?Year
