@@ -99,7 +99,7 @@ class Comics extends AbstractController
                 'comics' => $dtoList,
                 'perPage' => $perPage,
                 'page' => $page,
-                'totalItems' => $this->comicService->count(),
+                'totalItems' => $this->comicService->count($searchTerm),
                 'searchTerm' => $searchTerm
             ]
         );
