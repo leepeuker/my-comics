@@ -65,11 +65,15 @@ class Comics extends AbstractController
     {
         $perPage = empty($request->get('per_page')) === true ? 15 : (int)$request->get('per_page');
         $page = empty($request->get('page')) === true ? 1 : (int)$request->get('page');
-        $searchTerm = empty($request->get('term')) === true ? 1 : (int)$request->get('term');
+        $searchTerm = empty($request->get('term')) === true ? null : (string)$request->get('term');
+
+        if ($searchTerm !== null) {
+            $comics = $this->comicService->fetchBySearchTerm($searchTerm, $perPage, $page);
+        } else {
+            $comics = $this->comicService->fetchAll($perPage, $page);
+        }
 
         $dtoList = Comic\DtoList::create();
-        $comics = $this->comicService->fetchAll($perPage, $page);
-
         /** @var Comic\Entity $comic */
         foreach ($comics as $comic) {
             $publisherId = $comic->getPublisherId();
@@ -95,7 +99,8 @@ class Comics extends AbstractController
                 'comics' => $dtoList,
                 'perPage' => $perPage,
                 'page' => $page,
-                'totalItems' => $this->comicService->count()
+                'totalItems' => $this->comicService->count(),
+                'searchTerm' => $searchTerm
             ]
         );
     }
