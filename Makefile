@@ -45,6 +45,9 @@ app_comics_add:
 app_image_cleanup:
 	make run_cmd_php CMD="php bin/console image:cleanup"
 
+app_cache_clear:
+	make run_cmd_php CMD="php bin/console cache:clear"
+
 # Database
 ##########
 db_create_database:

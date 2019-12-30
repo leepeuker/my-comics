@@ -7,7 +7,6 @@ use App\Component\Image;
 use App\Component\Publisher;
 use App\ValueObject\DateTime;
 use App\ValueObject\Id;
-use App\ValueObject\Offset;
 use App\ValueObject\PlainText;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
