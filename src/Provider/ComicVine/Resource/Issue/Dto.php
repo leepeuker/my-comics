@@ -35,13 +35,13 @@ class Dto
     public static function createFromArray(array $data) : self
     {
         return new self(
-            Id::createFromInt((int)$data['id']),
+            Id::createFromString((string)$data['id']),
             Url::createFromString((string)$data['image']['medium_url']),
             (string)$data['name'],
             (string)$data['description'],
             $data['store_date'] === null ? null : (string)$data['store_date'],
             (int)$data['issue_number'],
-            Volume::createFromArray($data['volume']),
+            Volume::createFromArray((array)$data['volume']),
         );
     }
 

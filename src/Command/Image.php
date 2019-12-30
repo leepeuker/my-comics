@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Component\Image\Repository;
+use App\Component\Image\Service;
 use App\Util\File;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,12 +14,12 @@ class Image extends Command
 
     private File $fileUtil;
 
-    private Repository $imageRepository;
+    private Service $imageService;
 
-    public function __construct(Repository $imageRepository, File $fileUtil)
+    public function __construct(Service $imageService, File $fileUtil)
     {
         parent::__construct();
-        $this->imageRepository = $imageRepository;
+        $this->imageService = $imageService;
         $this->fileUtil = $fileUtil;
     }
 
@@ -30,7 +30,7 @@ class Image extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $imageNames = $this->imageRepository->fetchAllNames();
+        $imageNames = $this->imageService->fetchAllNames();
         $imagesPath = __DIR__ . '/../../public/images';
 
         foreach ($this->getExistingFileNames($imagesPath) as $fileName) {

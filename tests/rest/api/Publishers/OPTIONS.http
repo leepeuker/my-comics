@@ -1,0 +1,7 @@
+OPTIONS http://my-comics.test/api/publishers
+Accept: */*
+Origin: localhost
+Cache-Control: no-cache
+
+###
+

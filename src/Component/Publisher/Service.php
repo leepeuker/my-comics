@@ -13,9 +13,19 @@ class Service
         $this->repository = $repository;
     }
 
+    public function create(Id $comicVineId, string $name) : Entity
+    {
+        return $this->repository->create($comicVineId, $name);
+    }
+
     public function fetchById(Id $id) : ?Entity
     {
         return $this->repository->fetchById($id);
+    }
+
+    public function fetchByName(string $name) : ?Entity
+    {
+        return $this->repository->fetchByName($name);
     }
 
     public function fetchByNameOrCreate(string $name) : Entity

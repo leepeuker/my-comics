@@ -24,12 +24,7 @@ class DateTime implements \JsonSerializable
 
     public function __toString() : string
     {
-        $dateTime = $this->dateTime->format('Y-m-d H:i:s');
-        if ($dateTime === false) {
-            throw new \RuntimeException('Can\'t format dateTime object to string');
-        }
-
-        return $dateTime;
+        return (string)$this->dateTime->format('Y-m-d H:i:s');
     }
 
     public function format(string $format) : string

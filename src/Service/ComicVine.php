@@ -57,9 +57,16 @@ class ComicVine
 
     public function getPublisher(Volume\Dto $comicVineVolume) : Component\Publisher\Entity
     {
-        return $this->publisherService->fetchByNameOrCreate(
-            $comicVineVolume->getPublisher()->getName()
-        );
+        $publisher = $this->publisherService->fetchByName($comicVineVolume->getPublisher()->getName());
+
+        if ($publisher === null) {
+            return $this->publisherService->create(
+                $comicVineVolume->getPublisher()->getId(),
+                $comicVineVolume->getPublisher()->getName()
+            );
+        }
+
+        return $publisher;
     }
 
     public function persist(Issue\Dto $comicVineIssue, Volume\Dto $comicVineVolume) : Component\Comic\Entity

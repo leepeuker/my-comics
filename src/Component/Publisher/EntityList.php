@@ -16,7 +16,7 @@ class EntityList extends AbstractList
         $list = self::create();
 
         foreach ($data as $entity) {
-            $list->add(Entity::createFromArray($entity));
+            $list->add(Entity::createFromArray((array)$entity));
         }
 
         return $list;

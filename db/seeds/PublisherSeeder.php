@@ -9,18 +9,18 @@ class PublisherSeeder extends AbstractSeed
         $data = [
             [
                 'id' => 1,
-                'comic_vine_id' => '121323',
+                'comic_vine_id' => '31',
                 'name' => 'Marvel',
             ],
             [
                 'id' => 2,
-                'comic_vine_id' => '121324',
+                'comic_vine_id' => '513',
                 'name' => 'Image',
             ],
             [
                 'id' => 3,
-                'comic_vine_id' => '121325',
-                'name' => 'DC',
+                'comic_vine_id' => '10',
+                'name' => 'DC Comics',
             ]
         ];
 

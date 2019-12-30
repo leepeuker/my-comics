@@ -4,9 +4,13 @@ namespace App\Util;
 
 class Json
 {
+    /**
+     * @param string $json
+     * @return array
+     */
     public static function decode(string $json) : array
     {
-        return json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+        return (array)json_decode($json, true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**

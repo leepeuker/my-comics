@@ -1,7 +1,6 @@
-OPTIONS http://my-comics.test/comics
+GET http://my-comics.test/api/comics/1
 Accept: */*
 Origin: localhost
 Cache-Control: no-cache
 
 ###
-

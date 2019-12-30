@@ -1,0 +1,6 @@
+HEAD http://my-comics.test/api/publishers/1
+Accept: */*
+Cache-Control: no-cache
+
+###
+

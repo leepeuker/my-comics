@@ -16,6 +16,8 @@ class Entity implements \JsonSerializable
 
     private ?Id $coverId;
 
+    private DateTime $createdAt;
+
     private PlainText $description;
 
     private Id $id;
@@ -25,6 +27,8 @@ class Entity implements \JsonSerializable
     private ?Price $price;
 
     private ?Id $publisherId;
+
+    private ?DateTime $updatedAt;
 
     private ?Year $year;
 
@@ -37,7 +41,9 @@ class Entity implements \JsonSerializable
         ?Id $publisherId,
         PlainText $description,
         ?DateTime $addedToCollection,
-        ?Price $price
+        ?Price $price,
+        DateTime $createdAt,
+        ?DateTime $updatedAt
     ) {
         $this->id = $id;
         $this->coverId = $coverId;
@@ -48,6 +54,8 @@ class Entity implements \JsonSerializable
         $this->description = $description;
         $this->addedToCollection = $addedToCollection;
         $this->price = $price;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
     public static function createFromArray(array $data) : self
@@ -56,27 +64,15 @@ class Entity implements \JsonSerializable
             Id::createFromString((string)$data['id']),
             empty($data['cover_id']) === true ? null : Id::createFromString((string)$data['cover_id']),
             $data['comic_vine_id'] === null ? null : Id::createFromString((string)$data['comic_vine_id']),
-            PlainText::createFromString($data['name']),
+            PlainText::createFromString((string)$data['name']),
             empty($data['year']) === true ? null : Year::createFromInt((int)$data['year']),
             empty($data['publisher_id']) === true ? null : Id::createFromString((string)$data['publisher_id']),
-            PlainText::createFromString($data['description']),
+            PlainText::createFromString((string)$data['description']),
             empty($data['added_to_collection']) === true ? null : DateTime::createFromString((string)$data['added_to_collection']),
-            $data['price'] === null ? null : Price::createFromString((string)$data['price'])
+            $data['price'] === null ? null : Price::createFromString((string)$data['price']),
+            DateTime::createFromString((string)$data['created_at']),
+            empty($data['updated_at']) === false ? DateTime::createFromString((string)$data['updated_at']) : null
         );
-    }
-
-    public static function createFromParameters(
-        Id $id,
-        ?Id $coverId,
-        ?Id $comicVineId,
-        PlainText $name,
-        Year $year,
-        ?Id $publisherId,
-        PlainText $description,
-        ?DateTime $addedToCollection,
-        Price $price
-    ) : self {
-        return new self($id, $coverId, $comicVineId, $name, $year, $publisherId, $description, $addedToCollection, $price);
     }
 
     public function getAddedToCollection() : ?DateTime
@@ -92,6 +88,11 @@ class Entity implements \JsonSerializable
     public function getCoverId() : ?Id
     {
         return $this->coverId;
+    }
+
+    public function getCreatedAt() : DateTime
+    {
+        return $this->createdAt;
     }
 
     public function getDescription() : PlainText
@@ -119,6 +120,11 @@ class Entity implements \JsonSerializable
         return $this->publisherId;
     }
 
+    public function getUpdatedAt() : ?DateTime
+    {
+        return $this->updatedAt;
+    }
+
     public function getYear() : ?Year
     {
         return $this->year;
@@ -135,6 +141,8 @@ class Entity implements \JsonSerializable
             'publisherId' => $this->publisherId,
             'description' => $this->description,
             'price' => $this->price,
+            'createdAt' => $this->createdAt,
+            'updatedAt' => $this->updatedAt,
         ];
     }
 }

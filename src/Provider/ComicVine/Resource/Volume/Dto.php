@@ -25,10 +25,10 @@ class Dto
     public static function createFromArray(array $data) : self
     {
         return new self(
-            Id::createFromInt($data['id']),
-            $data['name'],
-            $data['description'],
-            Publisher::createFromArray($data['publisher'])
+            Id::createFromString((string)$data['id']),
+            (string)$data['name'],
+            (string)$data['description'],
+            Publisher::createFromArray((array)$data['publisher'])
         );
     }
 

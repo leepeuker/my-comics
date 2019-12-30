@@ -1,0 +1,6 @@
+HEAD http://my-comics.test/api/comics/1
+Accept: */*
+Origin: localhost
+Cache-Control: no-cache
+
+###

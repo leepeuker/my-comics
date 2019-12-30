@@ -58,6 +58,11 @@ class Service
         return $this->repository->create($fileName);
     }
 
+    public function fetchAllNames() : array
+    {
+        return $this->repository->fetchAllNames();
+    }
+
     public function fetchByFileName(Url $fileUrl) : ?Entity
     {
         return $this->repository->fetchByFileName($this->createFileNameFromUrl($fileUrl));

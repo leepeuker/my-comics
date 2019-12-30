@@ -32,16 +32,6 @@
                 <directory name="src/"/>
             </errorLevel>
         </MixedAssignment>
-        <MixedReturnStatement>
-            <errorLevel type="info">
-                <directory name="src/"/>
-            </errorLevel>
-        </MixedReturnStatement>
-        <MixedArgument>
-            <errorLevel type="info">
-                <directory name="src/"/>
-            </errorLevel>
-        </MixedArgument>
     </issueHandlers>
 
     <plugins>

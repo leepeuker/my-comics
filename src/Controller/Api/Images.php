@@ -2,30 +2,30 @@
 
 namespace App\Controller\Api;
 
-use App\Component\Publisher;
+use App\Component\Image;
 use App\ValueObject\Id;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class Publishers extends AbstractController
+class Images extends AbstractController
 {
-    private Publisher\Service $publisherService;
+    private Image\Service $imageService;
 
-    public function __construct(Publisher\Service $publisherService)
+    public function __construct(Image\Service $imageService)
     {
-        $this->publisherService = $publisherService;
+        $this->imageService = $imageService;
     }
 
     public function getById(int $id) : Response
     {
-        $publisherId = Id::createFromInt($id);
+        $imageId = Id::createFromInt($id);
 
         try {
-            $publisher = $this->publisherService->fetchById($publisherId);
+            $image = $this->imageService->fetchById($imageId);
         } catch (\RuntimeException $exception) {
             throw $this->createNotFoundException($exception->getMessage());
         }
 
-        return $this->json($publisher);
+        return $this->json($image);
     }
 }

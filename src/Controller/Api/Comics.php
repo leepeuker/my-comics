@@ -2,36 +2,30 @@
 
 namespace App\Controller\Api;
 
-use App\Service\ComicVine;
-use App\Util\Json;
+use App\Component\Comic;
 use App\ValueObject\Id;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class Comics extends AbstractController
 {
-    private ComicVine $comicVine;
+    private Comic\Service $comicService;
 
-    private LoggerInterface $logger;
-
-    public function __construct(ComicVine $comicVine, LoggerInterface $logger)
+    public function __construct(Comic\Service $comicService)
     {
-        $this->comicVine = $comicVine;
-        $this->logger = $logger;
+        $this->comicService = $comicService;
     }
 
-    public function addComic(Request $request) : Response
+    public function getById(int $id) : Response
     {
+        $comicId = Id::createFromInt($id);
+
         try {
-            $data = Json::decode((string)$request->getContent());
-            $issue = $this->comicVine->createComicByIssueId(Id::createFromString($data['comicVineId']));
-        } catch (\Throwable $t) {
-            $this->logger->error($t->getMessage());
-            throw new \Exception('');
+            $comic = $this->comicService->fetchById($comicId);
+        } catch (\RuntimeException $exception) {
+            throw $this->createNotFoundException($exception->getMessage());
         }
 
-        return $this->json($issue);
+        return $this->json($comic);
     }
 }

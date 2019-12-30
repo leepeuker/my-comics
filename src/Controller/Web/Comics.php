@@ -32,29 +32,30 @@ class Comics extends AbstractController
 
     public function edit(Request $request) : Response
     {
-        $comicId = Id::createFromString($request->get('id'));
-        $comicVineId = $request->get('comicVineId');
-        $price = $request->get('price');
-        $year = $request->get('year');
-        $publisherName = $request->get('publisherName');
+        $comicId = Id::createFromString((string)$request->get('id'));
+        $comicVineId = (string)$request->get('comicVineId');
+        $price =(string) $request->get('price');
+        $year = (int)$request->get('year');
+        $publisherName = (string)$request->get('publisherName');
         $coverImageFile = $request->files->get('coverImage');
+        $addedToCollection = (string)$request->get('addedToCollection');
 
         if ($coverImageFile instanceof UploadedFile) {
             $coverImageEntity = $this->imageService->createFromUploadedFile($coverImageFile);
             $this->comicService->updateCover($comicId, $coverImageEntity->getId());
         }
 
-        $publisher = empty($publisherName) === true ? null : $this->publisherService->fetchByNameOrCreate($request->get('publisherName'));
+        $publisher = empty($publisherName) === true ? null : $this->publisherService->fetchByNameOrCreate($publisherName);
 
         $this->comicService->updateWithoutCover(
             $comicId,
             empty($comicVineId) === true ? null : Id::createFromString($comicVineId),
-            PlainText::createFromString($request->get('name')),
-            empty($year) === true ? null : Year::createFromInt((int)$year),
-            PlainText::createFromString($request->get('description')),
-            empty($request->get('addedToCollection')) === true ? null : DateTime::createFromString($request->get('addedToCollection')),
+            PlainText::createFromString((string)$request->get('name')),
+            empty($year) === true ? null : Year::createFromInt($year),
+            PlainText::createFromString((string)$request->get('description')),
+            empty($addedToCollection) === true ? null : DateTime::createFromString($addedToCollection),
             $publisher === null ? null : $publisher->getId(),
-            empty($price) === true ? null : Price::createFromString($request->get('price'))
+            empty($price) === true ? null : Price::createFromString($price)
         );
 
         return $this->redirect('/comics/' . $comicId);
