@@ -34,7 +34,7 @@ class Comics extends AbstractController
     {
         $comicId = Id::createFromString((string)$request->get('id'));
         $comicVineId = (string)$request->get('comicVineId');
-        $price =(string) $request->get('price');
+        $price = (string)$request->get('price');
         $year = (int)$request->get('year');
         $publisherName = (string)$request->get('publisherName');
         $coverImageFile = $request->files->get('coverImage');
@@ -61,10 +61,13 @@ class Comics extends AbstractController
         return $this->redirect('/comics/' . $comicId);
     }
 
-    public function list() : Response
+    public function list(Request $request) : Response
     {
+        $perPage = empty($request->get('per_page')) === true ? 15 : (int)$request->get('per_page');
+        $page = empty($request->get('page')) === true ? 1 : (int)$request->get('page');
+
         $dtoList = Comic\DtoList::create();
-        $comics = $this->comicService->fetchAll(1000, 1);
+        $comics = $this->comicService->fetchAll($perPage, $page);
 
         /** @var Comic\Entity $comic */
         foreach ($comics as $comic) {
@@ -88,7 +91,10 @@ class Comics extends AbstractController
 
         return $this->render(
             'comics/list.html.twig', [
-                'comics' => $dtoList
+                'comics' => $dtoList,
+                'perPage' => $perPage,
+                'page' => $page,
+                'totalItems' => $this->comicService->count()
             ]
         );
     }

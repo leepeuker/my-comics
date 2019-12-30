@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <ul class="list-unstyled">
+    <ul class="list-unstyled" id="comicList">
         {% for comic in comics %}
             <li class="media media-comic" onclick="window.location.href ='/comics/{{ comic.id }}';">
                 {% if comic.cover is not null %}
@@ -14,14 +14,39 @@
             </li>
         {% endfor %}
     </ul>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {{ page == 1 ? 'disabled' }}">
+                <a class="page-link" href="?per_page={{ perPage }}&page=1">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item {{ page == 1 ? 'disabled' }}">
+                <a class="page-link" href="?per_page={{ perPage }}&page={{ page-1 }}">Previous</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?per_page={{ perPage }}&page={{ page }}">
+                    {{ page }} of {{ (totalItems / perPage)|round(0, 'ceil') }}
+                </a>
+            </li>
+            <li class="page-item {{ totalItems <= page * perPage ? 'disabled' }}">
+                <a class="page-link" href="?per_page={{ perPage }}&page={{ page+1 }}">
+                    Next
+                </a>
+            </li>
+            <li class="page-item {{ page >= (totalItems / perPage)|round(0, 'ceil') ? 'disabled' }}">
+                <a class="page-link" href="?per_page={{ perPage }}&page={{ (totalItems / perPage)|round(0, 'ceil') }}">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 {% endblock %}
 
 {% block stylesheets %}
-    <link href="/css/comic.css" type="text/css" rel="stylesheet" />
+    <link href="/css/comic.css" type="text/css" rel="stylesheet"/>
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-
-    </script>
+    {#    <script src="/js/app.js"></script>#}
 {% endblock %}
