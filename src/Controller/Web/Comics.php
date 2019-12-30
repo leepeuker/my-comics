@@ -65,6 +65,7 @@ class Comics extends AbstractController
     {
         $perPage = empty($request->get('per_page')) === true ? 15 : (int)$request->get('per_page');
         $page = empty($request->get('page')) === true ? 1 : (int)$request->get('page');
+        $searchTerm = empty($request->get('term')) === true ? 1 : (int)$request->get('term');
 
         $dtoList = Comic\DtoList::create();
         $comics = $this->comicService->fetchAll($perPage, $page);

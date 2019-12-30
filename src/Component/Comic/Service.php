@@ -48,6 +48,13 @@ class Service
         return $this->repository->fetchById($id);
     }
 
+    public function fetchBySearchTerm(string $searchTerm, int $perPage, int $page = 1) : EntityList
+    {
+        $offset = Offset::createFromLimitAndPage($perPage, $page);
+
+        return $this->repository->fetchBySearchTerm($searchTerm, $perPage, $offset);
+    }
+
     public function updateCover(Id $comicId, Id $coverId) : void
     {
         $this->repository->updateCover($comicId, $coverId);

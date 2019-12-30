@@ -83,6 +83,16 @@ class Repository
         return Entity::createFromArray($data);
     }
 
+    public function fetchBySearchTerm(string $searchTerm, int $perPage, Offset $offset) : EntityList
+    {
+        $data = $this->dbConnection->fetchAll(
+            sprintf('SELECT * FROM `comics` WHERE name LIKE ? ORDER BY name LIMIT %d OFFSET %d', $perPage, $offset->asInt()),
+            ["%$searchTerm%"]
+        );
+
+        return EntityList::createFromArray($data);
+    }
+
     public function update(Entity $entity) : void
     {
         $this->dbConnection->update(

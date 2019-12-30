@@ -22,10 +22,17 @@ class Comics extends AbstractController
     {
         $perPage = empty($request->get('per_page')) === true ? 15 : (int)$request->get('per_page');
         $page = empty($request->get('page')) === true ? 1 : (int)$request->get('page');
+        $searchTerm = empty($request->get('term')) === true ? null : (string)$request->get('term');
+
+        if ($searchTerm !== null) {
+            $items = $this->comicService->fetchBySearchTerm($searchTerm, $perPage, $page);
+        } else {
+            $items = $this->comicService->fetchAll($perPage, $page);
+        }
 
         return $this->json(
             PaginatedResponse::createFromParameters(
-                $this->comicService->fetchAll($perPage, $page),
+                $items,
                 $this->comicService->count(),
                 $perPage,
                 $page
