@@ -3,7 +3,7 @@
 {% block body %}
     <ul class="list-unstyled" id="comicList">
         <form action="/" method="GET" style="margin-bottom:1em;margin-top:1em">
-            <input class="form-control" type="text" placeholder="Search" name="term" id="searchTerm">
+            <input class="form-control" type="text" placeholder="{{ searchTerm is empty ? 'Search' : searchTerm }}" name="term" id="searchTerm">
             <input type="hidden" value="{{ perPage }}" name="per_page">
         </form>
         {% for comic in comics %}
