@@ -16,6 +16,11 @@ class Publishers extends AbstractController
         $this->publisherService = $publisherService;
     }
 
+    public function getAll() : Response
+    {
+        return $this->json($this->publisherService->fetchAll());
+    }
+
     public function getById(int $id) : Response
     {
         $publisherId = Id::createFromInt($id);

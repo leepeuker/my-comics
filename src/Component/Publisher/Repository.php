@@ -35,7 +35,7 @@ class Repository
 
     public function fetchAll() : EntityList
     {
-        $data = $this->dbConnection->fetchAll('SELECT * FROM `publishers`');
+        $data = $this->dbConnection->fetchAll('SELECT * FROM `publishers` ORDER BY name');
 
         return EntityList::createFromArray($data);
     }

@@ -4,3 +4,8 @@ Cache-Control: no-cache
 
 ###
 
+GET http://my-comics.test/api/publishers
+Accept: */*
+Cache-Control: no-cache
+
+###

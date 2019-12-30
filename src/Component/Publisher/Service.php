@@ -18,6 +18,11 @@ class Service
         return $this->repository->create($comicVineId, $name);
     }
 
+    public function fetchAll() : EntityList
+    {
+        return $this->repository->fetchAll();
+    }
+
     public function fetchById(Id $id) : ?Entity
     {
         return $this->repository->fetchById($id);

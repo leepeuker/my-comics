@@ -16,6 +16,11 @@ api_publishers_get_by_id:
     controller: App\Controller\Api\Publishers::getById
     methods: GET|HEAD
 
+api_publishers_get_all:
+    path: /api/publishers
+    controller: App\Controller\Api\Publishers::getAll
+    methods: GET|HEAD
+
 api_images_get_by_id:
     path: /api/images/{id}
     controller: App\Controller\Api\Images::getById
