@@ -33,7 +33,7 @@ class Comics extends AbstractController
         return $this->json(
             PaginatedResponse::createFromParameters(
                 $items,
-                $this->comicService->count(),
+                $this->comicService->count($searchTerm),
                 $perPage,
                 $page
             )

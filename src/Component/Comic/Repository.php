@@ -30,6 +30,20 @@ class Repository
         return (int)$count;
     }
 
+    public function countBySearchTerm(?string $searchTerm) : int
+    {
+        $count = $this->dbConnection->fetchColumn(
+            'SELECT COUNT(ID) FROM `comics` WHERE name LIKE ?',
+            ["%$searchTerm%"]
+        );
+
+        if ($count === false) {
+            throw new \RuntimeException('Could not count comics.');
+        }
+
+        return (int)$count;
+    }
+
     public function create(
         ?Id $comicVineId,
         ?Id $coverId,

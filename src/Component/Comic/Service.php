@@ -18,9 +18,12 @@ class Service
         $this->repository = $repository;
     }
 
-    public function count() : int
+    public function count(?string $searchTerm = null) : int
     {
-        return $this->repository->count();
+        if ($searchTerm === null) {
+            return $this->repository->count();
+        }
+        return $this->repository->countBySearchTerm($searchTerm);
     }
 
     public function create(
