@@ -7,6 +7,7 @@ use App\Component\Image;
 use App\Component\Publisher;
 use App\ValueObject\DateTime;
 use App\ValueObject\Id;
+use App\ValueObject\Offset;
 use App\ValueObject\PlainText;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
@@ -64,7 +65,7 @@ class Comics extends AbstractController
     public function list() : Response
     {
         $dtoList = Comic\DtoList::create();
-        $comics = $this->comicService->fetchAll();
+        $comics = $this->comicService->fetchAll(1000, 1);
 
         /** @var Comic\Entity $comic */
         foreach ($comics as $comic) {

@@ -4,6 +4,7 @@ namespace App\Component\Comic;
 
 use App\ValueObject\DateTime;
 use App\ValueObject\Id;
+use App\ValueObject\Offset;
 use App\ValueObject\PlainText;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
@@ -16,6 +17,17 @@ class Repository
     public function __construct(DBAL\Connection $dbConnection)
     {
         $this->dbConnection = $dbConnection;
+    }
+
+    public function count() : int
+    {
+        $count = $this->dbConnection->fetchColumn('SELECT COUNT(ID) FROM `comics`');
+
+        if ($count === false) {
+            throw new \RuntimeException('Could not count comics.');
+        }
+
+        return (int)$count;
     }
 
     public function create(
@@ -51,10 +63,10 @@ class Repository
         $this->dbConnection->delete('comics', ['id' => $id,]);
     }
 
-    public function fetchAll() : EntityList
+    public function fetchAll(int $perPage, Offset $offset) : EntityList
     {
         $data = $this->dbConnection->fetchAll(
-            'SELECT * FROM `comics` ORDER BY name'
+            sprintf('SELECT * FROM `comics` ORDER BY name LIMIT %d OFFSET %d', $perPage, $offset->asInt())
         );
 
         return EntityList::createFromArray($data);

@@ -4,3 +4,10 @@ Origin: localhost
 Cache-Control: no-cache
 
 ###
+
+GET http://my-comics.test/api/comics?per_page=10&page=1
+Accept: */*
+Origin: localhost
+Cache-Control: no-cache
+
+###

@@ -4,6 +4,7 @@ namespace App\Component\Comic;
 
 use App\ValueObject\DateTime;
 use App\ValueObject\Id;
+use App\ValueObject\Offset;
 use App\ValueObject\PlainText;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
@@ -15,6 +16,11 @@ class Service
     public function __construct(Repository $repository)
     {
         $this->repository = $repository;
+    }
+
+    public function count() : int
+    {
+        return $this->repository->count();
     }
 
     public function create(
@@ -30,9 +36,11 @@ class Service
         return $this->repository->create($comicVineId, $coverId, $name, $year, $publisherId, $description, $addedToCollection, $price);
     }
 
-    public function fetchAll() : EntityList
+    public function fetchAll(int $perPage, int $page = 1) : EntityList
     {
-        return $this->repository->fetchAll();
+        $offset = Offset::createFromLimitAndPage($perPage, $page);
+
+        return $this->repository->fetchAll($perPage, $offset);
     }
 
     public function fetchById(Id $id) : Entity

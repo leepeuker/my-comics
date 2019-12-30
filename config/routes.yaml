@@ -6,6 +6,11 @@ api_comics_get_by_id:
     controller: App\Controller\Api\Comics::getById
     methods: GET|HEAD
 
+api_comics_get_all:
+    path: /api/comics
+    controller: App\Controller\Api\Comics::getAll
+    methods: GET|HEAD
+
 api_comics_post:
     path: /api/comics
     controller: App\Controller\Api\Comics::post
