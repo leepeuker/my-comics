@@ -2,11 +2,13 @@
 
 namespace App\Tests\ValueObject;
 
+use App\Util\Json;
 use App\ValueObject\Price;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \App\ValueObject\Price
+ * @uses   \App\Util\Json
  */
 class PriceTest extends TestCase
 {
@@ -33,6 +35,11 @@ class PriceTest extends TestCase
         $this->expectExceptionMessage('Price contains more than digits: foobar');
 
         Price::createFromString('foobar');
+    }
+
+    public function testJsonSerialize() : void
+    {
+        $this->assertSame('100', Json::encode($this->price));
     }
 
     public function testTooString() : void

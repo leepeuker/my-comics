@@ -2,7 +2,7 @@
 
 namespace App\ValueObject;
 
-class Url
+class Url implements \JsonSerializable
 {
     private string $url;
 
@@ -21,7 +21,7 @@ class Url
     private static function ensureValidUrl(string $url) : void
     {
         if (filter_var($url, FILTER_VALIDATE_URL) === false) {
-            throw new \RuntimeException('String is not valid url: ' . $url);
+            throw new \InvalidArgumentException('String is not valid url: ' . $url);
         }
     }
 
@@ -33,5 +33,10 @@ class Url
     public function getPath() : ?string
     {
         return parse_url($this->url, PHP_URL_PATH);
+    }
+
+    public function jsonSerialize() : string
+    {
+        return $this->url;
     }
 }

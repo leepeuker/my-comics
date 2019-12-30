@@ -2,11 +2,13 @@
 
 namespace App\Tests\ValueObject;
 
+use App\Util\Json;
 use App\ValueObject\DateTime;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \App\ValueObject\DateTime
+ * @uses   \App\Util\Json
  */
 class DateTimeTest extends TestCase
 {
@@ -25,6 +27,11 @@ class DateTimeTest extends TestCase
     public function testFormat() : void
     {
         $this->assertSame('2012-02-01 10:01:01', $this->dateTime->format('Y-m-d H:i:s'));
+    }
+
+    public function testJsonSerialize() : void
+    {
+        $this->assertSame('"2012-02-01 10:01:01"', Json::encode($this->dateTime));
     }
 
     public function testTooString() : void

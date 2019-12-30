@@ -2,11 +2,13 @@
 
 namespace App\Tests\ValueObject;
 
+use App\Util\Json;
 use App\ValueObject\Id;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \App\ValueObject\Id
+ * @uses   \App\Util\Json
  */
 class IdTest extends TestCase
 {
@@ -33,6 +35,11 @@ class IdTest extends TestCase
         $this->expectExceptionMessage('Id contains more than digits: foobar');
 
         Id::createFromString('foobar');
+    }
+
+    public function testJsonSerialize() : void
+    {
+        $this->assertSame('100', Json::encode($this->id));
     }
 
     public function testTooString() : void

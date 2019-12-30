@@ -2,11 +2,13 @@
 
 namespace App\Tests\ValueObject;
 
+use App\Util\Json;
 use App\ValueObject\Year;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \App\ValueObject\Year
+ * @uses   \App\Util\Json
  */
 class YearTest extends TestCase
 {
@@ -28,6 +30,11 @@ class YearTest extends TestCase
         $this->expectExceptionMessage('Year has to be between 1901 and 2155, invalid value: 0');
 
         Year::createFromInt(0);
+    }
+
+    public function testJsonSerialize() : void
+    {
+        $this->assertSame('2001', Json::encode($this->year));
     }
 
     public function testTooString() : void

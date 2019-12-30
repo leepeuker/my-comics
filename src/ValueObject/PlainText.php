@@ -2,7 +2,7 @@
 
 namespace App\ValueObject;
 
-class PlainText
+class PlainText implements \JsonSerializable
 {
     private string $plainText;
 
