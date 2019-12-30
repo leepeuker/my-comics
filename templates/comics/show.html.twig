@@ -3,44 +3,48 @@
 {% block title %}{{ comic.name }}{% endblock %}
 
 {% block body %}
-    <form action="/comics/{{ comic.id }}/edit" method="POST">
+    <form action="/comics/{{ comic.id }}/edit" method="POST" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="formGroupExampleInput">Name</label>
-            <input type="text" class="form-control" name="name" id="formGroupExampleInput" value="{{ comic.name }}">
+            <label for="comicName">Name</label>
+            <input type="text" class="form-control" name="name" id="comicName" value="{{ comic.name }}">
         </div>
         <div class="row form-group">
             <div class="col">
-                <label for="formGroupExampleInput">Publisher</label>
-                <input type="text" class="form-control" name="publisherName" value="{{ comic.publisher is null ? '' : comic.publisher.name }}">
+                <label for="comicPublisher">Publisher</label>
+                <input type="text" id="comicPublisher" class="form-control" name="publisherName" value="{{ comic.publisher is null ? '' : comic.publisher.name }}">
             </div>
             <div class="col">
-                <label for="formGroupExampleInput">Year</label>
-                <input type="number" class="form-control" name="year" value="{{ comic.year }}" min="1901" max="2030">
+                <label for="comicYear">Year</label>
+                <input type="number" id="comicYear" class="form-control" name="year" value="{{ comic.year }}" min="1901" max="2030">
             </div>
         </div>
         <div class="form-group">
-            <label for="formGroupExampleInput2">Description</label>
-            <textarea class="form-control" name="description" rows="4">{{ comic.description }}</textarea>
+            <label for="comicDescription">Description</label>
+            <textarea class="form-control" id="comicDescription" name="description" rows="4">{{ comic.description }}</textarea>
         </div>
         <div class="row form-group">
             <div class="col">
-                <label for="formGroupExampleInput">Added to collection</label>
+                <label for="comicAddedToCollection">Added to collection</label>
                 {% if comic.addedToCollection == null %}
-                    <input type="date" class="form-control" name="addedToCollection" value="">
+                    <input type="date" class="form-control" id="comicAddedToCollection" name="addedToCollection" value="">
                 {% else %}
-                    <input type="date" class="form-control" name="addedToCollection" value="{{ comic.addedToCollection|date("Y-m-d") }}">
+                    <input type="date" class="form-control" id="comicAddedToCollection" name="addedToCollection" value="{{ comic.addedToCollection|date("Y-m-d") }}">
                 {% endif %}
             </div>
         </div>
         <div class="row form-group">
             <div class="col">
-                <label for="formGroupExampleInput">Price</label>
-                <input type="number" class="form-control" name="price" value="{{ comic.price }}">
+                <label for="comicPrice">Price</label>
+                <input type="number" id="comicPrice" class="form-control" name="price" value="{{ comic.price }}">
             </div>
             <div class="col">
-                <label for="formGroupExampleInput">ComicVine Id</label>
-                <input type="text" class="form-control" name="comicVineId" value="{{ comic.comicVineId }}">
+                <label for="comicComicVineId">ComicVine Id</label>
+                <input type="text" id="comicComicVineId" class="form-control" name="comicVineId" value="{{ comic.comicVineId }}">
             </div>
+        </div>
+        <div class="form-group">
+            <label for="comicCoverImage">Cover image</label>
+            <input type="file" class="form-control-file" name="coverImage" id="comicCoverImage">
         </div>
         <button type="submit" class="btn btn-primary float-right">Submit</button>
         <form action="/comics/{{ comic.id }}/delete" method="DELETE">

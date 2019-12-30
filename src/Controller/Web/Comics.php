@@ -11,35 +11,43 @@ use App\ValueObject\PlainText;
 use App\ValueObject\Price;
 use App\ValueObject\Year;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class Comics extends AbstractController
 {
-    private Comic\Repository $comicRepo;
+    private Comic\Service $comicService;
 
-    private Image\Repository $imageRepo;
+    private Image\Service $imageService;
 
-    private Publisher\Repository $publisherRepo;
+    private Publisher\Service $publisherService;
 
-    public function __construct(Comic\Repository $comicRepo, Image\Repository $imageRepo, Publisher\Repository $publisherRepo)
+    public function __construct(Comic\Service $comicService, Image\Service $imageService, Publisher\Service $publisherService)
     {
-        $this->comicRepo = $comicRepo;
-        $this->imageRepo = $imageRepo;
-        $this->publisherRepo = $publisherRepo;
+        $this->comicService = $comicService;
+        $this->imageService = $imageService;
+        $this->publisherService = $publisherService;
     }
 
-    public function edit(Request $request, int $id) : Response
+    public function edit(Request $request) : Response
     {
+        $comicId = Id::createFromString($request->get('id'));
         $comicVineId = $request->get('comicVineId');
         $price = $request->get('price');
         $year = $request->get('year');
         $publisherName = $request->get('publisherName');
+        $coverImageFile = $request->files->get('coverImage');
 
-        $publisher = empty($publisherName) === true ? null : $this->publisherRepo->fetchByNameOrCreate($request->get('publisherName'));
+        if ($coverImageFile instanceof UploadedFile) {
+            $coverImageEntity = $this->imageService->createFromUploadedFile($coverImageFile);
+            $this->comicService->updateCover($comicId, $coverImageEntity->getId());
+        }
 
-        $this->comicRepo->updateWithoutCover(
-            Id::createFromString($request->get('id')),
+        $publisher = empty($publisherName) === true ? null : $this->publisherService->fetchByNameOrCreate($request->get('publisherName'));
+
+        $this->comicService->updateWithoutCover(
+            $comicId,
             empty($comicVineId) === true ? null : Id::createFromString($comicVineId),
             PlainText::createFromString($request->get('name')),
             empty($year) === true ? null : Year::createFromInt((int)$year),
@@ -49,13 +57,13 @@ class Comics extends AbstractController
             empty($price) === true ? null : Price::createFromString($request->get('price'))
         );
 
-        return $this->redirect('/comics/' . $id);
+        return $this->redirect('/comics/' . $comicId);
     }
 
     public function list() : Response
     {
         $dtoList = Comic\DtoList::create();
-        $comics = $this->comicRepo->fetchAll();
+        $comics = $this->comicService->fetchAll();
 
         /** @var Comic\Entity $comic */
         foreach ($comics as $comic) {
@@ -65,11 +73,11 @@ class Comics extends AbstractController
             $dtoList->add(
                 Comic\Dto::createFromParameters(
                     $comic->getId(),
-                    $coverId === null ? null : $this->imageRepo->fetchById($coverId),
+                    $coverId === null ? null : $this->imageService->fetchById($coverId),
                     $comic->getComicVineId(),
                     $comic->getName(),
                     $comic->getYear(),
-                    $publisherId === null ? null : $this->publisherRepo->fetchById($publisherId),
+                    $publisherId === null ? null : $this->publisherService->fetchById($publisherId),
                     $comic->getDescription(),
                     $comic->getAddedToCollection(),
                     $comic->getPrice()
@@ -86,17 +94,17 @@ class Comics extends AbstractController
 
     public function show(int $id) : Response
     {
-        $comic = $this->comicRepo->fetchById(Id::createFromInt($id));
+        $comic = $this->comicService->fetchById(Id::createFromInt($id));
         $coverId = $comic->getCoverId();
         $publisherId = $comic->getPublisherId();
 
         $dto = Comic\Dto::createFromParameters(
             $comic->getId(),
-            $coverId === null ? null : $this->imageRepo->fetchById($coverId),
+            $coverId === null ? null : $this->imageService->fetchById($coverId),
             $comic->getComicVineId(),
             $comic->getName(),
             $comic->getYear(),
-            $publisherId === null ? null : $this->publisherRepo->fetchById($publisherId),
+            $publisherId === null ? null : $this->publisherService->fetchById($publisherId),
             $comic->getDescription(),
             $comic->getAddedToCollection(),
             $comic->getPrice()

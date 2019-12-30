@@ -8,28 +8,27 @@ use App\Provider\ComicVine\Resource\Issue;
 use App\Provider\ComicVine\Resource\Volume;
 use App\ValueObject\Id;
 use App\ValueObject\PlainText;
-use App\ValueObject\Price;
 use App\ValueObject\Year;
 
 class ComicVine
 {
     private Api $api;
 
-    private Component\Comic\Repository $comicRepository;
+    private Component\Comic\Service $comicService;
 
     private Component\Image\Service $imageService;
 
-    private Component\Publisher\Repository $publisherRepository;
+    private Component\Publisher\Service $publisherService;
 
     public function __construct(
         Api $api,
-        Component\Publisher\Repository $publisherRepository,
-        Component\Comic\Repository $comicRepository,
+        Component\Publisher\Service $publisherService,
+        Component\Comic\Service $comicService,
         Component\Image\Service $imageService
     ) {
         $this->api = $api;
-        $this->publisherRepository = $publisherRepository;
-        $this->comicRepository = $comicRepository;
+        $this->publisherService = $publisherService;
+        $this->comicService = $comicService;
         $this->imageService = $imageService;
     }
 
@@ -58,7 +57,7 @@ class ComicVine
 
     public function getPublisher(Volume\Dto $comicVineVolume) : Component\Publisher\Entity
     {
-        return $this->publisherRepository->fetchByNameOrCreate(
+        return $this->publisherService->fetchByNameOrCreate(
             $comicVineVolume->getPublisher()->getName()
         );
     }
@@ -68,7 +67,7 @@ class ComicVine
         $publisher = $this->getPublisher($comicVineVolume);
         $cover = $this->getCover($comicVineIssue);
 
-        return $this->comicRepository->create(
+        return $this->comicService->create(
             $comicVineIssue->getId(),
             $cover->getId(),
             PlainText::createFromString($this->convertString($comicVineVolume->getName() . ' - ' . $comicVineIssue->getName())),

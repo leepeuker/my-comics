@@ -91,8 +91,21 @@ class Repository
         );
     }
 
+    public function updateCover(Id $comicId, Id $coverId) : void
+    {
+        $this->dbConnection->update(
+            'comics',
+            [
+                'cover_id' => $coverId,
+            ],
+            [
+                'id' => $comicId
+            ]
+        );
+    }
+
     public function updateWithoutCover(
-        Id $id,
+        Id $comicId,
         ?Id $comicVineId,
         PlainText $name,
         ?Year $year,
@@ -113,7 +126,7 @@ class Repository
                 'price' => $price
             ],
             [
-                'id' => $id
+                'id' => $comicId
             ]
         );
     }

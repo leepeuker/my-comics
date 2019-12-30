@@ -73,17 +73,6 @@ class Repository
         return Entity::createFromArray($data);
     }
 
-    public function fetchByNameOrCreate(string $name) : Entity
-    {
-        $publisher = $this->fetchByName($name);
-
-        if ($publisher !== null) {
-            return $publisher;
-        }
-
-        return $this->create(null, $name);
-    }
-
     public function update(Entity $entity) : void
     {
         $this->dbConnection->update(

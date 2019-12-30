@@ -16,6 +16,7 @@ services:
     user: "${USER_ID}"
     volumes:
       - ./:/var/www
+      - ./build/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
 
   mysql:
     image: mysql:5.7

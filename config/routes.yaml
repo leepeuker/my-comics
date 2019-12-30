@@ -11,11 +11,6 @@ issues_get_all:
     controller: App\Controller\Api\Issues::getAll
     methods: GET|HEAD
 
-images:
-    path: /images/{id}
-    controller: App\Controller\Api\Images::getById
-    methods: GET|HEAD
-
 publishers:
     path: /publishers/{id}
     controller: App\Controller\Api\Publishers::getById
