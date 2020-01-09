@@ -82,6 +82,7 @@ class ComicVine
             $publisher->getId(),
             PlainText::createFromString($this->convertString($comicVineIssue->getDescription())),
             null,
+            null,
             null
         );
     }
