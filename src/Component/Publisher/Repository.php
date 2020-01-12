@@ -73,6 +73,17 @@ class Repository
         return Entity::createFromArray($data);
     }
 
+    public function fetchPublishersComicCount() : array
+    {
+        return $this->dbConnection->fetchAll(
+            'SELECT publishers.name, COUNT(c.id) AS count
+                FROM publishers
+                INNER JOIN comics c on publishers.id = c.publisher_id
+                GROUP BY publishers.id
+                ORDER BY COUNT(c.id) DESC ;'
+        );
+    }
+
     public function update(Entity $entity) : void
     {
         $this->dbConnection->update(
