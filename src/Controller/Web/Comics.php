@@ -10,6 +10,7 @@ use App\ValueObject\DateTime;
 use App\ValueObject\Id;
 use App\ValueObject\PlainText;
 use App\ValueObject\Price;
+use App\ValueObject\Rating;
 use App\ValueObject\Query\SortOrder;
 use App\ValueObject\Year;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,6 +42,7 @@ class Comics extends AbstractController
         $publisherName = (string)$request->get('publisherName');
         $coverImageFile = $request->files->get('coverImage');
         $addedToCollection = (string)$request->get('addedToCollection');
+        $rating = (int)$request->get('rating');
 
         if ($coverImageFile instanceof UploadedFile) {
             $coverImageEntity = $this->imageService->createFromUploadedFile($coverImageFile);
@@ -57,7 +59,8 @@ class Comics extends AbstractController
             PlainText::createFromString((string)$request->get('description')),
             empty($addedToCollection) === true ? null : DateTime::createFromString($addedToCollection),
             $publisher === null ? null : $publisher->getId(),
-            empty($price) === true ? null : Price::createFromString($price)
+            empty($price) === true ? null : Price::createFromString($price),
+            $rating === 0 ? null : Rating::createFromInt($rating)
         );
 
         return $this->redirect('/comics/' . $comicId);
@@ -89,7 +92,8 @@ class Comics extends AbstractController
                     $publisherId === null ? null : $this->publisherService->fetchById($publisherId),
                     $comic->getDescription(),
                     $comic->getAddedToCollection(),
-                    $comic->getPrice()
+                    $comic->getPrice(),
+                    $comic->getRating()
                 )
             );
         }
@@ -122,7 +126,8 @@ class Comics extends AbstractController
             $publisherId === null ? null : $this->publisherService->fetchById($publisherId),
             $comic->getDescription(),
             $comic->getAddedToCollection(),
-            $comic->getPrice()
+            $comic->getPrice(),
+            $comic->getRating()
         );
 
         return $this->render(

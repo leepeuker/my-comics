@@ -8,6 +8,7 @@ use App\ValueObject\DateTime;
 use App\ValueObject\Id;
 use App\ValueObject\PlainText;
 use App\ValueObject\Price;
+use App\ValueObject\Rating;
 use App\ValueObject\Year;
 
 class Dto implements \JsonSerializable
@@ -28,6 +29,8 @@ class Dto implements \JsonSerializable
 
     private ?Publisher\Entity $publisher;
 
+    private ?Rating $rating;
+
     private ?Year $year;
 
     private function __construct(
@@ -39,7 +42,8 @@ class Dto implements \JsonSerializable
         ?Publisher\Entity $publisher,
         PlainText $description,
         ?DateTime $addedToCollection,
-        ?Price $price
+        ?Price $price,
+        ?Rating $rating
     ) {
         $this->id = $id;
         $this->cover = $cover;
@@ -50,6 +54,7 @@ class Dto implements \JsonSerializable
         $this->description = $description;
         $this->addedToCollection = $addedToCollection;
         $this->price = $price;
+        $this->rating = $rating;
     }
 
     public static function createFromParameters(
@@ -61,9 +66,10 @@ class Dto implements \JsonSerializable
         ?Publisher\Entity $publisher,
         PlainText $description,
         ?DateTime $addedToCollection,
-        ?Price $price
+        ?Price $price,
+        ?Rating $rating
     ) : self {
-        return new self($id, $cover, $comicVineId, $name, $year, $publisher, $description, $addedToCollection, $price);
+        return new self($id, $cover, $comicVineId, $name, $year, $publisher, $description, $addedToCollection, $price, $rating);
     }
 
     public function getAddedToCollection() : ?DateTime
@@ -106,6 +112,11 @@ class Dto implements \JsonSerializable
         return $this->publisher;
     }
 
+    public function getRating() : ?Rating
+    {
+        return $this->rating;
+    }
+
     public function getYear() : ?Year
     {
         return $this->year;
@@ -122,6 +133,7 @@ class Dto implements \JsonSerializable
             'publisher' => $this->publisher,
             'description' => $this->description,
             'price' => $this->price,
+            'rating' => $this->rating
         ];
     }
 }

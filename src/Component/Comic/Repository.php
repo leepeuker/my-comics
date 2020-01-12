@@ -8,6 +8,7 @@ use App\ValueObject\Offset;
 use App\ValueObject\PlainText;
 use App\ValueObject\Price;
 use App\ValueObject\Query\SortOrder;
+use App\ValueObject\Rating;
 use App\ValueObject\Year;
 use Doctrine\DBAL;
 
@@ -64,7 +65,8 @@ class Repository
         ?Id $publisherId,
         PlainText $description,
         ?DateTime $addedToCollection,
-        ?Price $price
+        ?Price $price,
+        ?Rating $rating
     ) : Entity {
         $this->dbConnection->insert(
             'comics',
@@ -77,6 +79,7 @@ class Repository
                 'description' => $description,
                 'added_to_collection' => $addedToCollection === null ? null : (string)$addedToCollection,
                 'price' => $price === null ? null : $price->asInt(),
+                'rating' => $rating === null ? null : $rating->asInt()
             ]
         );
 
@@ -135,6 +138,7 @@ class Repository
                 'added_to_collection' => $entity->getAddedToCollection(),
                 'publisher_id' => $entity->getPublisherId(),
                 'price' => $entity->getPrice(),
+                'rating' => $entity->getRating()
             ],
             [
                 'id' => $entity->getId(),
@@ -163,7 +167,8 @@ class Repository
         PlainText $description,
         ?DateTime $addedToCollection,
         ?Id $publisherId,
-        ?Price $price
+        ?Price $price,
+        ?Rating $rating
     ) : void {
         $this->dbConnection->update(
             'comics',
@@ -175,6 +180,7 @@ class Repository
                 'publisher_id' => $publisherId,
                 'added_to_collection' => $addedToCollection,
                 'price' => $price,
+                'rating' => $rating
             ],
             [
                 'id' => $comicId,

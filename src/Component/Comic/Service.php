@@ -8,6 +8,7 @@ use App\ValueObject\Id;
 use App\ValueObject\Offset;
 use App\ValueObject\PlainText;
 use App\ValueObject\Price;
+use App\ValueObject\Rating;
 use App\ValueObject\Year;
 
 class Service
@@ -24,6 +25,7 @@ class Service
         if ($searchTerm === null) {
             return $this->repository->count();
         }
+
         return $this->repository->countBySearchTerm($searchTerm);
     }
 
@@ -35,9 +37,10 @@ class Service
         ?Id $publisherId,
         PlainText $description,
         ?DateTime $addedToCollection,
-        ?Price $price
+        ?Price $price,
+        ?Rating $rating
     ) : Entity {
-        return $this->repository->create($comicVineId, $coverId, $name, $year, $publisherId, $description, $addedToCollection, $price);
+        return $this->repository->create($comicVineId, $coverId, $name, $year, $publisherId, $description, $addedToCollection, $price, $rating);
     }
 
     public function fetchAll(Search $search) : EntityList
@@ -72,8 +75,9 @@ class Service
         PlainText $description,
         ?DateTime $addedToCollection,
         ?Id $publisherId,
-        ?Price $price
+        ?Price $price,
+        ?Rating $rating
     ) : void {
-        $this->repository->updateWithoutCover($comicId, $comicVineId, $name, $year, $description, $addedToCollection, $publisherId, $price);
+        $this->repository->updateWithoutCover($comicId, $comicVineId, $name, $year, $description, $addedToCollection, $publisherId, $price, $rating);
     }
 }
