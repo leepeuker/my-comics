@@ -21,15 +21,17 @@
                 <li class="nav-item">
                     <a class="nav-link {{ app.request.pathinfo == '/collection' or app.request.pathinfo == '/' ? 'active' }}" href="/collection">Collection</a>
                 </li>
-            </ul>
-            <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link {{ app.request.pathinfo == '/history' ? 'active' }} disabled" href="/history">History</a>
                 </li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link {{ app.request.pathinfo == '/statistic' ? 'active' }}" href="/statistic">Statistic</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {{ app.request.pathinfo starts with '/statistic' ? 'active' }}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Statistic
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/statistic/comics">Comics</a>
+                        <a class="dropdown-item" href="/statistic/publishers">Publisher</a>
+                    </div>
                 </li>
             </ul>
         </div>

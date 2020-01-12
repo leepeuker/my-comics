@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container" style="margin-top: 1em">
+        <div class="container text-center">
+            <h3><b>Comics per publisher:</b></h3>
+            <canvas id="publishersComicCount" width="100" style="width: 25em"></canvas>
+        </div>
+        <hr>
+        <div class="container text-center">
+            <h3><b>Cost per publisher:</b></h3>
+            <canvas id="publishersComicCost" width="100" style="width: 25em"></canvas>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.bundle.min.js" type="text/javascript"></script>
+    <script src="/js/statistics/publishers.js" type="text/javascript"></script>
+{% endblock %}

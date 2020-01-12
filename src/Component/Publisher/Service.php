@@ -43,4 +43,14 @@ class Service
 
         return $this->repository->create(null, $name);
     }
+
+    public function fetchPublishersComicCost() : array
+    {
+        return $this->repository->fetchPublishersComicCost();
+    }
+
+    public function fetchPublishersComicCount() : array
+    {
+        return $this->repository->fetchPublishersComicCount();
+    }
 }

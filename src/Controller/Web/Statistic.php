@@ -23,13 +23,26 @@ class Statistic extends AbstractController
         $this->publisherService = $publisherService;
     }
 
-    public function index() : Response
+    public function getComicStatistics() : Response
     {
         $totalPrice = $this->comicService->fetchTotalPrice();
         $averagePrice = $this->comicService->fetchAveragePrice();
 
         return $this->render(
-            'statistic/index.html.twig', [
+            'statistic/comics.html.twig', [
+                'totalPrice' => $totalPrice,
+                'averagePrice' => $averagePrice
+            ]
+        );
+    }
+
+    public function getPublisherStatistics() : Response
+    {
+        $totalPrice = $this->comicService->fetchTotalPrice();
+        $averagePrice = $this->comicService->fetchAveragePrice();
+
+        return $this->render(
+            'statistic/publishers.html.twig', [
                 'totalPrice' => $totalPrice,
                 'averagePrice' => $averagePrice
             ]

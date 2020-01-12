@@ -1,0 +1,6 @@
+GET http://my-comics.test/api/statistics
+Accept: */*
+Origin: localhost
+Cache-Control: no-cache
+
+###
