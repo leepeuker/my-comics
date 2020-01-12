@@ -73,6 +73,17 @@ class Repository
         return Entity::createFromArray($data);
     }
 
+    public function fetchPublishersComicCost() : array
+    {
+        return $this->dbConnection->fetchAll(
+            'SELECT publishers.name, SUM(c.price) AS cost
+                FROM publishers
+                INNER JOIN comics c on publishers.id = c.publisher_id
+                GROUP BY publishers.id
+                ORDER BY SUM(c.price) DESC ;'
+        );
+    }
+
     public function fetchPublishersComicCount() : array
     {
         return $this->dbConnection->fetchAll(

@@ -23,6 +23,7 @@ class Service
             $this->comicService->fetchTotalPrice(),
             $this->comicService->fetchAveragePrice(),
             $this->publisherService->fetchPublishersComicCount(),
+            $this->publisherService->fetchPublishersComicCost(),
         );
     }
 }

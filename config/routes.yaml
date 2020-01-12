@@ -49,9 +49,14 @@ web_comics_list:
     controller: App\Controller\Web\Comics::list
     methods: GET
 
-web_statistic_list:
-    path: /statistic
-    controller: App\Controller\Web\Statistic::index
+web_statistic_comics:
+    path: /statistic/comics
+    controller: App\Controller\Web\Statistic::getComicStatistics
+    methods: GET
+
+web_statistic_publishers:
+    path: /statistic/publishers
+    controller: App\Controller\Web\Statistic::getPublisherStatistics
     methods: GET
 
 web_comics_show:
