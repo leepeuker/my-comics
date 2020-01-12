@@ -1,0 +1,9 @@
+<li class="media media-comic" onclick="window.location.href='/comics/{{ comic.id }}';">
+    {% if comic.cover is not null %}
+        <img src="/images/covers/{{ comic.cover.fileName }}" width="130" class="mr-3" alt="...">
+    {% endif %}
+    <div class="media-body" style="padding-top:0.5em">
+        <h5 class="mt-0">{{ comic.name }} <small>{{ comic.year }}</small></h5>
+        {{ comic.description|length > 300 ? comic.description|slice(0, 300) ~ '...' : comic.description }}
+    </div>
+</li>

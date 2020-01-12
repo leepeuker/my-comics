@@ -1,0 +1,76 @@
+<form style="margin-top:1em" id="searchForm">
+    <div class="input-group">
+        <input class="form-control" type="text" placeholder="Search" name="term" id="searchTerm" value="{{ searchTerm is empty ? '' : searchTerm }}">
+        <div class="input-group-append">
+            <button type="button" class="input-group-text" id="toggle-advanced-search" onclick="toggleAdvancedSearchMenu()"><img src="/icons/chevron-down.svg" title="Bootstrap">
+            </button>
+        </div>
+        <div class="input-group-append">
+            <button type="submit" class="input-group-text"><img src="/icons/search.svg" title="Bootstrap">
+            </button>
+        </div>
+    </div>
+    <input type="hidden" value="{{ perPage }}" name="per_page">
+</form>
+<div style="border: #aab0b3 1px;display:none;margin-top:1em" id="advanced-search-menu">
+    <form>
+        <div class="form-group row">
+            <label for="per-page" class="col-sm-2 col-form-label">Per page:</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="per-page" id="per-page">
+                    <option value="10" {{ perPage == 10 ? 'selected' }}>10</option>
+                    <option value="15" {{ perPage == 15 ? 'selected' }}>15</option>
+                    <option value="25" {{ perPage == 25 ? 'selected' }}>25</option>
+                    <option value="40" {{ perPage == 40 ? 'selected' }}>40</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="sort-by" class="col-sm-2 col-form-label">Sort by:</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="sort-by" id="sort-by">
+                    <option value="name" {{ sortBy == 'name' ? 'selected' }}>Name</option>
+                    <option value="added_to_collection" {{ sortBy == 'added_to_collection' ? 'selected' }}>Added to collection</option>
+                    <option value="price" {{ sortBy == 'price' ? 'selected' }}>Price</option>
+                    <option value="rating" {{ sortBy == 'rating' ? 'selected' }}>Rating</option>
+                    <option value="year" {{ sortBy == 'year' ? 'selected' }}>Year</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="sort-order" class="col-sm-2 col-form-label">Sort order:</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="sort-order" id="sort-order">
+                    <option value="asc" {{ sortOrder == 'desc' ?: 'selected' }}>Asc</option>
+                    <option value="desc" {{ sortOrder == 'desc' ? 'selected' }}>Desc</option>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% block javascripts %}
+    <script>
+        function toggleAdvancedSearchMenu() {
+            let status = document.getElementById("advanced-search-menu").style.display;
+
+            if (status === "none") {
+                document.getElementById("advanced-search-menu").style.display = "block";
+            } else {
+                document.getElementById("advanced-search-menu").style.display = "none";
+            }
+        }
+
+        document.getElementById("searchForm").addEventListener("submit", search, true);
+
+        function search(event) {
+            event.preventDefault();
+            let searchTerm = document.getElementById("searchTerm").value;
+            let perPage = document.getElementById("per-page").value;
+            let sortBy = document.getElementById("sort-by").value;
+            let sortOrder = document.getElementById("sort-order").value;
+
+            window.location = "/?term=" + searchTerm + "&per_page=" + perPage + "&sortBy=" + sortBy + "&sortOrder=" + sortOrder;
+        }
+    </script>
+{% endblock %}

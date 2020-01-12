@@ -7,12 +7,24 @@ use App\ValueObject\Id;
 use App\ValueObject\Offset;
 use App\ValueObject\PlainText;
 use App\ValueObject\Price;
+use App\ValueObject\Query\SortOrder;
 use App\ValueObject\Rating;
 use App\ValueObject\Year;
 use Doctrine\DBAL;
 
 class Repository
 {
+    private const VALID_ORDER_DIR = [
+        'asc',
+        'desc'
+    ];
+    private const VALID_ORDER_BY_TABLES = [
+        'name',
+        'price',
+        'added_to_collection',
+        'year',
+    ];
+
     private DBAL\Connection $dbConnection;
 
     public function __construct(DBAL\Connection $dbConnection)
@@ -57,7 +69,8 @@ class Repository
         ?Rating $rating
     ) : Entity {
         $this->dbConnection->insert(
-            'comics', [
+            'comics',
+            [
                 'comic_vine_id' => $comicVineId === null ? null : $comicVineId->asInt(),
                 'cover_id' => $coverId,
                 'name' => $name,
@@ -80,10 +93,10 @@ class Repository
         $this->dbConnection->delete('comics', ['id' => $id,]);
     }
 
-    public function fetchAll(int $perPage, Offset $offset) : EntityList
+    public function fetchAll(int $perPage, Offset $offset, string $orderBy, SortOrder $sortOrder) : EntityList
     {
         $data = $this->dbConnection->fetchAll(
-            sprintf('SELECT * FROM `comics` ORDER BY name LIMIT %d OFFSET %d', $perPage, $offset->asInt())
+            sprintf('SELECT * FROM `comics` ORDER BY %s %s LIMIT %d OFFSET %d', $orderBy, (string)$sortOrder, $perPage, $offset->asInt())
         );
 
         return EntityList::createFromArray($data);
@@ -100,10 +113,12 @@ class Repository
         return Entity::createFromArray($data);
     }
 
-    public function fetchBySearchTerm(string $searchTerm, int $perPage, Offset $offset) : EntityList
+    public function fetchBySearchTerm(string $searchTerm, int $perPage, Offset $offset, string $orderBy, SortOrder $orderDir) : EntityList
     {
+        $this->ensureValidOrderByValue($orderBy);
+
         $data = $this->dbConnection->fetchAll(
-            sprintf('SELECT * FROM `comics` WHERE name LIKE ? ORDER BY name LIMIT %d OFFSET %d', $perPage, $offset->asInt()),
+            sprintf('SELECT * FROM `comics` WHERE name LIKE ? ORDER BY %s %s LIMIT %d OFFSET %d', $orderBy, (string)$orderDir, $perPage, $offset->asInt()),
             ["%$searchTerm%"]
         );
 
@@ -126,7 +141,7 @@ class Repository
                 'rating' => $entity->getRating()
             ],
             [
-                'id' => $entity->getId()
+                'id' => $entity->getId(),
             ]
         );
     }
@@ -139,7 +154,7 @@ class Repository
                 'cover_id' => $coverId,
             ],
             [
-                'id' => $comicId
+                'id' => $comicId,
             ]
         );
     }
@@ -168,8 +183,15 @@ class Repository
                 'rating' => $rating
             ],
             [
-                'id' => $comicId
+                'id' => $comicId,
             ]
         );
+    }
+
+    private function ensureValidOrderByValue(string $orderBy) : void
+    {
+        if (in_array($orderBy, self::VALID_ORDER_BY_TABLES, true) === false) {
+            throw new \RuntimeException('Invalid sort order value: ' . $orderBy);
+        }
     }
 }

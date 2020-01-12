@@ -1,50 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <ul class="list-unstyled" id="comicList">
-        <form action="/" method="GET" style="margin-bottom:1em;margin-top:1em">
-            <input class="form-control" type="text" placeholder="Search" name="term" id="searchTerm" value="{{ searchTerm is empty ? '' : searchTerm }}">
-            <input type="hidden" value="{{ perPage }}" name="per_page">
-        </form>
+    {{ include('comics/overview/search.html.twig') }}
+    <ul class="list-unstyled" id="comicList" style="margin-top:1em;">
         {% for comic in comics %}
-            <li class="media media-comic" onclick="window.location.href='/comics/{{ comic.id }}';">
-                {% if comic.cover is not null %}
-                    <img src="/images/covers/{{ comic.cover.fileName }}" width="130" class="mr-3" alt="...">
-                {% endif %}
-                <div class="media-body" style="padding-top:0.5em">
-                    <h5 class="mt-0">{{ comic.name }} <small>{{ comic.year }}</small></h5>
-                    {{ comic.description|length > 300 ? comic.description|slice(0, 300) ~ '...' : comic.description }}
-                </div>
-            </li>
+            {{ include('comics/overview/item.html.twig') }}
         {% endfor %}
     </ul>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            <li class="page-item {{ page == 1 ? 'disabled' }}">
-                <a class="page-link" href="?per_page={{ perPage }}&page=1&term={{ searchTerm }}">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item {{ page == 1 ? 'disabled' }}">
-                <a class="page-link" href="?per_page={{ perPage }}&page={{ page-1 }}&term={{ searchTerm }}">Previous</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?per_page={{ perPage }}&page={{ page }}&term={{ searchTerm }}">
-                    {{ page }} of {{ (totalItems / perPage)|round(0, 'ceil') }}
-                </a>
-            </li>
-            <li class="page-item {{ totalItems <= page * perPage ? 'disabled' }}">
-                <a class="page-link" href="?per_page={{ perPage }}&page={{ page+1 }}&term={{ searchTerm }}">
-                    Next
-                </a>
-            </li>
-            <li class="page-item {{ page >= (totalItems / perPage)|round(0, 'ceil') ? 'disabled' }}">
-                <a class="page-link" href="?per_page={{ perPage }}&page={{ (totalItems / perPage)|round(0, 'ceil') }}&term={{ searchTerm }}">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    {{ include('comics/overview/pagination.html.twig') }}
 {% endblock %}
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Component\Comic;
 
+use App\Component\Comic\ValueObject\Search;
 use App\ValueObject\DateTime;
 use App\ValueObject\Id;
 use App\ValueObject\Offset;
@@ -42,11 +43,11 @@ class Service
         return $this->repository->create($comicVineId, $coverId, $name, $year, $publisherId, $description, $addedToCollection, $price, $rating);
     }
 
-    public function fetchAll(int $perPage, int $page = 1) : EntityList
+    public function fetchAll(Search $search) : EntityList
     {
-        $offset = Offset::createFromLimitAndPage($perPage, $page);
+        $offset = Offset::createFromLimitAndPage($search->getPerPage(), $search->getPage());
 
-        return $this->repository->fetchAll($perPage, $offset);
+        return $this->repository->fetchAll($search->getPerPage(), $offset, $search->getSortBy(), $search->getSortOrder());
     }
 
     public function fetchById(Id $id) : Entity
@@ -54,11 +55,11 @@ class Service
         return $this->repository->fetchById($id);
     }
 
-    public function fetchBySearchTerm(string $searchTerm, int $perPage, int $page = 1) : EntityList
+    public function fetchBySearchTerm(Search $search) : EntityList
     {
-        $offset = Offset::createFromLimitAndPage($perPage, $page);
+        $offset = Offset::createFromLimitAndPage($search->getPerPage(), $search->getPage());
 
-        return $this->repository->fetchBySearchTerm($searchTerm, $perPage, $offset);
+        return $this->repository->fetchBySearchTerm($search->getTerm(), $search->getPerPage(), $offset, $search->getSortBy(), $search->getSortOrder());
     }
 
     public function updateCover(Id $comicId, Id $coverId) : void
