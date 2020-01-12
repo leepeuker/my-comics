@@ -3,12 +3,14 @@
 namespace App\Controller\Web;
 
 use App\Component\Comic;
+use App\Component\Comic\ValueObject\Search;
 use App\Component\Image;
 use App\Component\Publisher;
 use App\ValueObject\DateTime;
 use App\ValueObject\Id;
 use App\ValueObject\PlainText;
 use App\ValueObject\Price;
+use App\ValueObject\Query\SortOrder;
 use App\ValueObject\Year;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -63,19 +65,17 @@ class Comics extends AbstractController
 
     public function list(Request $request) : Response
     {
-        $perPage = empty($request->get('per_page')) === true ? 15 : (int)$request->get('per_page');
-        $page = empty($request->get('page')) === true ? 1 : (int)$request->get('page');
-        $searchTerm = empty($request->get('term')) === true ? null : (string)$request->get('term');
-
-        if ($searchTerm !== null) {
-            $comics = $this->comicService->fetchBySearchTerm($searchTerm, $perPage, $page);
-        } else {
-            $comics = $this->comicService->fetchAll($perPage, $page);
-        }
+        $search = Search::create(
+            empty($request->get('term')) === true ? null : (string)$request->get('term'),
+            empty($request->get('page')) === true ? null : (int)$request->get('page'),
+            empty($request->get('per_page')) === true ? null : (int)$request->get('per_page'),
+            empty($request->get('sortBy')) === true ? null : (string)$request->get('sortBy'),
+            empty($request->get('sortOrder')) === true ? null : SortOrder::create((string)$request->get('sortOrder'))
+        );
 
         $dtoList = Comic\DtoList::create();
         /** @var Comic\Entity $comic */
-        foreach ($comics as $comic) {
+        foreach ($this->comicService->fetchBySearchTerm($search) as $comic) {
             $publisherId = $comic->getPublisherId();
             $coverId = $comic->getCoverId();
 
@@ -97,10 +97,12 @@ class Comics extends AbstractController
         return $this->render(
             'comics/list.html.twig', [
                 'comics' => $dtoList,
-                'perPage' => $perPage,
-                'page' => $page,
-                'totalItems' => $this->comicService->count($searchTerm),
-                'searchTerm' => $searchTerm
+                'perPage' => $search->getPerPage(),
+                'page' => $search->getPage(),
+                'totalItems' => $this->comicService->count($search->getTerm()),
+                'searchTerm' => $search->getTerm(),
+                'sortBy' => $search->getSortBy(),
+                'sortOrder' => $search->getSortOrder()
             ]
         );
     }

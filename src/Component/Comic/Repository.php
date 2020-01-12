@@ -7,11 +7,23 @@ use App\ValueObject\Id;
 use App\ValueObject\Offset;
 use App\ValueObject\PlainText;
 use App\ValueObject\Price;
+use App\ValueObject\Query\SortOrder;
 use App\ValueObject\Year;
 use Doctrine\DBAL;
 
 class Repository
 {
+    private const VALID_ORDER_DIR = [
+        'asc',
+        'desc'
+    ];
+    private const VALID_ORDER_BY_TABLES = [
+        'name',
+        'price',
+        'added_to_collection',
+        'year',
+    ];
+
     private DBAL\Connection $dbConnection;
 
     public function __construct(DBAL\Connection $dbConnection)
@@ -55,7 +67,8 @@ class Repository
         ?Price $price
     ) : Entity {
         $this->dbConnection->insert(
-            'comics', [
+            'comics',
+            [
                 'comic_vine_id' => $comicVineId === null ? null : $comicVineId->asInt(),
                 'cover_id' => $coverId,
                 'name' => $name,
@@ -63,7 +76,7 @@ class Repository
                 'publisher_id' => $publisherId === null ? null : $publisherId->asInt(),
                 'description' => $description,
                 'added_to_collection' => $addedToCollection === null ? null : (string)$addedToCollection,
-                'price' => $price === null ? null : $price->asInt()
+                'price' => $price === null ? null : $price->asInt(),
             ]
         );
 
@@ -77,10 +90,10 @@ class Repository
         $this->dbConnection->delete('comics', ['id' => $id,]);
     }
 
-    public function fetchAll(int $perPage, Offset $offset) : EntityList
+    public function fetchAll(int $perPage, Offset $offset, string $orderBy, SortOrder $sortOrder) : EntityList
     {
         $data = $this->dbConnection->fetchAll(
-            sprintf('SELECT * FROM `comics` ORDER BY name LIMIT %d OFFSET %d', $perPage, $offset->asInt())
+            sprintf('SELECT * FROM `comics` ORDER BY %s %s LIMIT %d OFFSET %d', $orderBy, (string)$sortOrder, $perPage, $offset->asInt())
         );
 
         return EntityList::createFromArray($data);
@@ -97,10 +110,12 @@ class Repository
         return Entity::createFromArray($data);
     }
 
-    public function fetchBySearchTerm(string $searchTerm, int $perPage, Offset $offset) : EntityList
+    public function fetchBySearchTerm(string $searchTerm, int $perPage, Offset $offset, string $orderBy, SortOrder $orderDir) : EntityList
     {
+        $this->ensureValidOrderByValue($orderBy);
+
         $data = $this->dbConnection->fetchAll(
-            sprintf('SELECT * FROM `comics` WHERE name LIKE ? ORDER BY name LIMIT %d OFFSET %d', $perPage, $offset->asInt()),
+            sprintf('SELECT * FROM `comics` WHERE name LIKE ? ORDER BY %s %s LIMIT %d OFFSET %d', $orderBy, (string)$orderDir, $perPage, $offset->asInt()),
             ["%$searchTerm%"]
         );
 
@@ -119,10 +134,10 @@ class Repository
                 'description' => $entity->getDescription(),
                 'added_to_collection' => $entity->getAddedToCollection(),
                 'publisher_id' => $entity->getPublisherId(),
-                'price' => $entity->getPrice()
+                'price' => $entity->getPrice(),
             ],
             [
-                'id' => $entity->getId()
+                'id' => $entity->getId(),
             ]
         );
     }
@@ -135,7 +150,7 @@ class Repository
                 'cover_id' => $coverId,
             ],
             [
-                'id' => $comicId
+                'id' => $comicId,
             ]
         );
     }
@@ -159,11 +174,18 @@ class Repository
                 'description' => $description,
                 'publisher_id' => $publisherId,
                 'added_to_collection' => $addedToCollection,
-                'price' => $price
+                'price' => $price,
             ],
             [
-                'id' => $comicId
+                'id' => $comicId,
             ]
         );
+    }
+
+    private function ensureValidOrderByValue(string $orderBy) : void
+    {
+        if (in_array($orderBy, self::VALID_ORDER_BY_TABLES, true) === false) {
+            throw new \RuntimeException('Invalid sort order value: ' . $orderBy);
+        }
     }
 }

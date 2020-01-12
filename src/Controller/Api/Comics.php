@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Component\Comic;
 use App\ValueObject\Id;
 use App\ValueObject\PaginatedResponse;
+use App\ValueObject\PlainText;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,15 +25,15 @@ class Comics extends AbstractController
         $page = empty($request->get('page')) === true ? 1 : (int)$request->get('page');
         $searchTerm = empty($request->get('term')) === true ? null : (string)$request->get('term');
 
-        if ($searchTerm !== null) {
-            $items = $this->comicService->fetchBySearchTerm($searchTerm, $perPage, $page);
-        } else {
-            $items = $this->comicService->fetchAll($perPage, $page);
-        }
+//        if ($searchTerm !== null) {
+//            $items = $this->comicService->fetchBySearchTerm($searchTerm, $perPage, $page);
+//        } else {
+//            $items = $this->comicService->fetchAll($perPage, $page);
+//        }
 
         return $this->json(
             PaginatedResponse::createFromParameters(
-                $items,
+                PlainText::createFromString(''),
                 $this->comicService->count($searchTerm),
                 $perPage,
                 $page
