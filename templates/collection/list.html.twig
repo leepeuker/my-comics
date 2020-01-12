@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ include('comics/overview/search.html.twig') }}
+    {{ include('collection/overview/search.html.twig') }}
     <ul class="list-unstyled" id="comicList" style="margin-top:1em;">
         {% for comic in comics %}
-            {{ include('comics/overview/item.html.twig') }}
+            {{ include('collection/overview/item.html.twig') }}
         {% endfor %}
     </ul>
-    {{ include('comics/overview/pagination.html.twig') }}
+    {{ include('collection/overview/pagination.html.twig') }}
 {% endblock %}
 
 

@@ -99,7 +99,7 @@ class Comics extends AbstractController
         }
 
         return $this->render(
-            'comics/list.html.twig', [
+            'collection/list.html.twig', [
                 'comics' => $dtoList,
                 'perPage' => $search->getPerPage(),
                 'page' => $search->getPage(),
@@ -131,7 +131,7 @@ class Comics extends AbstractController
         );
 
         return $this->render(
-            'comics/show.html.twig', [
+            'collection/show.html.twig', [
                 'comic' => $dto
             ]
         );

@@ -125,6 +125,17 @@ class Repository
         return EntityList::createFromArray($data);
     }
 
+    public function fetchTotalPrice() : int
+    {
+        $data = $this->dbConnection->fetchColumn('SELECT SUM(price) FROM `comics`');
+
+        if ($data === false) {
+            throw new \RuntimeException('Could not fetch total price.');
+        }
+
+        return (int)$data;
+    }
+
     public function update(Entity $entity) : void
     {
         $this->dbConnection->update(
