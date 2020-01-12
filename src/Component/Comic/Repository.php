@@ -88,7 +88,7 @@ class Repository
         );
     }
 
-    public function deleteById(string $id) : void
+    public function deleteById(Id $id) : void
     {
         $this->dbConnection->delete('comics', ['id' => $id,]);
     }

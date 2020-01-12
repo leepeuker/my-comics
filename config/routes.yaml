@@ -59,6 +59,11 @@ web_collection_create_comic:
     controller: App\Controller\Web\Collection::postComic
     methods: POST
 
+web_collection_delete_comic:
+    path: /collection/delete-comic/{id}
+    controller: App\Controller\Web\Collection::deleteComic
+    methods: GET
+
 web_collection_show_comic:
     path: /collection/overview/{id}
     controller: App\Controller\Web\Collection::show

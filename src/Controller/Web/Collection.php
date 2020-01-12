@@ -38,6 +38,13 @@ class Collection extends AbstractController
         return $this->render('collection/add-comic/index.html.twig');
     }
 
+    public function deleteComic(int $id) : Response
+    {
+        $this->comicService->delete(Id::createFromInt($id));
+
+        return $this->redirect('/collection/overview/');
+    }
+
     public function edit(Request $request) : Response
     {
         $comicId = Id::createFromString((string)$request->get('id'));
