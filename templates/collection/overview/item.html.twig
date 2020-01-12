@@ -1,4 +1,4 @@
-<li class="media media-comic" onclick="window.location.href='/comics/{{ comic.id }}';">
+<li class="media media-comic" onclick="window.location.href='/collection/overview/{{ comic.id }}';">
     {% if comic.cover is not null %}
         <img src="/images/covers/{{ comic.cover.fileName }}" width="130" class="mr-3" alt="...">
     {% endif %}
