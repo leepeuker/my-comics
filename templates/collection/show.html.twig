@@ -58,9 +58,7 @@
             <div class="form-group">
             </div>
             <button type="submit" class="btn btn-primary float-right">Update</button>
-            <form action="/comics/{{ comic.id }}/delete" method="DELETE">
-                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this comic?')">Delete</button>
-            </form>
+            <a type="submit" class="btn btn-danger" href="/collection/delete-comic/{{ comic.id }}" onclick="return confirm('Are you sure you want to delete this comic?')">Delete</a>
         </form>
     </div>
 {% endblock %}

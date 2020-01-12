@@ -43,6 +43,11 @@ class Service
         return $this->repository->create($comicVineId, $coverId, $name, $year, $publisherId, $description, $addedToCollection, $price, $rating);
     }
 
+    public function delete(Id $id) : void
+    {
+        $this->repository->deleteById($id);
+    }
+
     public function fetchAll(Search $search) : EntityList
     {
         $offset = Offset::createFromLimitAndPage($search->getPerPage(), $search->getPage());
