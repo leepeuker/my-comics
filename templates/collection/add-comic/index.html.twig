@@ -1,47 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ comic.name }}{% endblock %}
+{% block title %}Collection | Add comic{% endblock %}
 
 {% block body %}
     <br>
     <div class="container">
-        <form action="/collection/overview/{{ comic.id }}/edit" method="POST" enctype="multipart/form-data">
+        <form action="/collection/add-comic" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="comicName">Name</label>
-                <input type="text" class="form-control" name="name" id="comicName" value="{{ comic.name }}">
+                <input type="text" class="form-control" name="name" id="comicName" value="">
             </div>
             <div class="row form-group">
                 <div class="col">
                     <label for="comicPublisher">Publisher</label>
-                    <input type="text" id="comicPublisher" class="form-control" name="publisherName" value="{{ comic.publisher is null ? '' : comic.publisher.name }}">
+                    <input type="text" id="comicPublisher" class="form-control" name="publisherName" value="">
                 </div>
                 <div class="col">
                     <label for="comicYear">Year</label>
-                    <input type="number" id="comicYear" class="form-control" name="year" value="{{ comic.year }}" min="1901" max="2030">
+                    <input type="number" id="comicYear" class="form-control" name="year" value="" min="1901" max="2030">
                 </div>
             </div>
             <div class="form-group">
                 <label for="comicDescription">Description</label>
-                <textarea class="form-control" id="comicDescription" name="description" rows="4">{{ comic.description }}</textarea>
+                <textarea class="form-control" id="comicDescription" name="description" rows="4"></textarea>
             </div>
             <div class="row form-group">
                 <div class="col">
                     <label for="comicAddedToCollection">Added to collection</label>
-                    {% if comic.addedToCollection == null %}
-                        <input type="date" class="form-control" id="comicAddedToCollection" name="addedToCollection" value="">
-                    {% else %}
-                        <input type="date" class="form-control" id="comicAddedToCollection" name="addedToCollection" value="{{ comic.addedToCollection|date("Y-m-d") }}">
-                    {% endif %}
+                    <input type="date" class="form-control" id="comicAddedToCollection" name="addedToCollection" value="{{ "now"|date("Y-m-d") }}">
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col">
                     <label for="comicPrice">Price</label>
-                    <input type="number" id="comicPrice" class="form-control" name="price" value="{{ comic.price }}">
+                    <input type="number" id="comicPrice" class="form-control" name="price" value="">
                 </div>
                 <div class="col">
                     <label for="comicComicVineId">ComicVine Id</label>
-                    <input type="text" id="comicComicVineId" class="form-control" name="comicVineId" value="{{ comic.comicVineId }}">
+                    <input type="text" id="comicComicVineId" class="form-control" name="comicVineId" value="">
                 </div>
             </div>
             <div class="row form-group">
@@ -52,15 +48,12 @@
                 <div class="col">
                     <label for="comicCoverImage">Rating</label>
                     <div class="my-rating"></div>
-                    <input type="range" id="rating" name="rating" min="0" max="3" value="{{ comic.rating is null ? 0 : comic.rating }}" style="display:none;">
+                    <input type="range" id="rating" name="rating" min="0" max="3" value="0" style="display:none;">
                 </div>
             </div>
             <div class="form-group">
             </div>
-            <button type="submit" class="btn btn-primary float-right">Update</button>
-            <form action="/comics/{{ comic.id }}/delete" method="DELETE">
-                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this comic?')">Delete</button>
-            </form>
+            <button type="submit" class="btn btn-primary float-right">Save</button>
         </form>
     </div>
 {% endblock %}
@@ -77,7 +70,7 @@
             emptyColor: 'lightgray',
             hoverColor: '#92b4f2',
             activeColor: '#3676e8',
-            initialRating: $("#rating").val(),
+            initialRating: 0,
             starSize: 35,
             totalStars: 3,
             disableAfterRate: false,

@@ -41,13 +41,38 @@ api_statistics_get_all:
 ###########
 web_base:
     path: /
-    controller: App\Controller\Web\Comics::list
+    controller: App\Controller\Web\Collection::overview
     methods: GET
 
-web_comics_list:
-    path: /collection
-    controller: App\Controller\Web\Comics::list
+web_collection_overview:
+    path: /collection/overview
+    controller: App\Controller\Web\Collection::overview
     methods: GET
+
+web_collection_add_comic:
+    path: /collection/add-comic
+    controller: App\Controller\Web\Collection::addComic
+    methods: GET
+
+web_collection_create_comic:
+    path: /collection/add-comic
+    controller: App\Controller\Web\Collection::postComic
+    methods: POST
+
+web_collection_show_comic:
+    path: /collection/overview/{id}
+    controller: App\Controller\Web\Collection::show
+    methods: GET
+
+web_comics_edit:
+    path: /collection/overview/{id}/edit
+    controller: App\Controller\Web\Collection::edit
+    methods: POST
+
+web_comics_remove:
+    path: /collection/overview/{id}/remove
+    controller: App\Controller\Web\Collection::remove
+    methods: DELETE
 
 web_statistic_comics:
     path: /statistic/comics
@@ -58,18 +83,3 @@ web_statistic_publishers:
     path: /statistic/publishers
     controller: App\Controller\Web\Statistic::getPublisherStatistics
     methods: GET
-
-web_comics_show:
-    path: /comics/{id}
-    controller: App\Controller\Web\Comics::show
-    methods: GET
-
-web_comics_edit:
-    path: /comics/{id}/edit
-    controller: App\Controller\Web\Comics::edit
-    methods: POST
-
-web_comics_remove:
-    path: /comics/{id}/remove
-    controller: App\Controller\Web\Comics::remove
-    methods: DELETE

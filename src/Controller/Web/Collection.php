@@ -10,15 +10,15 @@ use App\ValueObject\DateTime;
 use App\ValueObject\Id;
 use App\ValueObject\PlainText;
 use App\ValueObject\Price;
-use App\ValueObject\Rating;
 use App\ValueObject\Query\SortOrder;
+use App\ValueObject\Rating;
 use App\ValueObject\Year;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Comics extends AbstractController
+class Collection extends AbstractController
 {
     private Comic\Service $comicService;
 
@@ -31,6 +31,11 @@ class Comics extends AbstractController
         $this->comicService = $comicService;
         $this->imageService = $imageService;
         $this->publisherService = $publisherService;
+    }
+
+    public function addComic() : Response
+    {
+        return $this->render('collection/add-comic/index.html.twig');
     }
 
     public function edit(Request $request) : Response
@@ -63,10 +68,10 @@ class Comics extends AbstractController
             $rating === 0 ? null : Rating::createFromInt($rating)
         );
 
-        return $this->redirect('/comics/' . $comicId);
+        return $this->redirect('/collection/overview/' . $comicId);
     }
 
-    public function list(Request $request) : Response
+    public function overview(Request $request) : Response
     {
         $search = Search::create(
             empty($request->get('term')) === true ? null : (string)$request->get('term'),
@@ -99,7 +104,7 @@ class Comics extends AbstractController
         }
 
         return $this->render(
-            'collection/list.html.twig', [
+            'collection/overview/index.html.twig', [
                 'comics' => $dtoList,
                 'perPage' => $search->getPerPage(),
                 'page' => $search->getPage(),
@@ -109,6 +114,38 @@ class Comics extends AbstractController
                 'sortOrder' => $search->getSortOrder()
             ]
         );
+    }
+
+    public function postComic(Request $request) : Response
+    {
+        $comicVineId = (string)$request->get('comicVineId');
+        $price = (string)$request->get('price');
+        $year = (int)$request->get('year');
+        $publisherName = (string)$request->get('publisherName');
+        $coverImageFile = $request->files->get('coverImage');
+        $addedToCollection = (string)$request->get('addedToCollection');
+        $rating = (int)$request->get('rating');
+
+        $publisher = empty($publisherName) === true ? null : $this->publisherService->fetchByNameOrCreate($publisherName);
+
+        $coverImageEntity = null;
+        if ($coverImageFile instanceof UploadedFile) {
+            $coverImageEntity = $this->imageService->createFromUploadedFile($coverImageFile);
+        }
+
+        $comic = $this->comicService->create(
+            empty($comicVineId) === true ? null : Id::createFromString($comicVineId),
+            $coverImageEntity === null ? null : $coverImageEntity->getId(),
+            PlainText::createFromString((string)$request->get('name')),
+            empty($year) === true ? null : Year::createFromInt($year),
+            $publisher === null ? null : $publisher->getId(),
+            PlainText::createFromString((string)$request->get('description')),
+            empty($addedToCollection) === true ? null : DateTime::createFromString($addedToCollection),
+            empty($price) === true ? null : Price::createFromString($price),
+            $rating === 0 ? null : Rating::createFromInt($rating)
+        );
+
+        return $this->redirect('/collection/overview/' . $comic->getId());
     }
 
     public function show(int $id) : Response
