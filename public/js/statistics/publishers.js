@@ -55,7 +55,7 @@ $.ajax({
 
         resetChartData(publishersComicCostChart);
         result.publishersComicCost.forEach(function (item, index) {
-            publishersComicCostChart.data.datasets[0].data.push(item.cost);
+            publishersComicCostChart.data.datasets[0].data.push((item.cost/100).toFixed(2));
             publishersComicCostChart.data.datasets[0].backgroundColor.push(colors[index]);
             publishersComicCostChart.data.labels.push(item.name);
         });
