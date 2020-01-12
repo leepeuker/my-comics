@@ -6,6 +6,7 @@ use App\ValueObject\DateTime;
 use App\ValueObject\Id;
 use App\ValueObject\PlainText;
 use App\ValueObject\Price;
+use App\ValueObject\Rating;
 use App\ValueObject\Year;
 
 class Entity implements \JsonSerializable
@@ -28,6 +29,8 @@ class Entity implements \JsonSerializable
 
     private ?Id $publisherId;
 
+    private ?Rating $rating;
+
     private ?DateTime $updatedAt;
 
     private ?Year $year;
@@ -42,6 +45,7 @@ class Entity implements \JsonSerializable
         PlainText $description,
         ?DateTime $addedToCollection,
         ?Price $price,
+        ?Rating $rating,
         DateTime $createdAt,
         ?DateTime $updatedAt
     ) {
@@ -54,6 +58,7 @@ class Entity implements \JsonSerializable
         $this->description = $description;
         $this->addedToCollection = $addedToCollection;
         $this->price = $price;
+        $this->rating = $rating;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
     }
@@ -70,6 +75,7 @@ class Entity implements \JsonSerializable
             PlainText::createFromString((string)$data['description']),
             empty($data['added_to_collection']) === true ? null : DateTime::createFromString((string)$data['added_to_collection']),
             $data['price'] === null ? null : Price::createFromString((string)$data['price']),
+            $data['rating'] === null ? null : Rating::createFromString((string)$data['rating']),
             DateTime::createFromString((string)$data['created_at']),
             empty($data['updated_at']) === false ? DateTime::createFromString((string)$data['updated_at']) : null
         );
@@ -118,6 +124,11 @@ class Entity implements \JsonSerializable
     public function getPublisherId() : ?Id
     {
         return $this->publisherId;
+    }
+
+    public function getRating() : ?Rating
+    {
+        return $this->rating;
     }
 
     public function getUpdatedAt() : ?DateTime
