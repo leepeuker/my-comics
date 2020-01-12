@@ -34,8 +34,13 @@ api_images_get_by_id:
 ###########
 ### Web ###
 ###########
-web_comics_list:
+web_base:
     path: /
+    controller: App\Controller\Web\Comics::list
+    methods: GET
+
+web_comics_list:
+    path: /collection
     controller: App\Controller\Web\Comics::list
     methods: GET
 
