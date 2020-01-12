@@ -50,6 +50,11 @@ class Service
         return $this->repository->fetchAll($search->getPerPage(), $offset, $search->getSortBy(), $search->getSortOrder());
     }
 
+    public function fetchAveragePrice() : int
+    {
+        return (int)round($this->repository->fetchTotalPrice() / $this->count());
+    }
+
     public function fetchById(Id $id) : Entity
     {
         return $this->repository->fetchById($id);
@@ -60,6 +65,11 @@ class Service
         $offset = Offset::createFromLimitAndPage($search->getPerPage(), $search->getPage());
 
         return $this->repository->fetchBySearchTerm($search->getTerm(), $search->getPerPage(), $offset, $search->getSortBy(), $search->getSortOrder());
+    }
+
+    public function fetchTotalPrice() : int
+    {
+        return $this->repository->fetchTotalPrice();
     }
 
     public function updateCover(Id $comicId, Id $coverId) : void
