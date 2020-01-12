@@ -31,6 +31,11 @@ api_images_get_by_id:
     controller: App\Controller\Api\Images::getById
     methods: GET|HEAD
 
+api_statistics_get_all:
+    path: /api/statistics
+    controller: App\Controller\Api\Statistics::getAll
+    methods: GET|HEAD
+
 ###########
 ### Web ###
 ###########
