@@ -175,7 +175,7 @@ class Collection extends AbstractController
         );
 
         return $this->render(
-            'collection/show.html.twig', [
+            'collection/overview/show.html.twig', [
                 'comic' => $dto
             ]
         );
