@@ -77,6 +77,21 @@ class Service
         return $this->repository->fetchTotalPrice();
     }
 
+    public function update(
+        Id $comicId,
+        ?Id $comicVineId,
+        ?Id $coverImageId,
+        PlainText $name,
+        ?Year $year,
+        PlainText $description,
+        ?DateTime $addedToCollection,
+        ?Id $publisherId,
+        ?Price $price,
+        ?Rating $rating
+    ) : void {
+        $this->repository->update($comicId, $comicVineId, $coverImageId,$name, $year, $description, $addedToCollection, $publisherId, $price, $rating);
+    }
+
     public function updateCover(Id $comicId, Id $coverId) : void
     {
         $this->repository->updateCover($comicId, $coverId);

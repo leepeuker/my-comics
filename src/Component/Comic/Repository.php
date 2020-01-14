@@ -136,23 +136,33 @@ class Repository
         return (int)$data;
     }
 
-    public function update(Entity $entity) : void
-    {
+    public function update(
+        Id $comicId,
+        ?Id $comicVineId,
+        ?Id $coverId,
+        PlainText $name,
+        ?Year $year,
+        PlainText $description,
+        ?DateTime $addedToCollection,
+        ?Id $publisherId,
+        ?Price $price,
+        ?Rating $rating
+    ) : void {
         $this->dbConnection->update(
             'comics',
             [
-                'comic_vine_id' => $entity->getComicVineId(),
-                'cover_id' => $entity->getCoverId(),
-                'name' => $entity->getName(),
-                'year' => $entity->getYear(),
-                'description' => $entity->getDescription(),
-                'added_to_collection' => $entity->getAddedToCollection(),
-                'publisher_id' => $entity->getPublisherId(),
-                'price' => $entity->getPrice(),
-                'rating' => $entity->getRating()
+                'comic_vine_id' => $comicVineId,
+                'cover_id' => $coverId,
+                'name' => $name,
+                'year' => $year,
+                'description' => $description,
+                'publisher_id' => $publisherId,
+                'added_to_collection' => $addedToCollection,
+                'price' => $price,
+                'rating' => $rating
             ],
             [
-                'id' => $entity->getId(),
+                'id' => $comicId,
             ]
         );
     }

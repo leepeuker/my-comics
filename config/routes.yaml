@@ -21,6 +21,11 @@ api_comics_delete:
     controller: App\Controller\Api\Comics::delete
     methods: DELETE
 
+api_comics_put:
+    path: /api/comics/{id}
+    controller: App\Controller\Api\Comics::put
+    methods: PUT
+
 api_publishers_get_by_id:
     path: /api/publishers/{id}
     controller: App\Controller\Api\Publishers::getById

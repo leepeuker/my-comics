@@ -8,9 +8,17 @@
         {% endfor %}
     </ul>
     {{ include('collection/overview/pagination.html.twig') }}
+
+    {{ include('collection/overview/details-modal.html') }}
 {% endblock %}
 
 
 {% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/star-rating-svg@3.5.0/src/css/star-rating-svg.css" rel="stylesheet" type="text/css"/>
     <link href="/css/comic.css" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/star-rating-svg@3.5.0/dist/jquery.star-rating-svg.min.js" type="text/javascript"></script>
+    <script src="/js/collection/collection.js"></script>
 {% endblock %}

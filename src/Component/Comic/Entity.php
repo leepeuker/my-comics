@@ -152,6 +152,7 @@ class Entity implements \JsonSerializable
             'description' => $this->description,
             'publisherId' => $this->publisherId,
             'price' => $this->price,
+            'rating' => $this->rating,
             'addedToCollection' => $this->addedToCollection,
             'createdAt' => $this->createdAt,
             'updatedAt' => $this->updatedAt,

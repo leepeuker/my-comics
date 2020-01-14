@@ -17,15 +17,9 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbar">
-            <ul class="navbar-nav">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle {{ app.request.pathinfo starts with '/collection' or app.request.pathinfo == '/'  ? 'active' }}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Collection
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/collection/overview">Overwiew</a>
-                        <a class="dropdown-item" href="/collection/add-comic">Add comic</a>
-                    </div>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link {{ app.request.pathinfo starts with '/collection' or app.request.pathinfo == '/'  ? 'active' }}" href="/collection/overview">Collection</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ app.request.pathinfo == '/history' ? 'active' }} disabled" href="/history">History</a>
@@ -38,6 +32,12 @@
                         <a class="dropdown-item" href="/statistic/comics">Comics</a>
                         <a class="dropdown-item" href="/statistic/publishers">Publisher</a>
                     </div>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a type="button" class="btn btn-light" href="/collection/add-comic"><img src="/images/plus.png" width="15em" title="Bootstrap"></a>
                 </li>
             </ul>
         </div>

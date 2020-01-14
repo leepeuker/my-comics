@@ -37,7 +37,7 @@ addComicForm.addEventListener("submit", function (event) {
                 postComic(comicFormData);
             },
             error: function (data) {
-                alert('Error. Could not create comic.');
+                alert('Error. Could not create image.');
                 console.log(data);
             }
         });
@@ -62,7 +62,7 @@ function postComic(comicFormData) {
         processData: false,
         data: comicFormData,
         success: function (data) {
-            window.location = '/collection/overview/' + data.id;
+            window.location = '/collection/overview';
         },
         error: function (data) {
             alert('Error. Could not create comic.');

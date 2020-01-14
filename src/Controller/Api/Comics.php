@@ -88,4 +88,32 @@ class Comics extends AbstractController
 
         return $this->json($comic, Response::HTTP_CREATED);
     }
+
+    public function put(Request $request, int $id) : Response
+    {
+        $comicId = Id::createFromInt($id);
+
+        $comicVineId = $request->request->get('comicVineId');
+        $publisherId = $request->request->get('publisherId');
+        $price = $request->request->get('price');
+        $coverImageId = $request->request->get('coverId');
+        $year = $request->request->get('year');
+        $addedToCollection = $request->request->get('addedToCollection');
+        $rating = $request->request->get('rating');
+
+        $this->comicService->update(
+            $comicId,
+            empty($comicVineId) === true ? null : Id::createFromString($comicVineId),
+            empty($coverImageId) === true ? null : Id::createFromString($coverImageId),
+            PlainText::createFromString((string)$request->request->get('name')),
+            empty($year) === true ? null : Year::createFromInt((int)$year),
+            PlainText::createFromString((string)$request->request->get('description')),
+            empty($addedToCollection) === true ? null : DateTime::createFromString($addedToCollection),
+            empty($publisherId) === true ? null : Id::createFromString($publisherId),
+            empty($price) === true ? null : Price::createFromString($price),
+            empty($rating) === true ? null : Rating::createFromString($rating)
+        );
+
+        return $this->json($this->comicService->fetchById($comicId), Response::HTTP_OK);
+    }
 }
