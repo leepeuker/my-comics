@@ -5,7 +5,7 @@ namespace App\ValueObject;
 class Rating implements \JsonSerializable
 {
     private const MAX_RATING = 3;
-    private const MIN_RATING = 0;
+    private const MIN_RATING = 1;
 
     private int $rating;
 

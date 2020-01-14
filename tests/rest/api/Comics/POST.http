@@ -1,0 +1,9 @@
+POST http://my-comics.test/api/comics
+Accept: */*
+Origin: localhost
+Cache-Control: no-cache
+Content-Type: application/x-www-form-urlencoded
+
+comicVineId=20491&year=2000&price=2000&coverImageId=2&name=test&description=Lorem&addedToCollection=2020-01-14&publisherName=Lala
+
+###

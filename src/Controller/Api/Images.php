@@ -5,6 +5,8 @@ namespace App\Controller\Api;
 use App\Component\Image;
 use App\ValueObject\Id;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class Images extends AbstractController
@@ -27,5 +29,18 @@ class Images extends AbstractController
         }
 
         return $this->json($image);
+    }
+
+    public function post(Request $request) : Response
+    {
+        $imageData = $request->files->get('image');
+
+        if (($imageData instanceof UploadedFile) === false) {
+            throw new \RuntimeException('No image was uploaded.');
+        }
+
+        $image = $this->imageService->createFromUploadedFile($imageData);
+
+        return $this->json($image, Response::HTTP_CREATED);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Component\Comic\ValueObject;
 
 use App\ValueObject\Query\SortOrder;
+use Symfony\Component\HttpFoundation\Request;
 
 class Search
 {
@@ -11,13 +12,13 @@ class Search
     private const DEFAULT_PAGE = 1;
     private const DEFAULT_PER_PAGE = 10;
 
-    private string $sortBy;
-
-    private SortOrder $sortOrder;
-
     private int $page;
 
     private int $perPage;
+
+    private string $sortBy;
+
+    private SortOrder $sortOrder;
 
     private string $term;
 
@@ -35,14 +36,15 @@ class Search
         return new self($term, $page, $perPage, $sortBy, $sortOrder);
     }
 
-    public function getSortBy() : string
+    public static function createFromResponse(Request $request) : self
     {
-        return $this->sortBy;
-    }
-
-    public function getSortOrder() : SortOrder
-    {
-        return $this->sortOrder;
+        return new self(
+            $request->query->has('term') === true ? (string)$request->query->get('term') : null,
+            $request->query->has('page') === true ? $request->query->getInt('page') : null,
+            $request->query->has('per_page') === true ? $request->query->getInt('per_page') : null,
+            $request->query->has('sort_by') === true ? (string)$request->query->get('sort_by') : null,
+            $request->query->has('sort_order') === true ? SortOrder::create($request->query->getAlnum('sort_order')) : null,
+        );
     }
 
     public function getPage() : int
@@ -53,6 +55,16 @@ class Search
     public function getPerPage() : int
     {
         return $this->perPage;
+    }
+
+    public function getSortBy() : string
+    {
+        return $this->sortBy;
+    }
+
+    public function getSortOrder() : SortOrder
+    {
+        return $this->sortOrder;
     }
 
     public function getTerm() : string

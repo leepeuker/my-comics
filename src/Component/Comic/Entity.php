@@ -145,13 +145,14 @@ class Entity implements \JsonSerializable
     {
         return [
             'id' => $this->id,
+            'name' => $this->name,
             'coverId' => $this->coverId,
             'comicVineId' => $this->comicVineId,
-            'name' => $this->name,
             'year' => $this->year,
-            'publisherId' => $this->publisherId,
             'description' => $this->description,
+            'publisherId' => $this->publisherId,
             'price' => $this->price,
+            'addedToCollection' => $this->addedToCollection,
             'createdAt' => $this->createdAt,
             'updatedAt' => $this->updatedAt,
         ];

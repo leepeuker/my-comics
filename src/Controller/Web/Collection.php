@@ -38,13 +38,6 @@ class Collection extends AbstractController
         return $this->render('collection/add-comic/index.html.twig');
     }
 
-    public function deleteComic(int $id) : Response
-    {
-        $this->comicService->delete(Id::createFromInt($id));
-
-        return $this->redirect('/collection/overview/');
-    }
-
     public function edit(Request $request) : Response
     {
         $comicId = Id::createFromString((string)$request->get('id'));
@@ -80,13 +73,7 @@ class Collection extends AbstractController
 
     public function overview(Request $request) : Response
     {
-        $search = Search::create(
-            empty($request->get('term')) === true ? null : (string)$request->get('term'),
-            empty($request->get('page')) === true ? null : (int)$request->get('page'),
-            empty($request->get('per_page')) === true ? null : (int)$request->get('per_page'),
-            empty($request->get('sortBy')) === true ? null : (string)$request->get('sortBy'),
-            empty($request->get('sortOrder')) === true ? null : SortOrder::create((string)$request->get('sortOrder'))
-        );
+        $search = Search::createFromResponse($request);
 
         $dtoList = Comic\DtoList::create();
         /** @var Comic\Entity $comic */
@@ -121,38 +108,6 @@ class Collection extends AbstractController
                 'sortOrder' => $search->getSortOrder()
             ]
         );
-    }
-
-    public function postComic(Request $request) : Response
-    {
-        $comicVineId = (string)$request->get('comicVineId');
-        $price = (string)$request->get('price');
-        $year = (int)$request->get('year');
-        $publisherName = (string)$request->get('publisherName');
-        $coverImageFile = $request->files->get('coverImage');
-        $addedToCollection = (string)$request->get('addedToCollection');
-        $rating = (int)$request->get('rating');
-
-        $publisher = empty($publisherName) === true ? null : $this->publisherService->fetchByNameOrCreate($publisherName);
-
-        $coverImageEntity = null;
-        if ($coverImageFile instanceof UploadedFile) {
-            $coverImageEntity = $this->imageService->createFromUploadedFile($coverImageFile);
-        }
-
-        $comic = $this->comicService->create(
-            empty($comicVineId) === true ? null : Id::createFromString($comicVineId),
-            $coverImageEntity === null ? null : $coverImageEntity->getId(),
-            PlainText::createFromString((string)$request->get('name')),
-            empty($year) === true ? null : Year::createFromInt($year),
-            $publisher === null ? null : $publisher->getId(),
-            PlainText::createFromString((string)$request->get('description')),
-            empty($addedToCollection) === true ? null : DateTime::createFromString($addedToCollection),
-            empty($price) === true ? null : Price::createFromString($price),
-            $rating === 0 ? null : Rating::createFromInt($rating)
-        );
-
-        return $this->redirect('/collection/overview/' . $comic->getId());
     }
 
     public function show(int $id) : Response

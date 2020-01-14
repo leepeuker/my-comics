@@ -1,12 +1,12 @@
 ###########
 ### Api ###
 ###########
-api_comics_get_by_id:
+api_comics_get:
     path: /api/comics/{id}
     controller: App\Controller\Api\Comics::getById
     methods: GET|HEAD
 
-api_comics_get_all:
+api_comics_list:
     path: /api/comics
     controller: App\Controller\Api\Comics::getAll
     methods: GET|HEAD
@@ -15,6 +15,11 @@ api_comics_post:
     path: /api/comics
     controller: App\Controller\Api\Comics::post
     methods: POST
+
+api_comics_delete:
+    path: /api/comics/{id}
+    controller: App\Controller\Api\Comics::delete
+    methods: DELETE
 
 api_publishers_get_by_id:
     path: /api/publishers/{id}
@@ -26,10 +31,15 @@ api_publishers_get_all:
     controller: App\Controller\Api\Publishers::getAll
     methods: GET|HEAD
 
-api_images_get_by_id:
+api_images_get:
     path: /api/images/{id}
     controller: App\Controller\Api\Images::getById
     methods: GET|HEAD
+
+api_images_post:
+    path: /api/images
+    controller: App\Controller\Api\Images::post
+    methods: POST
 
 api_statistics_get_all:
     path: /api/statistics
@@ -54,16 +64,6 @@ web_collection_add_comic:
     controller: App\Controller\Web\Collection::addComic
     methods: GET
 
-web_collection_create_comic:
-    path: /collection/add-comic
-    controller: App\Controller\Web\Collection::postComic
-    methods: POST
-
-web_collection_delete_comic:
-    path: /collection/delete-comic/{id}
-    controller: App\Controller\Web\Collection::deleteComic
-    methods: GET
-
 web_collection_show_comic:
     path: /collection/overview/{id}
     controller: App\Controller\Web\Collection::show
@@ -73,11 +73,6 @@ web_comics_edit:
     path: /collection/overview/{id}/edit
     controller: App\Controller\Web\Collection::edit
     methods: POST
-
-web_comics_remove:
-    path: /collection/overview/{id}/remove
-    controller: App\Controller\Web\Collection::remove
-    methods: DELETE
 
 web_statistic_comics:
     path: /statistic/comics
