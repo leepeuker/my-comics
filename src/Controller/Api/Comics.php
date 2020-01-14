@@ -110,7 +110,7 @@ class Comics extends AbstractController
             PlainText::createFromString((string)$request->request->get('description')),
             empty($addedToCollection) === true ? null : DateTime::createFromString($addedToCollection),
             empty($publisherId) === true ? null : Id::createFromString($publisherId),
-            empty($price) === true ? null : Price::createFromString($price),
+            empty($price) === true ? null : Price::createFromInt((int)$price),
             empty($rating) === true ? null : Rating::createFromString($rating)
         );
 

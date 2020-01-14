@@ -1,5 +1,21 @@
 $('document').ready(function () {
     loadModalPublisherOptions()
+
+    $(".my-rating").starRating({
+        useFullStars: true,
+        emptyColor: 'lightgray',
+        hoverColor: '#92b4f2',
+        activeColor: '#3676e8',
+        initialRating: 0,
+        starSize: 35,
+        totalStars: 3,
+        disableAfterRate: false,
+        useGradient: false,
+        callback: function (currentRating, $el) {
+            $("#rating").val(currentRating);
+            document.getElementById('comicRating').value = currentRating;
+        }
+    });
 });
 
 document.getElementById('deleteButton').addEventListener('click', function (event) {
@@ -106,22 +122,6 @@ function resetDetailModal() {
 }
 
 function showDetailModal(id) {
-    $(".my-rating").starRating({
-        useFullStars: true,
-        emptyColor: 'lightgray',
-        hoverColor: '#92b4f2',
-        activeColor: '#3676e8',
-        initialRating: 0,
-        starSize: 35,
-        totalStars: 3,
-        disableAfterRate: false,
-        useGradient: false,
-        callback: function (currentRating, $el) {
-            $("#rating").val(currentRating);
-            document.getElementById('comicRating').value = currentRating;
-        }
-    });
-
     $.ajax({
             type: 'GET',
             url: '/api/comics/' + id,
