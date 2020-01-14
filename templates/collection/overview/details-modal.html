@@ -11,7 +11,6 @@
                 <form enctype="multipart/form-data" id="comicDetailForm">
                     <input type="hidden" name="comicId" id="comicId" value="">
                     <input type="hidden" name="coverId" id="comicCoverId" value="">
-                    <input type="hidden" name="coverId" id="comicPublisherId" value="">
                     <div class="form-group">
                         <label for="comicName">Name</label>
                         <input type="text" class="form-control" name="name" id="comicName" value="">
@@ -19,7 +18,8 @@
                     <div class="row form-group">
                         <div class="col">
                             <label for="comicPublisher">Publisher</label>
-                            <input type="text" id="comicPublisherName" class="form-control" name="publisherName" value="">
+                            <select class="form-control" name="publisherId" id="comicPublisher">
+                            </select>
                         </div>
                         <div class="col">
                             <label for="comicYear">Year</label>
