@@ -64,26 +64,26 @@ class Comics extends AbstractController
 
     public function post(Request $request) : Response
     {
-        $comicVineId = $request->request->has('comicVineId') === true ? $request->request->getInt('comicVineId') : null;
-        $coverImageId = $request->request->has('coverImageId') === true ? $request->request->getInt('coverImageId') : null;
-        $year = $request->request->has('year') === true ? $request->request->getInt('year') : null;
-        $publisherName = $request->request->has('publisherName') === true ? (string)$request->request->get('publisherName') : null;
-        $price = $request->request->has('price') === true ? $request->request->getInt('price') : null;
-        $addedToCollection = $request->request->has('addedToCollection') === true ? (string)$request->request->get('addedToCollection') : null;
-        $rating = $request->request->has('rating') === true ? $request->request->getInt('rating') : null;
+        $comicVineId = $request->request->get('comicVineId');
+        $coverImageId = $request->request->get('coverImageId');
+        $year = $request->request->get('year');
+        $publisherName = $request->request->get('publisherName');
+        $addedToCollection = $request->request->get('addedToCollection');
+        $price = $request->request->get('price');
+        $rating = $request->request->get('rating');
 
-        $publisher = $publisherName === null ? null : $this->publisherService->fetchByNameOrCreate($publisherName);
+        $publisher = $publisherName === null ? null : $this->publisherService->fetchByNameOrCreate((string)$publisherName);
 
         $comic = $this->comicService->create(
-            $comicVineId === null ? null : Id::createFromInt($comicVineId),
-            $coverImageId === null ? null : Id::createFromInt($coverImageId),
+            empty($comicVineId) === true ? null : Id::createFromString($comicVineId),
+            empty($coverImageId) === true ? null : Id::createFromString($coverImageId),
             PlainText::createFromString((string)$request->request->get('name')),
-            $year === null ? null : Year::createFromInt($year),
+            empty($year) === true ? null : Year::createFromInt((int)$year),
             $publisher === null ? null : $publisher->getId(),
             PlainText::createFromString((string)$request->request->get('description')),
             $addedToCollection === null ? null : DateTime::createFromString($addedToCollection),
-            $price === null ? null : Price::createFromInt($price),
-            $rating === null ? null : Rating::createFromInt($rating)
+            empty($price) === true ? null : Price::createFromString($price),
+            empty($rating) === true ? null : Rating::createFromString($rating)
         );
 
         return $this->json($comic, Response::HTTP_CREATED);
