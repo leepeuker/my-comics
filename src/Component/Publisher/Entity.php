@@ -7,7 +7,7 @@ use App\ValueObject\Id;
 
 class Entity implements \JsonSerializable
 {
-    private Id $comicVineId;
+    private ?Id $comicVineId;
 
     private DateTime $createdAt;
 
@@ -17,7 +17,7 @@ class Entity implements \JsonSerializable
 
     private ?DateTime $updatedAt;
 
-    private function __construct(Id $id, Id $comicVineId, string $name, DateTime $createdAt, ?DateTime $updatedAt)
+    private function __construct(Id $id, ?Id $comicVineId, string $name, DateTime $createdAt, ?DateTime $updatedAt)
     {
         $this->id = $id;
         $this->comicVineId = $comicVineId;
@@ -30,14 +30,14 @@ class Entity implements \JsonSerializable
     {
         return new self(
             Id::createFromString((string)$data['id']),
-            Id::createFromString((string)$data['comic_vine_id']),
+            empty($data['comic_vine_id']) === false ? Id::createFromString((string)$data['comic_vine_id']) : null,
             (string)$data['name'],
             DateTime::createFromString((string)$data['created_at']),
             empty($data['updated_at']) === false ? DateTime::createFromString((string)$data['updated_at']) : null
         );
     }
 
-    public function getComicVineId() : Id
+    public function getComicVineId() : ?Id
     {
         return $this->comicVineId;
     }
