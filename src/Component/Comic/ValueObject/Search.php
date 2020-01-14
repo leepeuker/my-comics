@@ -7,8 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Search
 {
-    private const DEFAULT_SORT_BY = 'name';
-    private const DEFAULT_SORT_ORDER = 'asc';
+    private const DEFAULT_SORT_BY = 'added_to_collection';
+    private const DEFAULT_SORT_ORDER = 'desc';
     private const DEFAULT_PAGE = 1;
     private const DEFAULT_PER_PAGE = 10;
 
