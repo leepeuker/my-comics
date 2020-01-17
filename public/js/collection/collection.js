@@ -199,6 +199,7 @@ function setComicDetailFormStatus(status) {
         return;
     }
     if (status === 'addComicVineId') {
+        document.getElementById('comicDetailsModalCenterTitle').innerHTML = 'Add comic';
         document.getElementById('addComicVineIdForm').style.display = 'block';
         document.getElementById('comicDetailForm').classList.add('text-center');
         document.getElementById('toggleAddModeButton').style.display = 'block';
@@ -207,6 +208,7 @@ function setComicDetailFormStatus(status) {
         return;
     }
     if (status === 'addComicManually') {
+        document.getElementById('comicDetailsModalCenterTitle').innerHTML = 'Add comic';
         document.getElementById('comicDetailForm').style.display = 'block';
         document.getElementById('toggleAddModeButton').style.display = 'block';
         document.getElementById('toggleAddModeButton').innerHTML = 'Add automatically';

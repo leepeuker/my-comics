@@ -47,7 +47,7 @@
                     <div class="row form-group">
                         <div class="col">
                             <label for="comicDetailPrice">Price</label>
-                            <input type="number" id="comicDetailPrice" class="form-control" name="price" value="">
+                            <input type="number" id="comicDetailPrice" class="form-control" name="price" value="" step="0.01">
                         </div>
                         <div class="col">
                             <label for="comicDetailComicVineId">ComicVine Id</label>
@@ -62,7 +62,7 @@
                         <div class="col">
                             <label for="comicDetailRating">Rating</label>
                             <div class="my-rating"></div>
-                            <input type="range" id="comicDetailRating" name="rating" min="0" max="3" value="0" style="display:none;">
+                            <input type="range" id="comicDetailRating" name="rating" min="0" max="3" value="0" style="display:none;" onchange="reloadRatingStars()">
                         </div>
                     </div>
                 </form>
