@@ -74,10 +74,15 @@ class ComicVine
         $publisher = $this->getPublisher($comicVineVolume);
         $cover = $this->getCover($comicVineIssue);
 
+        $name = $comicVineVolume->getName();
+        if ($comicVineIssue->getName() !== '') {
+            $name .= ' - ' . $comicVineIssue->getName();
+        }
+
         return $this->comicService->create(
             $comicVineIssue->getId(),
             $cover->getId(),
-            PlainText::createFromString($this->convertString($comicVineVolume->getName() . ' - ' . $comicVineIssue->getName())),
+            PlainText::createFromString($this->convertString($name)),
             $this->getYear($comicVineIssue),
             $publisher->getId(),
             PlainText::createFromString($this->convertString($comicVineIssue->getDescription())),

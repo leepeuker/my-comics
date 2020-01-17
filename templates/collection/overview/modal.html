@@ -1,0 +1,79 @@
+<div aria-hidden="true" aria-labelledby="comicDetailsModalCenterTitle" class="modal fade" id="addModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="comicDetailsModalCenterTitle">Add comic</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addComicVineIdForm" style="display: block">
+                    <div class="container text-center" style="width: 250px;margin-bottom: 1em;">
+                        <label for="addComicVineIdFormInput"><b>Enter ComicVineId</b></label>
+                        <input class="form-control form-control-lg" id="addComicVineIdFormInput" name="comicVineId" type="text">
+                    </div>
+                    <div id="addComicVineIdAlertDiv">
+                    </div>
+                </form>
+                <form id="comicDetailForm" style="display: none">
+                    <input type="hidden" name="comicId" id="comicDetailId" value="">
+                    <input type="hidden" name="coverId" id="comicDetailCoverId" value="">
+                    <div class="form-group">
+                        <label for="comicDetailName">Name</label>
+                        <input type="text" class="form-control" name="name" id="comicDetailName" value="">
+                    </div>
+                    <div class="row form-group">
+                        <div class="col">
+                            <label for="comicDetailPublisher">Publisher</label>
+                            <select class="form-control" name="publisherId" id="comicDetailPublisher">
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="comicDetailYear">Year</label>
+                            <input type="number" id="comicDetailYear" class="form-control" name="year" value="" min="1901" max="2030">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="comicDetailDescription">Description</label>
+                        <textarea class="form-control" id="comicDetailDescription" name="description" rows="4"></textarea>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col">
+                            <label for="comicDetailAddedToCollection">Added to collection</label>
+                            <input type="date" class="form-control" id="comicDetailAddedToCollection" name="addedToCollection" value="">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col">
+                            <label for="comicDetailPrice">Price</label>
+                            <input type="number" id="comicDetailPrice" class="form-control" name="price" value="">
+                        </div>
+                        <div class="col">
+                            <label for="comicDetailComicVineId">ComicVine Id</label>
+                            <input type="text" id="comicDetailComicVineId" class="form-control" name="comicVineId" value="">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col">
+                            <label for="comicDetailCoverImage">Cover image</label>
+                            <input type="file" class="form-control-file" name="coverImage" id="comicDetailCoverImage">
+                        </div>
+                        <div class="col">
+                            <label for="comicDetailRating">Rating</label>
+                            <div class="my-rating"></div>
+                            <input type="range" id="comicDetailRating" name="rating" min="0" max="3" value="0" style="display:none;">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light mr-auto" id="toggleAddModeButton" type="button" style="display: none"><small>Add manually</small></button>
+                <button type="button" class="btn btn-danger" id="deleteButton" style="display: none;" onclick="return confirm('Are you sure you want to delete this comic?')">Delete</button>
+                <button class="btn btn-primary" id="addComicVineIdButton" type="button" style="display: none">Add</button>
+                <button class="btn btn-primary" id="addComicManuallyButton" type="button" style="display: none">Add</button>
+                <button type="button" class="btn btn-primary" id="saveButton" style="display: none">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

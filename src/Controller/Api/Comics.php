@@ -5,6 +5,8 @@ namespace App\Controller\Api;
 use App\Component\Comic;
 use App\Component\Comic\ValueObject\Search;
 use App\Component\Publisher;
+use App\Provider\ComicVine\ApiNoResultFoundException;
+use App\Service\ComicVine;
 use App\ValueObject\DateTime;
 use App\ValueObject\Id;
 use App\ValueObject\PaginatedResponse;
@@ -20,12 +22,15 @@ class Comics extends AbstractController
 {
     private Comic\Service $comicService;
 
+    private ComicVine $comicVineService;
+
     private Publisher\Service $publisherService;
 
-    public function __construct(Comic\Service $comicService, Publisher\Service $publisherService)
+    public function __construct(Comic\Service $comicService, Publisher\Service $publisherService, ComicVine $comicVineService)
     {
         $this->comicService = $comicService;
         $this->publisherService = $publisherService;
+        $this->comicVineService = $comicVineService;
     }
 
     public function delete(int $id) : Response
@@ -75,18 +80,31 @@ class Comics extends AbstractController
         $publisher = $publisherName === null ? null : $this->publisherService->fetchByNameOrCreate((string)$publisherName);
 
         $comic = $this->comicService->create(
-            empty($comicVineId) === true ? null : Id::createFromString($comicVineId),
-            empty($coverImageId) === true ? null : Id::createFromString($coverImageId),
+            empty($comicVineId) === true ? null : Id::createFromString((string)$comicVineId),
+            empty($coverImageId) === true ? null : Id::createFromString((string)$coverImageId),
             PlainText::createFromString((string)$request->request->get('name')),
             empty($year) === true ? null : Year::createFromInt((int)$year),
             $publisher === null ? null : $publisher->getId(),
             PlainText::createFromString((string)$request->request->get('description')),
-            $addedToCollection === null ? null : DateTime::createFromString($addedToCollection),
-            empty($price) === true ? null : Price::createFromString($price),
-            empty($rating) === true ? null : Rating::createFromString($rating)
+            $addedToCollection === null ? null : DateTime::createFromString((string)$addedToCollection),
+            empty($price) === true ? null : Price::createFromString((string)$price),
+            empty($rating) === true ? null : Rating::createFromString((string)$rating)
         );
 
         return $this->json($comic, Response::HTTP_CREATED);
+    }
+
+    public function postComicVineId(Request $request) : Response
+    {
+        $comicVineId = (string)$request->request->get('comicVineId');
+
+        try {
+            $issue = $this->comicVineService->createComicByIssueId(Id::createFromString($comicVineId));
+        } catch (ApiNoResultFoundException $e) {
+            return $this->json(['errorMessage' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this->json($issue, Response::HTTP_CREATED);
     }
 
     public function put(Request $request, int $id) : Response
@@ -103,15 +121,15 @@ class Comics extends AbstractController
 
         $this->comicService->update(
             $comicId,
-            empty($comicVineId) === true ? null : Id::createFromString($comicVineId),
-            empty($coverImageId) === true ? null : Id::createFromString($coverImageId),
+            empty($comicVineId) === true ? null : Id::createFromString((string)$comicVineId),
+            empty($coverImageId) === true ? null : Id::createFromString((string)$coverImageId),
             PlainText::createFromString((string)$request->request->get('name')),
             empty($year) === true ? null : Year::createFromInt((int)$year),
             PlainText::createFromString((string)$request->request->get('description')),
-            empty($addedToCollection) === true ? null : DateTime::createFromString($addedToCollection),
-            empty($publisherId) === true ? null : Id::createFromString($publisherId),
+            empty($addedToCollection) === true ? null : DateTime::createFromString((string)$addedToCollection),
+            empty($publisherId) === true ? null : Id::createFromString((string)$publisherId),
             empty($price) === true ? null : Price::createFromInt((int)$price),
-            empty($rating) === true ? null : Rating::createFromString($rating)
+            empty($rating) === true ? null : Rating::createFromString((string)$rating)
         );
 
         return $this->json($this->comicService->fetchById($comicId), Response::HTTP_OK);

@@ -26,6 +26,12 @@ class Api
     {
         $request = new Request('GET', 'https://comicvine.gamespot.com/api/issue/4000-' . $id . '/?format=json&field_list=id,image,name,description,volume,store_date,issue_number&api_key=' . $this->apiKey);
 
+        $responseData = $this->sendRequest($request);
+
+        if (count($responseData) === 0) {
+            throw new ApiNoResultFoundException('Could not find a match for ComicVineId: ' . $id);
+        }
+
         return Issue\Dto::createFromArray($this->sendRequest($request));
     }
 

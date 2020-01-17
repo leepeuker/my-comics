@@ -51,6 +51,11 @@ api_statistics_get_all:
     controller: App\Controller\Api\Statistics::getAll
     methods: GET|HEAD
 
+api_comic_vine_id_post:
+    path: /api/comic/comic_vine_id
+    controller: App\Controller\Api\Comics::postComicVineId
+    methods: POST
+
 ###########
 ### Web ###
 ###########
