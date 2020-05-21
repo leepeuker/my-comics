@@ -34,24 +34,6 @@ $('document').ready(function () {
                 data: imageFormData,
                 success: function (data) {
                     document.getElementById('comicDetailCoverId').value = data.id;
-
-                    $.ajax({
-                        type: 'GET',
-                        url: '/api/images',
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        data: imageFormData,
-                        success: function (data) {
-                            document.getElementById('comicDetailCoverId').value = data.id;
-
-                            postComic();
-                        },
-                        error: function (data) {
-                            alert('Error. Could not load created image.');
-                            console.log(data);
-                        }
-                    });
                     postComic();
                 },
                 error: function (data) {
@@ -59,9 +41,11 @@ $('document').ready(function () {
                     console.log(data);
                 }
             });
-        } else {
-            postComic();
+
+            return
         }
+
+        postComic();
     });
 
     document.getElementById('addComicVineIdButton').addEventListener('click', function (event) {
@@ -151,23 +135,6 @@ $('document').ready(function () {
                 success: function (data) {
                     document.getElementById('comicDetailCoverId').value = data.id;
 
-                    $.ajax({
-                        type: 'GET',
-                        url: '/api/images',
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        data: imageFormData,
-                        success: function (data) {
-                            document.getElementById('comicDetailCoverId').value = data.id;
-
-                            putComic();
-                        },
-                        error: function (data) {
-                            alert('Error. Could not create image.');
-                            console.log(data);
-                        }
-                    });
                     putComic();
                 },
                 error: function (data) {
@@ -175,9 +142,11 @@ $('document').ready(function () {
                     console.log(data);
                 }
             });
-        } else {
-            putComic();
+
+            return;
         }
+
+        putComic();
     });
 
     document.getElementById('addButton').addEventListener('click', function (event) {
@@ -339,7 +308,7 @@ function getPriceFromDetailModal() {
 }
 
 function putComic() {
-        $.ajax({
+    $.ajax({
         type: 'PUT',
         url: '/api/comics/' + document.getElementById('comicDetailId').value,
         data: {

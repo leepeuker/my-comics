@@ -2,12 +2,14 @@
 
 namespace App\Component\Image;
 
+use App\Exception\CouldNotDeleteFile;
 use App\Util;
 use App\ValueObject\Id;
 use App\ValueObject\Url;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\StreamInterface;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -20,13 +22,16 @@ class Service
 
     private Util\File $fileUtil;
 
+    private LoggerInterface $logger;
+
     private Repository $repository;
 
-    public function __construct(Repository $repository, ClientInterface $client, Util\File $fileUtil)
+    public function __construct(Repository $repository, ClientInterface $client, Util\File $fileUtil, LoggerInterface $logger)
     {
         $this->repository = $repository;
         $this->client = $client;
         $this->fileUtil = $fileUtil;
+        $this->logger = $logger;
     }
 
     public function createFromUploadedFile(UploadedFile $coverImage) : Entity
@@ -58,6 +63,21 @@ class Service
         return $this->repository->create($fileName);
     }
 
+    public function deleteById(Id $id) : void
+    {
+        $image = $this->findById($id);
+
+        $this->repository->deleteById($id);
+
+        if ($image !== null) {
+            try {
+                $this->fileUtil->delete(self::COVER_IMAGE_PATH . $image->getFileName());
+            } catch (CouldNotDeleteFile $e) {
+                $this->logger->warning($e->getMessage());
+            }
+        }
+    }
+
     public function fetchAllNames() : array
     {
         return $this->repository->fetchAllNames();
@@ -68,9 +88,21 @@ class Service
         return $this->repository->fetchByFileName($this->createFileNameFromUrl($fileUrl));
     }
 
-    public function fetchById(Id $id) : ?Entity
+    public function fetchById(Id $id) : Entity
     {
         return $this->repository->fetchById($id);
+    }
+
+    public function findById(Id $id) : ?Entity
+    {
+        return $this->repository->findById($id);
+    }
+
+    public function findImageIdByComicId(Id $comicId) : ?Id
+    {
+        $image = $this->repository->findByComicId($comicId);
+
+        return $image === null ? null : $image->getId();
     }
 
     private function createFileNameFromUrl(Url $fileUrl) : string

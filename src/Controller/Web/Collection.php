@@ -10,7 +10,6 @@ use App\ValueObject\DateTime;
 use App\ValueObject\Id;
 use App\ValueObject\PlainText;
 use App\ValueObject\Price;
-use App\ValueObject\Query\SortOrder;
 use App\ValueObject\Rating;
 use App\ValueObject\Year;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -84,7 +83,7 @@ class Collection extends AbstractController
             $dtoList->add(
                 Comic\Dto::createFromParameters(
                     $comic->getId(),
-                    $coverId === null ? null : $this->imageService->fetchById($coverId),
+                    $coverId === null ? null : $this->imageService->findById($coverId),
                     $comic->getComicVineId(),
                     $comic->getName(),
                     $comic->getYear(),
@@ -118,7 +117,7 @@ class Collection extends AbstractController
 
         $dto = Comic\Dto::createFromParameters(
             $comic->getId(),
-            $coverId === null ? null : $this->imageService->fetchById($coverId),
+            $coverId === null ? null : $this->imageService->findById($coverId),
             $comic->getComicVineId(),
             $comic->getName(),
             $comic->getYear(),

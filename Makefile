@@ -44,8 +44,11 @@ reload_nginx:
 app_comics_add:
 	make run_cmd_php CMD="php bin/console comic:add $(ID)"
 
-app_image_cleanup:
-	make run_cmd_php CMD="php bin/console image:cleanup"
+app_image_cleanup_files:
+	make run_cmd_php CMD="php bin/console image:cleanup:files"
+
+app_image_cleanup_database:
+	make run_cmd_php CMD="php bin/console image:cleanup:database"
 
 app_cache_clear:
 	make run_cmd_php CMD="php bin/console cache:clear"

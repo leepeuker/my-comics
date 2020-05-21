@@ -2,6 +2,7 @@
 
 namespace App\Component\Image;
 
+use App\Exception\ResourceNotFound;
 use App\ValueObject\Id;
 use Doctrine\DBAL;
 
@@ -27,9 +28,9 @@ class Repository
         );
     }
 
-    public function deleteById(string $id) : void
+    public function deleteById(Id $id) : void
     {
-        $this->dbConnection->delete('images', ['id' => $id,]);
+        $this->dbConnection->delete('images', ['id' => $id->asInt(),]);
     }
 
     public function fetchAllNames() : array
@@ -56,10 +57,32 @@ class Repository
         $data = $this->dbConnection->fetchAssoc('SELECT * FROM `images` WHERE id = ?', [$id->asInt()]);
 
         if ($data === false) {
-            throw new \RuntimeException('No image found by id: ' . $id);
+            throw new ResourceNotFound('No image found by id: ' . $id);
         }
 
         return Entity::createFromArray($data);
+    }
+
+    public function findByComicId(Id $comicId) : ?Entity
+    {
+        $data = $this->dbConnection->fetchAssoc(
+            'SELECT `images`.*
+            FROM `images`
+            JOIN `comics` on `images`.id = `comics`.cover_id
+            WHERE `comics`.id = ?',
+            [$comicId->asInt()]
+        );
+
+        return $data === false ? null : Entity::createFromArray($data);
+    }
+
+    public function findById(Id $id) : ?Entity
+    {
+        try {
+            return $this->fetchById($id);
+        } catch (ResourceNotFound $e) {
+            return null;
+        }
     }
 
     public function update(Entity $entity) : void

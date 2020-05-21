@@ -40,6 +40,15 @@ class Id implements \JsonSerializable
         return $this->id;
     }
 
+    public function isEqual(?Id $id) : bool
+    {
+        if ($id === null) {
+            return false;
+        }
+
+        return $id->asInt() === $this->asInt();
+    }
+
     public function jsonSerialize() : int
     {
         return $this->id;

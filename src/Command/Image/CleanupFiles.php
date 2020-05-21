@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Command;
+namespace App\Command\Image;
 
 use App\Component\Image\Service;
 use App\Util\File;
@@ -8,9 +8,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Image extends Command
+class CleanupFiles extends Command
 {
-    protected static $defaultName = 'image:cleanup';
+    protected static $defaultName = 'image:cleanup:files';
 
     private File $fileUtil;
 
@@ -25,13 +25,13 @@ class Image extends Command
 
     protected function configure() : void
     {
-        $this->setDescription('Delete images which do not exist in the database.');
+        $this->setDescription('Delete images files which do not exist in the database.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $imageNames = $this->imageService->fetchAllNames();
-        $imagesPath = __DIR__ . '/../../public/images';
+        $imagesPath = __DIR__ . '/../../../public/images/covers';
 
         foreach ($this->getExistingFileNames($imagesPath) as $fileName) {
             if (in_array('images/' . (string)$fileName, $imageNames, true) === false) {

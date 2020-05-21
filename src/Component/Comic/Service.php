@@ -3,6 +3,7 @@
 namespace App\Component\Comic;
 
 use App\Component\Comic\ValueObject\Search;
+use App\Component\Image;
 use App\ValueObject\DateTime;
 use App\ValueObject\Id;
 use App\ValueObject\Offset;
@@ -13,11 +14,14 @@ use App\ValueObject\Year;
 
 class Service
 {
+    private Image\Service $imageService;
+
     private Repository $repository;
 
-    public function __construct(Repository $repository)
+    public function __construct(Repository $repository, Image\Service $imageService)
     {
         $this->repository = $repository;
+        $this->imageService = $imageService;
     }
 
     public function count(?string $searchTerm = null) : int
@@ -45,7 +49,13 @@ class Service
 
     public function delete(Id $id) : void
     {
+        $coverImageId = $this->imageService->findImageIdByComicId($id);
+
         $this->repository->deleteById($id);
+
+        if ($coverImageId !== null) {
+            $this->imageService->deleteById($coverImageId);
+        }
     }
 
     public function fetchAll(Search $search) : EntityList
@@ -89,7 +99,13 @@ class Service
         ?Price $price,
         ?Rating $rating
     ) : void {
-        $this->repository->update($comicId, $comicVineId, $coverImageId,$name, $year, $description, $addedToCollection, $publisherId, $price, $rating);
+        $oldCoverImageId = $this->imageService->findImageIdByComicId($comicId);
+
+        $this->repository->update($comicId, $comicVineId, $coverImageId, $name, $year, $description, $addedToCollection, $publisherId, $price, $rating);
+
+        if ($oldCoverImageId !== null && $oldCoverImageId->isEqual($coverImageId) === false) {
+            $this->imageService->deleteById($oldCoverImageId);
+        }
     }
 
     public function updateCover(Id $comicId, Id $coverId) : void
