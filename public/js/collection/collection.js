@@ -311,7 +311,7 @@ function showDetailModal(id) {
                 document.getElementById('comicDetailPublisher').value = data.publisherId;
                 document.getElementById('comicDetailDescription').value = data.description;
                 document.getElementById('comicDetailAddedToCollection').value = data.addedToCollection === null ? '' : data.addedToCollection.substr(0, 10);
-                document.getElementById('comicDetailPrice').value = data.price === null ? '' : data.price / 100;
+                document.getElementById('comicDetailPrice').value = data.price === null ? '' : (data.price / 100).toFixed(2);
                 document.getElementById('comicDetailComicVineId').value = data.comicVineId;
                 document.getElementById('comicDetailRating').value = data.rating === null ? 0 : data.rating;
 
@@ -328,15 +328,25 @@ function showDetailModal(id) {
     $('#addModal').modal('toggle')
 }
 
+function getPriceFromDetailModal() {
+    let price = document.getElementById('comicDetailPrice').value
+
+    if (price !== '' && isNaN(price) === false) {
+        return parseFloat(price) * 100;
+    }
+
+    return null;
+}
+
 function putComic() {
-    $.ajax({
+        $.ajax({
         type: 'PUT',
         url: '/api/comics/' + document.getElementById('comicDetailId').value,
         data: {
             'name': document.getElementById('comicDetailName').value,
             'coverId': document.getElementById('comicDetailCoverId').value,
             'comicVineId': document.getElementById('comicDetailComicVineId').value,
-            'price': document.getElementById('comicDetailPrice').value * 100,
+            'price': getPriceFromDetailModal(),
             'year': document.getElementById('comicDetailYear').value,
             'description': document.getElementById('comicDetailDescription').value,
             'publisherId': document.getElementById('comicDetailPublisher').value,
@@ -361,7 +371,7 @@ function postComic() {
             'name': document.getElementById('comicDetailName').value,
             'coverId': document.getElementById('comicDetailCoverId').value,
             'comicVineId': document.getElementById('comicDetailComicVineId').value,
-            'price': document.getElementById('comicDetailPrice').value * 100,
+            'price': getPriceFromDetailModal(),
             'year': document.getElementById('comicDetailYear').value,
             'description': document.getElementById('comicDetailDescription').value,
             'publisherId': document.getElementById('comicDetailPublisher').value,
