@@ -284,6 +284,7 @@ function resetDetailModal() {
     document.getElementById('comicDetailAddedToCollection').value = null;
     document.getElementById('comicDetailPrice').value = null;
     document.getElementById('comicDetailComicVineId').value = null;
+    document.getElementById('comicDetailCoverImage').value = null;
     document.getElementById('comicDetailRating').value = 0;
 
     reloadRatingStars();
