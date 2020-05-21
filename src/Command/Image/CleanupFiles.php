@@ -30,14 +30,14 @@ class CleanupFiles extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $imageNames = $this->imageService->fetchAllNames();
-        $imagesPath = __DIR__ . '/../../../public/images/covers';
-
-        foreach ($this->getExistingFileNames($imagesPath) as $fileName) {
-            if (in_array('images/' . (string)$fileName, $imageNames, true) === false) {
-                $this->fileUtil->delete($imagesPath . '/' . (string)$fileName);
-            }
-        }
+//        $imageNames = $this->imageService->fetchAllNames();
+//        $imagesPath = __DIR__ . '/../../../public/images/covers';
+//
+//        foreach ($this->getExistingFileNames($imagesPath) as $fileName) {
+//            if (in_array('images/' . (string)$fileName, $imageNames, true) === false) {
+//                $this->fileUtil->delete($imagesPath . '/' . (string)$fileName);
+//            }
+//        }
 
         return 0;
     }

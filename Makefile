@@ -39,6 +39,14 @@ run_cmd_mysql:
 reload_nginx:
 	docker exec -it my-comics-nginx bash -c "service nginx reload"
 
+# Composer
+#########
+composer_install:
+	make run_cmd_php CMD="composer install"
+
+composer_update:
+	make run_cmd_php CMD="composer update"
+
 # App
 #####
 app_comics_add:
@@ -87,14 +95,6 @@ db_seed_run:
 db_seed_create:
 	make run_cmd_php CMD="vendor/bin/phinx seed:create DefaultSeeder"
 
-# Composer
-#########
-composer_install:
-	make run_cmd_php CMD="composer install"
-
-composer_update:
-	make run_cmd_php CMD="composer update"
-
 # Tests
 #######
 test: test_phpstan test_psalm test_phpunit
@@ -110,3 +110,8 @@ test_psalm:
 
 test_psalm_with_info:
 	make run_cmd_php CMD="vendor/bin/psalm -c ./psalm.xml --show-info=true"
+
+# Other
+#######
+backup_cover_images:
+	tar -czvf var/cover_images_`date +%Y-%m-%d-%H-%M-%S`.tar.gz -C public/images/covers .
