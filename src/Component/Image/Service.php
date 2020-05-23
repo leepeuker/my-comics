@@ -56,7 +56,7 @@ class Service
 
     public function createFromUrl(Url $fileUrl) : Entity
     {
-        $fileName = $this->createFileNameFromUrl($fileUrl);
+        $fileName = $this->getFileNameFromUrl($fileUrl);
 
         $this->fileUtil->write(self::COVER_IMAGE_PATH . $fileName, $this->fetchImage($fileUrl)->getContents());
 
@@ -85,7 +85,7 @@ class Service
 
     public function fetchByFileName(Url $fileUrl) : ?Entity
     {
-        return $this->repository->fetchByFileName($this->createFileNameFromUrl($fileUrl));
+        return $this->repository->fetchByFileName($this->getFileNameFromUrl($fileUrl));
     }
 
     public function fetchById(Id $id) : Entity
@@ -105,16 +105,6 @@ class Service
         return $image === null ? null : $image->getId();
     }
 
-    private function createFileNameFromUrl(Url $fileUrl) : string
-    {
-        $urlFileName = explode('/', (string)$fileUrl->getPath())[4];
-        if (empty($urlFileName) === true) {
-            throw new RuntimeException('No filename found in url.');
-        }
-
-        return $urlFileName;
-    }
-
     private function fetchImage(Url $fileUrl) : StreamInterface
     {
         $response = $this->client->sendRequest(new Request('GET', (string)$fileUrl));
@@ -123,5 +113,15 @@ class Service
         }
 
         return $response->getBody();
+    }
+
+    private function getFileNameFromUrl(Url $fileUrl) : string
+    {
+        $urlFileName = basename($fileUrl->getPath());
+        if ($urlFileName === '') {
+            throw new RuntimeException('No filename found in url: ' . $fileUrl);
+        }
+
+        return $urlFileName;
     }
 }
