@@ -154,8 +154,6 @@ $('document').ready(function () {
 
         $('#addModal').modal('toggle')
     });
-
-
 });
 
 function setComicDetailFormStatus(status) {
@@ -195,8 +193,8 @@ function initRatingStars() {
         hoverColor: '#92b4f2',
         activeColor: '#3676e8',
         initialRating: 0,
-        starSize: 35,
-        totalStars: 3,
+        starSize: 30,
+        totalStars: 5,
         disableAfterRate: false,
         useGradient: false,
         callback: function (currentRating, $el) {
